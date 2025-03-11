@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace SmartGradeServer.Controllers
+namespace SmartGradeAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]

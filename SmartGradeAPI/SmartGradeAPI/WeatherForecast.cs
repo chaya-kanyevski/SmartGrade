@@ -1,4 +1,4 @@
-namespace SmartGradeServer
+namespace SmartGradeAPI
 {
     public class WeatherForecast
     {

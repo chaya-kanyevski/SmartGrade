@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartGradeServer", "SmartGradeServer\SmartGradeServer.csproj", "{9FCECABA-DC14-4DF7-A009-CE039D1E4CD7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartGradeAPI", "SmartGradeAPI\SmartGradeAPI.csproj", "{10A88621-7FEE-4CF3-8089-649140AAA3DD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9FCECABA-DC14-4DF7-A009-CE039D1E4CD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9FCECABA-DC14-4DF7-A009-CE039D1E4CD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9FCECABA-DC14-4DF7-A009-CE039D1E4CD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9FCECABA-DC14-4DF7-A009-CE039D1E4CD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10A88621-7FEE-4CF3-8089-649140AAA3DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10A88621-7FEE-4CF3-8089-649140AAA3DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10A88621-7FEE-4CF3-8089-649140AAA3DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10A88621-7FEE-4CF3-8089-649140AAA3DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {A4037BEA-0323-4847-98DA-0FABF5935725}
+		SolutionGuid = {BA1BDE14-6A96-4148-B5E1-CE0C8A2FC413}
 	EndGlobalSection
 EndGlobal
