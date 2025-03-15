@@ -22,7 +22,8 @@ namespace SmartGradeAPI.Data.Repositories
         }
         public async Task<User> GetUserByIdAsync(string id)
         {
-            return await _context.Users.FirstOrDefaultAsync(user => user.Id == id);
+            return await _context.Users.FirstOrDefaultAsync(user => user.Id == id)
+                ?? throw new Exception("User not found"); ;
         }
         public async Task<User> GetUserByMail(string email)
         {
@@ -37,10 +38,7 @@ namespace SmartGradeAPI.Data.Repositories
             {
                 return null; // user already exist
             }
-            user.Role = Role.Teacher;
-
-
-            _context.Users.AddAsync(user);
+            await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
 
             return user;

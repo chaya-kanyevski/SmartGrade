@@ -11,5 +11,15 @@ namespace SmartGradeAPI.Core.Models
         public int Id { get; set; }
         public string Text { get; set; }
         public int ExamId { get; set; }
+        public Question()
+        {
+            
+        }
+        public Question(int id, string text, int examId)
+        {
+            Id = id;
+            Text = text;
+            ExamId = examId;
+        }
     }
 }

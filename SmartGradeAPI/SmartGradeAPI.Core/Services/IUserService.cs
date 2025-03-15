@@ -9,10 +9,11 @@ namespace SmartGradeAPI.Core.Services
 {
     public interface IUserService
     {
-        public Task<List<User>> GetAllUsersAsync();
-        public Task<User> GetUserByIdAsync(string id);
-        public Task<User> AddUserAsync(User user);
-        public Task<bool> UpdateUserAsync(string id, User user);
-        public Task<bool> DeleteUserAsync(string id);
+        Task<List<User>> GetAllUsersAsync();
+        Task<User> GetUserByIdAsync(string id);
+        Task<User> AddUserAsync(User user);
+        Task<bool> UpdateUserAsync(string id, User user);
+        Task<bool> DeleteUserAsync(string id);
+        string GenerateJwtToken(string email, string role);
     }
 }

@@ -9,15 +9,28 @@ namespace SmartGradeAPI.Core.Models
     public class Exam
     {
         public int Id { get; set; }
+        public string Subject { get; set; }
         public string Title { get; set; }
-        public DateTime Date { get; set; } 
-        public string Subject { get; set; } 
+        public DateTime Created_at { get; set; } 
         public string Class { get; set; }
-        public List<Question> Questions { get; set; } 
+        public List<Question> Questions { get; set; }
+        public List<Answer> Answers { get; set; }
+        public List<ExamUpload> ExamsUpload { get; set; }
 
         public Exam()
         {
-            Questions = new List<Question>();
+
+        }
+        public Exam(int id, string subject, string title, DateTime created_at, string @class, List<Question> questions, List<Answer> answers, List<ExamUpload> examsUpload)
+        {
+            Id = id;
+            Subject = subject;
+            Title = title;
+            Created_at = created_at;
+            Class = @class;
+            Questions = questions;
+            Answers = answers;
+            ExamsUpload = examsUpload;
         }
     }
 }

@@ -1,8 +1,9 @@
+using SmartGradeAPI.Core;
 using SmartGradeAPI.Core.Repositories;
 using SmartGradeAPI.Core.Services;
 using SmartGradeAPI.Data;
 using SmartGradeAPI.Data.Repositories;
-using SmartGradeAPI.Service;
+using SmartGradeAPI.Service.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +17,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddDbContext<DataContext>();
-
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

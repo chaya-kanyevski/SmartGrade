@@ -6,18 +6,17 @@ using System.Threading.Tasks;
 
 namespace SmartGradeAPI.Core.Models
 {
-    public class Student
+    public class Student : User
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public string Address { get; set; }
-        public int Age { get; set; } 
-        public List<Exam> Exams { get; set; } 
-
+        public string Class { get; set; }
+        public List<ExamUpload> ExamsUpload { get; set; }
         public Student()
         {
-            Exams = new List<Exam>();
+
+        }
+        public Student(string id, string name, string email, string password, string @class) : base(id, name, email, password)
+        {
+            Class = @class;
         }
     }
 }

@@ -10,13 +10,19 @@ namespace SmartGradeAPI.Core.Models
     public class Report
     {
         public int Id { get; set; }
-        public int StudentId { get; set; }  
-        public DateTime DateGenerated { get; set; }  
-        public List<Grade> Grades { get; set; } 
+        public string UserId { get; set; }
+        public DateTime DateGenerated { get; set; }  = DateTime.Now;
+        public List<Student> Students { get; set; } 
 
         public Report()
         {
-            Grades = new List<Grade>();
+
+        }
+        public Report(int id, string userId, List<Student> students)
+        {
+            Id = id;
+            UserId = userId;
+            Students = students;
         }
     }
 }
