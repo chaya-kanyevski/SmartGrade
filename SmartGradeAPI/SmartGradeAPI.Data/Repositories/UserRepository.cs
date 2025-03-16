@@ -20,7 +20,7 @@ namespace SmartGradeAPI.Data.Repositories
         {
             return await _context.Users.ToListAsync();
         }
-        public async Task<User> GetUserByIdAsync(string id)
+        public async Task<User> GetUserByIdAsync(int id)
         {
             return await _context.Users.FirstOrDefaultAsync(user => user.Id == id)
                 ?? throw new Exception("User not found"); ;
@@ -44,7 +44,7 @@ namespace SmartGradeAPI.Data.Repositories
             return user;
         }
 
-        public async Task<bool> UpdateUserAsync(string id, User user)
+        public async Task<bool> UpdateUserAsync(int id, User user)
         {
             var originUser = await GetUserByIdAsync(id);
             if (originUser != null)
@@ -59,7 +59,7 @@ namespace SmartGradeAPI.Data.Repositories
             return false;
         }
 
-        public async Task<bool> DeleteUserAsync(string id)
+        public async Task<bool> DeleteUserAsync(int id)
         {
             var user = await _context.Users.FirstOrDefaultAsync(user => user.Id == id);
             _context.Users.Remove(user);

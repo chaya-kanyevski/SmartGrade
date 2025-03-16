@@ -10,10 +10,10 @@ namespace SmartGradeAPI.Core.Services
     public interface IUserService
     {
         Task<List<User>> GetAllUsersAsync();
-        Task<User> GetUserByIdAsync(string id);
+        Task<User> GetUserByIdAsync(int id);
         Task<User> AddUserAsync(User user);
-        Task<bool> UpdateUserAsync(string id, User user);
-        Task<bool> DeleteUserAsync(string id);
+        Task<bool> UpdateUserAsync(int id, User user);
+        Task<bool> DeleteUserAsync(int id);
         string GenerateJwtToken(string email, string role);
     }
 }

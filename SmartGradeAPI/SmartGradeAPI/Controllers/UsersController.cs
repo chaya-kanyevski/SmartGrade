@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SmartGradeAPI.Core.DTOs;
 using SmartGradeAPI.Core.Models;
 using SmartGradeAPI.Core.Services;
 using SmartGradeAPI.Service;
@@ -14,63 +16,77 @@ namespace SmartGradeAPI.API.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IMapper _mapper;
 
-        public UsersController(IUserService userService)
+        public UsersController(IUserService userService, IMapper mapper)
         {
             _userService = userService; 
+            _mapper = mapper;
         }
 
         // get all users
         [HttpGet]
-        public async Task<ActionResult<User>> GetAllUsersAsync()
+        public async Task<ActionResult<UserDto>> Get()
         {
-            var userList = await _userService.GetAllUsersAsync();
-            return Ok(userList);
+            var usersList = await _userService.GetAllUsersAsync();
+            return Ok(_mapper.Map<List<UserDto>>(usersList));
         }
 
         // Get user data by Id
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUserByIdAsync(string id)
+        public async Task<ActionResult<User>> Get(int id)
         {
             var user = await _userService.GetUserByIdAsync(id);
             if (user == null)
             {
                 return NotFound("No user with id " + id);
             }
-            return Ok(user);
+            return Ok(_mapper.Map<UserDto>(user));
         }
 
         // Add new user
         [HttpPost("register")]
-        public async Task<ActionResult<string>> PostAsync()
+        public async Task<ActionResult<bool>> Post(UserDto userDto)
         {
-
-            return BadRequest(false);
-
+            var user = _mapper.Map<User>(userDto);
+            try
+            {
+                var result = await _userService.AddUserAsync(user);
+                if (result != null) 
+                {
+                    return Ok(true); 
+                }
+                return Conflict("User already exists.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
         }
-
-
-
 
         // Update user
         [HttpPut("{id}")]
-        public async Task<ActionResult<bool>> PutAsync(string id)
+        public async Task<ActionResult<bool>> Put(int id, UserDto userDto)
         {
-
-            return BadRequest(false);
-
+            var user = _mapper.Map<User>(userDto);
+            var result = await _userService.UpdateUserAsync(id, user);
+            if (!result)
+            {
+                return NotFound("User not found.");
+            }
+            return Ok(result);
         }
 
         // Delete user
         [HttpDelete("{id}")]
-        public async Task<ActionResult<bool>> DeleteUserAsync(string id)
+        public async Task<ActionResult<bool>> Delete(int id)
         {
-            if (await _userService.DeleteUserAsync(id))
+            var result = await _userService.DeleteUserAsync(id);
+            if (!result)
             {
-                return Ok(true);
+                return BadRequest(true);
             }
-            return BadRequest(true);
-
+            return Ok(true);
         }
     }
 }

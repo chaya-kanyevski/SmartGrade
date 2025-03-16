@@ -24,7 +24,7 @@ namespace SmartGradeAPI.Data.Repositories
             return true;
         }
 
-        public async Task<bool> DeleteStudentAsync(string id)
+        public async Task<bool> DeleteStudentAsync(int id)
         {
             Student student = await _context.Users.OfType<Student>().FirstOrDefaultAsync(s => s.Id.Equals(id))
                 ?? throw new Exception("Student not found");
@@ -38,7 +38,7 @@ namespace SmartGradeAPI.Data.Repositories
             return await _context.Users.OfType<Student>().ToListAsync();
         }
 
-        public async Task<Student> GetStudentById(string id)
+        public async Task<Student> GetStudentById(int id)
         {
             return await _context.Users.OfType<Student>().FirstOrDefaultAsync(x => x.Id == id)
                 ?? throw new Exception("Student not found");

@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using SmartGradeAPI.Core.DTOs;
 using SmartGradeAPI.Core.Services;
+using SmartGradeAPI.Service;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,17 +20,18 @@ namespace SmartGradeAPI.API.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        //[HttpGet]
+        //public IEnumerable<string> Get()
+        //{
+        //    return new string[] { "value1", "value2" };
+        //}
 
         // GET api/<AnswerController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<ActionResult<AnswerDto>> Get(int id, int examId)
         {
-            return "value";
+            var answer = await _answerService.GetAnswerByIdAsync(id, examId);
+            return Ok(_mapper.Map<AnswerDto>(answer));
         }
 
         // POST api/<AnswerController>

@@ -30,7 +30,7 @@ namespace SmartGradeAPI.Service
             return await _userRepository.AddUserAsync(user);
         }
 
-        public async Task<bool> DeleteUserAsync(string id)
+        public async Task<bool> DeleteUserAsync(int id)
         {
             return await _userRepository.DeleteUserAsync(id);
         }
@@ -41,12 +41,12 @@ namespace SmartGradeAPI.Service
             return await _userRepository.GetAllUsersAsync();
         }
 
-        public async Task<User> GetUserByIdAsync(string id)
+        public async Task<User> GetUserByIdAsync(int id)
         {
             return await _userRepository.GetUserByIdAsync(id);
         }
 
-        public async Task<bool> UpdateUserAsync(string id, User user)
+        public async Task<bool> UpdateUserAsync(int id, User user)
         {
             return await _userRepository.UpdateUserAsync(id, user);
         }

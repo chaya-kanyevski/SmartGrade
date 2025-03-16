@@ -8,14 +8,14 @@ namespace SmartGradeAPI.Core.Models
 {
     public class Student : User
     {
-        public string UserId { get; set; }
+        public int UserId { get; set; }
         public string Class { get; set; }
         public List<ExamUpload> ExamsUpload { get; set; }
         public Student()
         {
 
         }
-        public Student(string id, string name, string email, string password, string @class) : base(id, name, email, password)
+        public Student(int id, string name, string email, string password, string @class) : base(id, name, email, password)
         {
             Class = @class;
         }

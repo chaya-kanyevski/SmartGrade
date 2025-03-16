@@ -9,7 +9,7 @@ namespace SmartGradeAPI.Core.Models
 {
     public class User
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
@@ -20,14 +20,14 @@ namespace SmartGradeAPI.Core.Models
 
         }
 
-        public User(string id, string name, string email, string password)
+        public User(int id, string name, string email, string password)
         {
             Id = id;
             Name = name;
             Email = email;
             Password = password;
         }
-        public User(string id, string name, string email, string password, string role)
+        public User(int id, string name, string email, string password, string role)
         {
             Id = id;
             Name = name;

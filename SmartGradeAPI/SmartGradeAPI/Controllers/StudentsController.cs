@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using SmartGradeAPI.Core.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -8,6 +10,13 @@ namespace SmartGradeAPI.API.Controllers
     [ApiController]
     public class StudentsController : ControllerBase
     {
+        private readonly IStudentService _studentService;
+        private readonly IMapper _mapper;
+        public StudentsController(IStudentService studentService, IMapper mapper)
+        {
+            _studentService = studentService;
+            _mapper = mapper;
+        }
         // GET: api/<StudentsController>
         [HttpGet]
         public IEnumerable<string> Get()

@@ -1,5 +1,4 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
+using AutoMapper;
 using SmartGradeAPI.Core;
 using SmartGradeAPI.Core.Repositories;
 using SmartGradeAPI.Core.Services;
@@ -7,6 +6,7 @@ using SmartGradeAPI.Data;
 using SmartGradeAPI.Data.Repositories;
 using SmartGradeAPI.Service;
 using System.Text;
+
 
 var builder = WebApplication.CreateBuilder(args);
 

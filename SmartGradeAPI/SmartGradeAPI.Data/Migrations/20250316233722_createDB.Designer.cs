@@ -12,8 +12,8 @@ using SmartGradeAPI.Data;
 namespace SmartGradeAPI.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250316121159_v2")]
-    partial class v2
+    [Migration("20250316233722_createDB")]
+    partial class createDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -85,7 +85,7 @@ namespace SmartGradeAPI.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Exams");
+                    b.ToTable("Exam");
                 });
 
             modelBuilder.Entity("SmartGradeAPI.Core.Models.ExamUpload", b =>
@@ -109,9 +109,6 @@ namespace SmartGradeAPI.Data.Migrations
                     b.Property<int>("StudentId")
                         .HasColumnType("int");
 
-                    b.Property<string>("StudentId1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("UploadDate")
                         .HasColumnType("datetime2");
 
@@ -123,7 +120,7 @@ namespace SmartGradeAPI.Data.Migrations
 
                     b.HasIndex("ExamId");
 
-                    b.HasIndex("StudentId1");
+                    b.HasIndex("StudentId");
 
                     b.ToTable("ExamsUploads");
                 });
@@ -172,12 +169,11 @@ namespace SmartGradeAPI.Data.Migrations
 
             modelBuilder.Entity("SmartGradeAPI.Core.Models.User", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -200,11 +196,9 @@ namespace SmartGradeAPI.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("User");
-
-                    b.UseTphMappingStrategy();
+                    b.UseTptMappingStrategy();
                 });
 
             modelBuilder.Entity("SmartGradeAPI.Core.Models.Student", b =>
@@ -218,13 +212,12 @@ namespace SmartGradeAPI.Data.Migrations
                     b.Property<int?>("ReportId")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasIndex("ReportId");
 
-                    b.HasDiscriminator().HasValue("Student");
+                    b.ToTable("Students", (string)null);
                 });
 
             modelBuilder.Entity("SmartGradeAPI.Core.Models.Answer", b =>
@@ -246,7 +239,9 @@ namespace SmartGradeAPI.Data.Migrations
 
                     b.HasOne("SmartGradeAPI.Core.Models.Student", null)
                         .WithMany("ExamsUpload")
-                        .HasForeignKey("StudentId1");
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SmartGradeAPI.Core.Models.Question", b =>
@@ -260,6 +255,12 @@ namespace SmartGradeAPI.Data.Migrations
 
             modelBuilder.Entity("SmartGradeAPI.Core.Models.Student", b =>
                 {
+                    b.HasOne("SmartGradeAPI.Core.Models.User", null)
+                        .WithOne()
+                        .HasForeignKey("SmartGradeAPI.Core.Models.Student", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("SmartGradeAPI.Core.Models.Report", null)
                         .WithMany("Students")
                         .HasForeignKey("ReportId");

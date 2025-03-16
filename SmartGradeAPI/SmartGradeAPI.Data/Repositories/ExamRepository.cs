@@ -19,14 +19,14 @@ namespace SmartGradeAPI.Data.Repositories
         }
         public async Task<bool> AddExamAsync(Exam newexam)
         {
-            _context.Exams.Add(newexam);
+            _context.Exam.Add(newexam);
             await _context.SaveChangesAsync();
             return true;
         }
 
         public async Task<Exam> GetByIdAsync(int id)
         {
-            return await _context.Exams.FirstOrDefaultAsync(e => e.Id == id) ?? throw new Exception("Exam not found");
+            return await _context.Exam.FirstOrDefaultAsync(e => e.Id == id) ?? throw new Exception("Exam not found");
         }
     }
 }

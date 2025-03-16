@@ -8,15 +8,15 @@ namespace SmartGradeAPI.Core.Models
 {
     public class Exam
     {
-        public int Id { get; set; }
-        public string UserId { get; set; }
-        public string Subject { get; set; }
-        public string Title { get; set; }
-        public DateTime Created_at { get; set; } 
-        public string Class { get; set; }
-        public List<Question> Questions { get; set; }
-        public List<Answer> Answers { get; set; }
-        public List<ExamUpload> ExamsUpload { get; set; }
+        public int Id { get; set; } = 0;
+        public string UserId { get; set; } = string.Empty;
+        public string Subject { get; set; } = "";
+        public string Title { get; set; } = "";
+        public DateTime Created_at { get; set; } = DateTime.Now;
+        public string Class { get; set; } = "";
+        public List<Question> Questions { get; set; } = new List<Question>();
+        public List<Answer> Answers { get; set; } = new List<Answer>();
+        public List<ExamUpload> ExamsUpload { get; set; } = new List<ExamUpload>();
 
         public Exam()
         {

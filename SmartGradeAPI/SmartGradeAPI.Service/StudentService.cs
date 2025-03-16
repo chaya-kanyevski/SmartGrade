@@ -23,7 +23,7 @@ namespace SmartGradeAPI.Service
             return await _studentRepository.AddStudentAsync(student);
         }
 
-        public async Task<bool> DeleteStudentAsync(string id)
+        public async Task<bool> DeleteStudentAsync(int id)
         {
             return await _studentRepository.DeleteStudentAsync(id);
         }
@@ -33,7 +33,7 @@ namespace SmartGradeAPI.Service
             return await _studentRepository.GetAllStudentsAsync();
         }
 
-        public async Task<Student> GetStudentById(string id)
+        public async Task<Student> GetStudentById(int id)
         {
             return await _studentRepository.GetStudentById(id);
         }

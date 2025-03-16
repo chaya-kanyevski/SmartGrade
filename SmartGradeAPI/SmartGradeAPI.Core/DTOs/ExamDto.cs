@@ -11,7 +11,6 @@ namespace SmartGradeAPI.Core.DTOs
     {
         public string Subject { get; set; }
         public string Title { get; set; }
-        public DateTime Created_at { get; set; }
         public string Class { get; set; }
     }
 }
