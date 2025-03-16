@@ -8,7 +8,7 @@ namespace SmartGradeAPI.Core.Models
 {
     public class Student : User
     {
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public string Class { get; set; }
         public List<ExamUpload> ExamsUpload { get; set; }
         public Student()

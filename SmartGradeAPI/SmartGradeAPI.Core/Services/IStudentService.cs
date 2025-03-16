@@ -11,9 +11,9 @@ namespace SmartGradeAPI.Core.Services
     {
         Task<List<Student>> GetAllStudentsAsync();
 
-        Task<Student> GetStudentById(int id);
+        Task<Student> GetStudentById(string id);
 
-        Task<bool> DeleteStudentAsync(int id);
+        Task<bool> DeleteStudentAsync(string id);
 
         Task<bool> AddStudentAsync(Student student);
     }

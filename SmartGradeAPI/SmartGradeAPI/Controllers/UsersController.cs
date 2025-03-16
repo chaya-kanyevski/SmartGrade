@@ -42,41 +42,21 @@ namespace SmartGradeAPI.API.Controllers
 
         // Add new user
         [HttpPost("register")]
-        public async Task<ActionResult<string>> PostAsync([FromBody] UserPost user)
+        public async Task<ActionResult<string>> PostAsync()
         {
-            var tmpuser = await _userService.AddUserAsync(user);
-            if (tmpuser != null)
-            {
-                var token = _userService.GenerateJwtToken(user.Email, "User");
-                return Ok(new { Token = token, userId = tmpuser.Id });
-            }
 
             return BadRequest(false);
 
         }
 
-        //Login to a logged-in user
-        [HttpPost("login")]
-        public async Task<ActionResult> Login([FromBody] LoginModel model)
-        {
-            var user = await _userService.GetUserByMail(model.Email);
-            if (user == null || !BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash))
-                return Unauthorized();
 
-
-            var token = _userService.GenerateJwtToken(user.Email, user.Role);
-            return Ok(new { Token = token, userId = user.Id });
-        }
 
 
         // Update user
         [HttpPut("{id}")]
-        public async Task<ActionResult<bool>> PutAsync(string id, [FromBody] UserPost user)
+        public async Task<ActionResult<bool>> PutAsync(string id)
         {
-            if (await _userService.UpdateUserAsync(id, user))
-            {
-                return Ok(true);
-            }
+
             return BadRequest(false);
 
         }

@@ -9,6 +9,7 @@ namespace SmartGradeAPI.Core.Models
     public class Exam
     {
         public int Id { get; set; }
+        public string UserId { get; set; }
         public string Subject { get; set; }
         public string Title { get; set; }
         public DateTime Created_at { get; set; } 
@@ -21,9 +22,10 @@ namespace SmartGradeAPI.Core.Models
         {
 
         }
-        public Exam(int id, string subject, string title, DateTime created_at, string @class, List<Question> questions, List<Answer> answers, List<ExamUpload> examsUpload)
+        public Exam(int id, string userId, string subject, string title, DateTime created_at, string @class, List<Question> questions, List<Answer> answers, List<ExamUpload> examsUpload)
         {
             Id = id;
+            UserId = userId;
             Subject = subject;
             Title = title;
             Created_at = created_at;

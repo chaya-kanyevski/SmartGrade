@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace SmartGradeAPI.Core.DTOs
 {
-    internal class ExamUploadDto
+    public class ExamUploadDto
     {
+        public string FilePath { get; set; }
+        public DateTime UploadDate { get; set; } = DateTime.UtcNow;
+        public int Score { get; set; }
     }
 }

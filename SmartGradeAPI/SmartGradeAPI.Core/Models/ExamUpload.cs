@@ -9,7 +9,7 @@ namespace SmartGradeAPI.Core.Models
     public class ExamUpload
     {
         public int Id { get; set; }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public int StudentId { get; set; }
         public int ExamId { get; set; }
         public string FilePath { get; set; }
@@ -21,7 +21,7 @@ namespace SmartGradeAPI.Core.Models
 
         }
 
-        public ExamUpload(int id, int userId, int studentId, int examId, string filePath, DateTime uploadDate, int score)
+        public ExamUpload(int id, string userId, int studentId, int examId, string filePath, DateTime uploadDate, int score)
         {
             Id = id; 
             UserId = userId; 

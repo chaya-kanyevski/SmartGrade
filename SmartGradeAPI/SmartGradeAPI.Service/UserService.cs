@@ -60,7 +60,7 @@ namespace SmartGradeAPI.Service
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Name, username),
-            new Claim(ClaimTypes.Role, role) // הוספת התפקיד היחיד כ-Claim
+            new Claim(ClaimTypes.Role, role)
 
         };
 

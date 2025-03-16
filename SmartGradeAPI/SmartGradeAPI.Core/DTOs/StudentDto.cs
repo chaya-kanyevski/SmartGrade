@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace SmartGradeAPI.Core.DTOs
 {
-    internal class StudentDto
+    public class StudentDto
     {
+        public string Class { get; set; }
     }
 }
