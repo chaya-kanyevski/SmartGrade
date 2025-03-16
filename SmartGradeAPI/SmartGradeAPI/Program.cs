@@ -3,7 +3,7 @@ using SmartGradeAPI.Core.Repositories;
 using SmartGradeAPI.Core.Services;
 using SmartGradeAPI.Data;
 using SmartGradeAPI.Data.Repositories;
-using SmartGradeAPI.Service.Services;
+using SmartGradeAPI.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
