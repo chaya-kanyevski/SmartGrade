@@ -9,6 +9,6 @@ namespace SmartGradeAPI.Core.Services
 {
     public interface IReportService
     {
-        Task<Report> GetReportByIdAsync(int id);
+        Task<List<Report>> GetReportByIdAsync(int id);
     }
 }

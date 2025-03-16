@@ -19,7 +19,7 @@ namespace SmartGradeAPI.Service
     {
         private readonly Microsoft.Extensions.Configuration.IConfiguration _configuration;
         private readonly IUserRepository _userRepository;
-        public UserService(UserRepository userReposetory, Microsoft.Extensions.Configuration.IConfiguration configuration)
+        public UserService(IUserRepository userReposetory, Microsoft.Extensions.Configuration.IConfiguration configuration)
         {
             _configuration = configuration;
             _userRepository = userReposetory;

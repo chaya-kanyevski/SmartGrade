@@ -10,11 +10,11 @@ namespace SmartGradeAPI.API.Controllers
     [ApiController]
     public class AnswersController : ControllerBase
     {
-        private readonly IAnswerService _answerservice;
+        private readonly IAnswerService _answerService;
         private readonly IMapper _mapper;
-        public AnswersController(IAnswerService answerservice, IMapper mapper)
+        public AnswersController(IAnswerService answerService, IMapper mapper)
         {
-            _answerservice = answerservice;
+            _answerService = answerService;
             _mapper = mapper;
         }
 

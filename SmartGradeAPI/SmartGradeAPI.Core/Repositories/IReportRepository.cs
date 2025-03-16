@@ -9,6 +9,6 @@ namespace SmartGradeAPI.Core.Repositories
 {
     public interface IReportRepository
     {
-        Task<Report> GetReportByIdAsync(int id);
+        Task<List<Report>> GetReportByIdAsync(int id);
     }
 }

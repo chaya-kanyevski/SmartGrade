@@ -17,7 +17,7 @@ namespace SmartGradeAPI.Service
             _reportRepository = reportRepository;
         }
 
-        public async Task<Report> GetReportByIdAsync(int id)
+        public async Task<List<Report>> GetReportByIdAsync(int id)
         {
             return await _reportRepository.GetReportByIdAsync(id);
         }
