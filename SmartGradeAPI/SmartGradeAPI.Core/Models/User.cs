@@ -14,7 +14,7 @@ namespace SmartGradeAPI.Core.Models
         public string Email { get; set; }
         public string Password { get; set; }
         public DateTime created_at { get; set; } = DateTime.Now;
-        public bool IsAdmin { get; set; } = false;
+        public string Role { get; set; } = "User";
         public User()
         {
 
@@ -27,13 +27,13 @@ namespace SmartGradeAPI.Core.Models
             Email = email;
             Password = password;
         }
-        public User(string id, string name, string email, string password, bool isAdmin)
+        public User(string id, string name, string email, string password, string role)
         {
             Id = id;
             Name = name;
             Email = email;
             Password = password;
-            IsAdmin = isAdmin;
+            Role = role;
         }
     }
 }

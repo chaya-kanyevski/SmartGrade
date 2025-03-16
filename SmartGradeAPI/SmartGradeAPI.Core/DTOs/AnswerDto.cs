@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace SmartGradeAPI.Core.DTOs
 {
-    internal class AnswerDto
+    public class AnswerDto
     {
+        public int QuestionNumber { get; set; }
+        public string Text { get; set; }
+        public bool IsCorrect { get; set; }
+        public int Value { get; set; }
     }
 }
