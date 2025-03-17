@@ -20,7 +20,6 @@ namespace SmartGradeAPI.Core
             CreateMap<ExamUpload, ExamUploadDto>().ReverseMap();
             CreateMap<Question, QuestionDto>().ReverseMap();
             CreateMap<Report, ReportDto>().ReverseMap();
-            CreateMap<List<User>, List<UserDto>>().ReverseMap();
         }
     }
 }

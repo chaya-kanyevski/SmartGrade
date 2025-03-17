@@ -29,7 +29,7 @@ namespace SmartGradeAPI.API.Controllers
         public async Task<ActionResult<UserDto>> Get()
         {
             var usersList = await _userService.GetAllUsersAsync();
-            return Ok(_mapper.Map<List<UserDto>>(usersList));
+            return Ok(_mapper.Map<IEnumerable<UserDto>>(usersList));
         }
 
         // Get user data by Id
@@ -69,6 +69,7 @@ namespace SmartGradeAPI.API.Controllers
         public async Task<ActionResult<bool>> Put(int id, UserDto userDto)
         {
             var user = _mapper.Map<User>(userDto);
+            user.Id = id;
             var result = await _userService.UpdateUserAsync(id, user);
             if (!result)
             {
@@ -76,6 +77,7 @@ namespace SmartGradeAPI.API.Controllers
             }
             return Ok(result);
         }
+
 
         // Delete user
         [HttpDelete("{id}")]
