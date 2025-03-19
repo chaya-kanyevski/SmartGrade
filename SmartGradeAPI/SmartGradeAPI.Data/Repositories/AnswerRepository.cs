@@ -17,6 +17,11 @@ namespace SmartGradeAPI.Data.Repositories
         {
             _context = context;
         }
+
+        public async Task<List<Answer>> GetAllAnswersAsync(int examId)
+        {
+            return await _context.Answers.Where(x => x.ExamId == examId).ToListAsync();
+        }
         public async Task<bool> AddAnswerAsync(Answer answer)
         {
             _context.Answers.Add(answer);
@@ -28,6 +33,18 @@ namespace SmartGradeAPI.Data.Repositories
         {
             return await _context.Answers.FirstOrDefaultAsync(a => a.Id == id && a.ExamId == examId)
                 ?? throw new Exception("Answer not found");
+        }
+
+        public async Task<bool> DeleteAnswerAsync(int id)
+        {
+            var answer = await _context.Answers.FindAsync(id);
+            if (answer != null)
+            {
+                _context.Answers.Remove(answer);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
     }
 }

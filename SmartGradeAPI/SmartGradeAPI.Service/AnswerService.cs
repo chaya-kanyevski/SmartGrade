@@ -21,9 +21,20 @@ namespace SmartGradeAPI.Service
             return await _answerRepository.AddAnswerAsync(answer);
         }
 
+        public async Task<bool> DeleteAnswerAsync(int id)
+        {
+            return await (_answerRepository.DeleteAnswerAsync(id));
+        }
+
+        public Task<List<Answer>> GetAllAnswersAsync(int exam_id)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Answer> GetAnswerByIdAsync(int id, int examId)
         {
             return await GetAnswerByIdAsync(id, examId);
         }
+
     }
 }

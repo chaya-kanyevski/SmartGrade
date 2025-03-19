@@ -3,9 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SmartGradeAPI.Core.DTOs;
 using SmartGradeAPI.Core.Models;
 using SmartGradeAPI.Core.Services;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
+//!!
 namespace SmartGradeAPI.API.Controllers
 {
     [Route("api/[controller]")]
@@ -19,14 +17,7 @@ namespace SmartGradeAPI.API.Controllers
             _examService = examService;
             _mapper = mapper;
         }
-        // GET: api/<ExamController>
-        //[HttpGet]
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
 
-        // GET api/<ExamController>/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ExamDto>> Get(int id)
         {
@@ -34,7 +25,6 @@ namespace SmartGradeAPI.API.Controllers
             return Ok(_mapper.Map<ExamDto>(exam));
         }
 
-        // POST api/<ExamController>
         [HttpPost]
         public async Task<ActionResult<bool>> Post([FromBody] ExamDto examDto)
         {
@@ -42,16 +32,5 @@ namespace SmartGradeAPI.API.Controllers
             return Ok(await _examService.AddExamAsync(exam));
         }
 
-        // PUT api/<ExamController>/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
-
-        // DELETE api/<ExamController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
     }
 }

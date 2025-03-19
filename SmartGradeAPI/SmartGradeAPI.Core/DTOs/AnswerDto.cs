@@ -12,5 +12,6 @@ namespace SmartGradeAPI.Core.DTOs
         public string Text { get; set; }
         public bool IsCorrect { get; set; }
         public int Value { get; set; }
+        public int ExamId { get; set; }
     }
 }

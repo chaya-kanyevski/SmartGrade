@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SmartGradeAPI.Core.Repositories
+namespace SmartGradeAPI.Core.Models
 {
-    public interface IAdminRepository
+    public class Manager : User
     {
     }
 }

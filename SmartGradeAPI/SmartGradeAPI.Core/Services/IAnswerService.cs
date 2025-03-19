@@ -11,5 +11,7 @@ namespace SmartGradeAPI.Core.Services
     {
         Task<Answer> GetAnswerByIdAsync(int id, int examId);
         Task<bool> AddAnswerAsync(Answer answer);
+        Task<List<Answer>> GetAllAnswersAsync(int exam_id);
+        Task<bool> DeleteAnswerAsync(int id);
     }
 }
