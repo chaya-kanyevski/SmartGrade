@@ -1,10 +1,12 @@
+import { RouterProvider } from 'react-router-dom'
 import './App.css'
+import { router } from './Router'
 
 function App() {
 
   return (
     <>
-      wellcome to smartGrade client!!!
+      <RouterProvider router={ router }/>
     </>
   )
 }
