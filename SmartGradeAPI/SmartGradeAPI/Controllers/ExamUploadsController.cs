@@ -1,52 +1,54 @@
-﻿using AutoMapper;
+﻿using Amazon.S3;
+using Amazon.S3.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SmartGradeAPI.Core.Services;
+using static System.Net.Mime.MediaTypeNames;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace SmartGradeAPI.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ExamUploadsController : ControllerBase
+    //[Authorize(Roles = "Admin")]
+    public class ExamUploadController : ControllerBase
     {
-        private readonly IExamUploadService _examUploadService;
-        private readonly IMapper _mapper;
-        public ExamUploadsController(IExamUploadService examUploadService, IMapper mapper)
+        private readonly IAmazonS3 _s3Client;
+        private readonly string _bucketName;
+
+        public ExamUploadController(IAmazonS3 s3Client, IConfiguration configuration)
         {
-            _examUploadService = examUploadService;
-            _mapper = mapper;
-        }
-        // GET: api/<ExamUploadController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
+            _s3Client = s3Client;
+            _bucketName = Environment.GetEnvironmentVariable("AWS_S3_BUCKET_NAME");
+            //_bucketName = configuration["AWS:BucketName"];
         }
 
-        // GET api/<ExamUploadController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("presigned-url")]
+        public async Task<IActionResult> GetPresignedUrl([FromQuery] string fileName)
         {
-            return "value";
-        }
+            if (string.IsNullOrEmpty(fileName))
+                return BadRequest("שם הקובץ נדרש");
 
-        // POST api/<ExamUploadController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
+            var request = new GetPreSignedUrlRequest
+            {
+                BucketName = _bucketName,
+                Key = $"exams/{fileName}", // קבצים נשמרים בתיקיית exams
+                //Key = $"{fileName}", // קבצים נשמרים בתיקיית exams
+                Verb = HttpVerb.PUT,
+                Expires = DateTime.UtcNow.AddMinutes(20),
+                //ContentType = "application/pdf" // ניתן לשנות לסוג קובץ אחר
+                ContentType = "application/pdf"
+            };
+            request.Headers["x-amz-acl"] = "bucket-owner-full-control";
 
-        // PUT api/<ExamUploadController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<ExamUploadController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            try
+            {
+                string url = _s3Client.GetPreSignedURL(request);
+                return Ok(new { url });
+            }
+            catch (AmazonS3Exception ex)
+            {
+                return StatusCode(500, $"Error generating presigned URL: {ex.Message}");
+            }
         }
     }
 }

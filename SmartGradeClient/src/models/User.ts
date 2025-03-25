@@ -4,11 +4,11 @@ export type User = {
     name : string,
     email : string,
     password : string,
-    roles : Role [],
+    role : string,
     exams : Exam []
 }
 
 enum Role {
-    Admin,
-    Teacher
+    Admin = "Admin",
+    User = "User"
 }

@@ -23,7 +23,10 @@ export default (state : User, action : Action): User => {
                 ...state,
                 ...action.data
             };
-        case 'LOGIN':
+        case 'LOGIN':    
+        console.log('action data:', action.data); 
+        const newState = { ...state, ...action.data };
+        console.log('new state:', newState)
             return {
                 ...state,
                 ...action.data
@@ -40,13 +43,13 @@ export default (state : User, action : Action): User => {
     }
 }
 
-export const initialUser : User = {
-    name : '',
-    email : '',
-    password : '',
-    roles : [],
-    exams : []
-}
+export const initialUser: User = {
+    name: '',
+    email: '',
+    password: '',
+    role: '',
+    exams: []
+};
 
 export const UserContext = createContext<{
     user : User;

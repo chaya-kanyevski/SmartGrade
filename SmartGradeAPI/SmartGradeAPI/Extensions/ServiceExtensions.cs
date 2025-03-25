@@ -4,6 +4,9 @@ using SmartGradeAPI.Core;
 using SmartGradeAPI.Data.Repositories;
 using SmartGradeAPI.Data;
 using SmartGradeAPI.Service;
+using Amazon.Runtime;
+using Amazon.S3;
+using Amazon;
 
 namespace SmartGradeAPI.API.Extensions
 {
@@ -33,7 +36,8 @@ namespace SmartGradeAPI.API.Extensions
             services.AddDbContext<DataContext>();
             //        services.AddDbContext<DataContext>(options =>
             //options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-
+            services.AddAutoMapper(typeof(MappingProfile));
+            services.AddDbContext<DataContext>();
         }
 
     }

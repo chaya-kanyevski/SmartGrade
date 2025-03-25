@@ -30,3 +30,5 @@ secrets.json
 *.ncrunch*
 *.user
 *.vs
+*.env
+

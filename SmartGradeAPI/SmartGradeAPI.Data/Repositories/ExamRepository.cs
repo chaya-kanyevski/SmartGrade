@@ -28,5 +28,10 @@ namespace SmartGradeAPI.Data.Repositories
         {
             return await _context.Exam.FirstOrDefaultAsync(e => e.Id == id) ?? throw new Exception("Exam not found");
         }
+
+        public async Task<List<Exam>> GetExamsByUserIdAsync(int userId)
+        {
+            return await _context.Exam.Where(e => e.Id == userId).ToListAsync();
+        }
     }
 }

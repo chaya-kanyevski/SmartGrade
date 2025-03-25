@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using SmartGradeAPI.Core.DTOs;
 using SmartGradeAPI.Core.Models;
 
 namespace SmartGradeAPI.Data
@@ -25,6 +26,7 @@ namespace SmartGradeAPI.Data
         {
             modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<Student>().ToTable("Students");
+            modelBuilder.Entity<ExamDto>().HasNoKey();
         }
 
     }

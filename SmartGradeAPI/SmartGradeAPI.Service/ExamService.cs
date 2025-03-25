@@ -26,5 +26,11 @@ namespace SmartGradeAPI.Service
         {
             return await _examRepository.GetByIdAsync(id);
         }
+
+        public async Task<List<Exam>> GetExamsByUserIdAsync(int userId)
+        {
+            return await _examRepository.GetExamsByUserIdAsync(userId);
+        }
+
     }
 }

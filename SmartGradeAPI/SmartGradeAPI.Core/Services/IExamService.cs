@@ -11,5 +11,6 @@ namespace SmartGradeAPI.Core.Services
     {
         Task<Exam> GetByIdAsync(int id);
         Task<bool> AddExamAsync(Exam newexam);
+        Task<List<Exam>> GetExamsByUserIdAsync(int userId);
     }
 }

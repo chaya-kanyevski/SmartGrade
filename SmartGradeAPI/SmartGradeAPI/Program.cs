@@ -1,15 +1,47 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SmartGradeAPI.API.Extensions;
 using SmartGradeAPI.API.Extentions;
-using System.Text;
+using DotNetEnv;
+using Amazon.S3;
+using Amazon;
+using System.Runtime;
+using SmartGradeAPI.Core.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
+Env.TraversePath().Load();
+// תוודאי שהקובץ קיים בתיקייה הראשית!
+// טוען את משתני הסביבה
+var accessKey = Env.GetString("AWS_ACCESS_KEY_ID");
+var secretKey = Env.GetString("AWS_SECRET_ACCESS_KEY");
+var bucketName = Env.GetString("AWS_BUCKET_NAME");
+var region = Env.GetString("AWS_REGION");
+
+// בדיקה שהערכים לא ריקים
+Console.WriteLine($"AccessKey: {accessKey}");
+Console.WriteLine($"SecretKey: {secretKey}");
+Console.WriteLine($"BucketName: {bucketName}");
+Console.WriteLine($"Region: {region}");
+
+if (string.IsNullOrEmpty(accessKey) || string.IsNullOrEmpty(secretKey) || string.IsNullOrEmpty(region))
+{
+    throw new Exception("אחד מהמשתנים AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY או AWS_REGION לא נטען!");
+}
+
+// יצירת הלקוח של S3
+var s3Client = new AmazonS3Client(accessKey, secretKey, RegionEndpoint.GetBySystemName(region));
+
+// הוספת S3 ל-DI
+builder.Services.AddSingleton<IAmazonS3>(s3Client);
+
+// הוספת שם הבקט והאזור כמשתנים גלובליים
+builder.Services.AddSingleton(new S3Settings
+{
+    BucketName = bucketName,
+    Region = region
+});
 
 // הוספת CORS
 builder.Services.AddCors(options =>

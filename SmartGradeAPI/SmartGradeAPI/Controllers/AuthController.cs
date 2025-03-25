@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using SmartGradeAPI.Core.DTOs;
 using SmartGradeAPI.Core.Models;
 using SmartGradeAPI.Core.Services;
 //!!
@@ -9,10 +11,12 @@ namespace SmartGradeAPI.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly IMapper _mapper;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, IMapper mapper)
         {
             _authService = authService;
+            _mapper = mapper;
         }
 
         [HttpPost("register")]
@@ -23,15 +27,16 @@ namespace SmartGradeAPI.API.Controllers
 
             User newUser = model.Role.ToLower() switch
             {
-                "student" => new Student { Name = model.Name, Email = model.Email, Password = model.Password, Class = model.Class },
-                "admin" => new Manager { Name = model.Name, Email = model.Email, Password = model.Password },
+                "user" => new User { Name = model.Name, Email = model.Email, Password = model.Password, Role = "User" },
+                "admin" => new Manager { Name = model.Name, Email = model.Email, Password = model.Password, Role = "Admin" },
                 _ => throw new Exception("Invalid role")
             };
 
             await _authService.AddUserAsync(newUser);
 
             var token = _authService.GenerateJwtToken(newUser);
-            return Ok(new { Token = token });
+            return Ok(new { Token = token, User = new { newUser.Name, newUser.Email, newUser.Password, newUser.Role } });
+
         }
 
         [HttpPost("login")]
@@ -43,7 +48,9 @@ namespace SmartGradeAPI.API.Controllers
                 return Unauthorized("Invalid credentials");
 
             var token = _authService.GenerateJwtToken(user);
-            return Ok(new { Token = token });
+            var userDto = _mapper.Map<UserDto>(user);
+            return Ok(new { Token = token, User = userDto }); 
+
         }
     }
 
@@ -53,7 +60,6 @@ namespace SmartGradeAPI.API.Controllers
         public string Email { get; set; }
         public string Password { get; set; }
         public string Role { get; set; }
-        public string Class { get; set; }
     }
 
     public class LoginModel

@@ -25,6 +25,17 @@ namespace SmartGradeAPI.API.Controllers
             return Ok(_mapper.Map<ExamDto>(exam));
         }
 
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<List<ExamDto>>> GetExamsByUserId(int userId)
+        {
+            var exams = await _examService.GetExamsByUserIdAsync(userId);
+            if (exams == null || exams.Count == 0)
+            {
+                return NotFound("No exams found for this user");
+            }
+            return Ok(_mapper.Map<List<ExamDto>>(exams));
+        }
+
         [HttpPost]
         public async Task<ActionResult<bool>> Post([FromBody] ExamDto examDto)
         {
