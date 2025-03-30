@@ -18,11 +18,14 @@ namespace SmartGradeAPI.Core.Models
         {
             
         }
-        public Question(int id, string text, int examId)
+        public Question(int id, string text, int examId, int questionNumber, string answer, int value)
         {
             Id = id;
             Text = text;
             ExamId = examId;
+            QuestionNumber = questionNumber;
+            Answer = answer;
+            Value = value;
         }
     }
 }

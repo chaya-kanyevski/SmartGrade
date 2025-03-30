@@ -12,5 +12,7 @@ namespace SmartGradeAPI.Core.Repositories
         Task<Exam> GetByIdAsync(int id);
         Task<bool> AddExamAsync(Exam newexam);
         Task<List<Exam>> GetExamsByUserIdAsync(int userId);
+        Task<bool> UpdateExamAsync(Exam exam);
+        Task<bool> DeleteExamAsync(int id);
     }
 }

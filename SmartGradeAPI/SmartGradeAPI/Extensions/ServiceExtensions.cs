@@ -19,14 +19,12 @@ namespace SmartGradeAPI.API.Extensions
             services.AddScoped<IUserRepository, UserRepository>();
             //services.AddScoped<IStudentRepository, StudentRepository>();
             services.AddScoped<IExamUploadRepository, ExamUploadRepository>();
-            services.AddScoped<IAnswerRepository, AnswerRepository>();
             services.AddScoped<IExamRepository, ExamRepository>();
             services.AddScoped<IAuthRepository, AuthRepository>();
 
             services.AddScoped<IUserService, UserService>();
             //services.AddScoped<IStudentService, StudentService>();
             services.AddScoped<IExamService, ExamService>();
-            services.AddScoped<IAnswerService, AnswerService>();
             services.AddScoped<IExamUploadService, ExamUploadService>();
             services.AddScoped<IAuthService, AuthService>();
 

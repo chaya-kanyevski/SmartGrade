@@ -3,8 +3,9 @@ using Amazon.S3.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SmartGradeAPI.Core.DTOs;
 using SmartGradeAPI.Core.Models;
-using SmartGradeAPI.Service;
+using SmartGradeAPI.Core.Services;
 using static System.Net.Mime.MediaTypeNames;
 
 
@@ -17,10 +18,10 @@ namespace SmartGradeAPI.API.Controllers
     {
         private readonly IAmazonS3 _s3Client;
         private readonly string _bucketName;
-        private readonly ExamService _examService;
-        private readonly ExamUploadService _examUploadService;
+        private readonly IExamService _examService;
+        private readonly IExamUploadService _examUploadService;
 
-        public ExamUploadController(IAmazonS3 s3Client, IConfiguration configuration, ExamService examService, ExamUploadService examUploadService)
+        public ExamUploadController(IAmazonS3 s3Client, IConfiguration configuration, IExamService examService, IExamUploadService examUploadService)
         {
             _s3Client = s3Client;
             _bucketName = Environment.GetEnvironmentVariable("AWS_BUCKET_NAME");
@@ -60,53 +61,89 @@ namespace SmartGradeAPI.API.Controllers
             }
         }
 
-        [HttpPost("upload")]
-        public async Task<IActionResult> UploadStudentExam([FromQuery] int examId, [FromForm] IFormFile file)
+        [HttpPost("upload-url")]
+        public async Task<IActionResult> UploadExamUrl([FromBody] ExamUploadDto request)
         {
-            if (file == null || file.Length == 0)
-                return BadRequest("לא נבחר קובץ");
+            if (string.IsNullOrEmpty(request.FileUrl))
+                return BadRequest("ה-URL לא תקין");
 
-            var exam = await _examService.GetByIdAsync(examId);
+            var exam = await _examService.GetByIdAsync(request.ExamId);
             if (exam == null)
                 return NotFound("המבחן לא נמצא");
 
-            // חישוב מספר הגשה אוטומטי
-            var existingUploads = await _examUploadService.GetAllByIdAsync(examId) ?? new List<ExamUpload>();
+            // חישוב מספר ההגשה של התלמיד
+            var existingUploads = await _examUploadService.GetAllByIdAsync(request.ExamId) ?? new List<ExamUpload>();
             int submissionNumber = existingUploads.Count + 1;
 
-            // טיפול בשם הקובץ למניעת בעיות
-            var safeFileName = Path.GetFileNameWithoutExtension(file.FileName)
-                                   .Replace(" ", "_")
-                                   .Replace(".", "_")
-                                   .Replace("/", "_")
-                                   .Replace("\\", "_");
-            var fileName = $"{Guid.NewGuid()}_{safeFileName}{Path.GetExtension(file.FileName)}";
-
-            var request = new PutObjectRequest
+            // יצירת אובייקט חדש של ExamUpload
+            var newExamUpload = new ExamUpload
             {
-                BucketName = _bucketName,
-                Key = fileName,
-                InputStream = file.OpenReadStream(),
-                ContentType = file.ContentType
-            };
-
-            await _s3Client.PutObjectAsync(request);
-            var fileUrl = $"https://{_bucketName}.s3.amazonaws.com/{fileName}";
-
-            // יצירת מבחן חדש עם מספר רץ
-            var upload = new ExamUpload
-            {
-                ExamId = examId,
-                SubmissionNumber = submissionNumber, // מספר אוטומטי
-                FilePath = fileUrl,
+                UserId = request.UserId,
+                ExamId = request.ExamId,
+                StudentName = request.StudentName,
+                FilePath = request.FileUrl,
                 UploadDate = DateTime.UtcNow,
-                Score = 0
+                Score = 0, // ציון ראשוני
+                SubmissionNumber = submissionNumber
             };
 
-            await _examUploadService.AddExamUploadAsync(upload);
-
-            return Ok(new { Message = "המבחן הועלה בהצלחה", SubmissionNumber = submissionNumber, FileUrl = fileUrl });
+            // הוספה למסד נתונים
+            await _examUploadService.AddExamUploadAsync(newExamUpload);
+            // הוספה לרשימת ההעלאות של המבחן
+            exam.ExamUploads.Add(newExamUpload);
+            await _examService.UpdateExamAsync(exam);
+            return Ok(new { Message = "ה-URL נוספה בהצלחה למבחן", SubmissionNumber = submissionNumber });
         }
+
+
+        //[Consumes("multipart/form-data")]
+        //[HttpPost("upload")]
+        //public async Task<IActionResult> UploadStudentExam([FromRoute] int examId, [FromForm] IFormFile file)
+        //{
+        //    if (file == null || file.Length == 0)
+        //        return BadRequest("לא נבחר קובץ");
+
+        //    var exam = await _examService.GetByIdAsync(examId);
+        //    if (exam == null)
+        //        return NotFound("המבחן לא נמצא");
+
+        //    // חישוב מספר הגשה אוטומטי
+        //    var existingUploads = await _examUploadService.GetAllByIdAsync(examId) ?? new List<ExamUpload>();
+        //    int submissionNumber = existingUploads.Count + 1;
+
+        //    // טיפול בשם הקובץ למניעת בעיות
+        //    var safeFileName = Path.GetFileNameWithoutExtension(file.FileName)
+        //                           .Replace(" ", "_")
+        //                           .Replace(".", "_")
+        //                           .Replace("/", "_")
+        //                           .Replace("\\", "_");
+        //    var fileName = $"{Guid.NewGuid()}_{safeFileName}{Path.GetExtension(file.FileName)}";
+
+        //    var request = new PutObjectRequest
+        //    {
+        //        BucketName = _bucketName,
+        //        Key = fileName,
+        //        InputStream = file.OpenReadStream(),
+        //        ContentType = file.ContentType
+        //    };
+
+        //    await _s3Client.PutObjectAsync(request);
+        //    var fileUrl = $"https://{_bucketName}.s3.amazonaws.com/{fileName}";
+
+        //    // יצירת מבחן חדש עם מספר רץ
+        //    var upload = new ExamUpload
+        //    {
+        //        ExamId = examId,
+        //        SubmissionNumber = submissionNumber, // מספר אוטומטי
+        //        FilePath = fileUrl,
+        //        UploadDate = DateTime.UtcNow,
+        //        Score = 0
+        //    };
+
+        //    await _examUploadService.AddExamUploadAsync(upload);
+
+        //    return Ok(new { Message = "המבחן הועלה בהצלחה", SubmissionNumber = submissionNumber, FileUrl = fileUrl });
+        //}
 
     }
 }

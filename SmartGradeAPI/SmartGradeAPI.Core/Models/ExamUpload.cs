@@ -14,7 +14,6 @@ namespace SmartGradeAPI.Core.Models
         public int UserId { get; set; }
         public int? ExamId { get; set; }
         public string StudentName { get; set; }
-        public string StudentEmail { get; set; }
         public string FilePath { get; set; }//הניתוב של הקובץ בעצמו מAWS
         public DateTime UploadDate { get; set; } = DateTime.UtcNow;
         public int Score { get; set; }

@@ -31,7 +31,40 @@ namespace SmartGradeAPI.Data.Repositories
 
         public async Task<List<Exam>> GetExamsByUserIdAsync(int userId)
         {
-            return await _context.Exam.Where(e => e.Id == userId).ToListAsync();
+            return await _context.Exam.Where(e => e.UserId == userId).ToListAsync();
         }
+
+        public async Task<bool> UpdateExamAsync(Exam exam)
+        {
+            var existingExam = await _context.Exam.FirstOrDefaultAsync(e => e.Id == exam.Id);
+            if (existingExam == null)
+                throw new Exception("המבחן לא נמצא");
+
+            existingExam.Subject = exam.Subject;
+            existingExam.Title = exam.Title;
+            existingExam.Class = exam.Class;
+            existingExam.Questions = exam.Questions;
+            existingExam.ExamUploads = exam.ExamUploads;
+            existingExam.ExampleExamPath = exam.ExampleExamPath;
+
+            _context.Exam.Update(existingExam);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> DeleteExamAsync(int id)
+        {
+            var exam = await _context.Exam.FindAsync(id);
+            if (exam == null)
+            {
+                return false;
+            }
+
+            _context.Exam.Remove(exam);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
     }
 }

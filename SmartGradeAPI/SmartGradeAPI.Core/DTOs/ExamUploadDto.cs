@@ -8,10 +8,9 @@ namespace SmartGradeAPI.Core.DTOs
 {
     public class ExamUploadDto
     {
-        public string FilePath { get; set; }
-        public DateTime UploadDate { get; set; } = DateTime.UtcNow;
-        public int Score { get; set; }
-        public int UserId { get; set; }
-
+        public int ExamId { get; set; }
+        public int UserId { get; set; } // כדי לשייך את ההעלאה לתלמיד
+        public string StudentName { get; set; }
+        public string FileUrl { get; set; }
     }
 }

@@ -15,7 +15,6 @@ namespace SmartGradeAPI.Data
         public DbSet<Exam> Exam { get; set; }
         public DbSet<ExamUpload> ExamsUploads { get; set; }   
         public DbSet<Question> Questions { get; set; }
-        public DbSet<Answer> Answers { get; set; }  
         public DbSet<Report> Reports { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

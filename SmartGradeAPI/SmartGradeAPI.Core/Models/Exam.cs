@@ -15,15 +15,14 @@ namespace SmartGradeAPI.Core.Models
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public string Class { get; set; }
         public List<Question> Questions { get; set; }
-        public List<Answer> Answers { get; set; }
-        public string ExampleExamPath { get; set; } 
+        public string ExampleExamPath { get; set; } = "";
         public List<ExamUpload> ExamUploads { get; set; } = new List<ExamUpload>();
 
         public Exam()
         {
 
         }
-        public Exam(int id, int userId, string subject, string title, DateTime created_at, string @class, List<Question> questions, List<Answer> answers, List<ExamUpload> examsUpload)
+        public Exam(int id, int userId, string subject, string title, DateTime created_at, string @class, List<Question> questions, List<ExamUpload> examsUpload)
         {
             Id = id;
             UserId = userId;
@@ -32,7 +31,6 @@ namespace SmartGradeAPI.Core.Models
             CreatedAt = created_at;
             Class = @class;
             Questions = questions;
-            Answers = answers;
         }
     }
 }

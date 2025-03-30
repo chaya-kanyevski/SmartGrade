@@ -32,5 +32,14 @@ namespace SmartGradeAPI.Service
             return await _examRepository.GetExamsByUserIdAsync(userId);
         }
 
+        public async Task<bool> UpdateExamAsync(Exam exam)
+        {
+            return  await _examRepository.UpdateExamAsync(exam);
+        }
+
+        public async Task<bool> DeleteExamAsync(int id)
+        {
+            return await _examRepository.DeleteExamAsync(id);
+        }
     }
 }

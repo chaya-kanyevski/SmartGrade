@@ -8,6 +8,7 @@ using Amazon.S3;
 using Amazon;
 using System.Runtime;
 using SmartGradeAPI.Core.Models;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,6 +59,16 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "SmartGrade API", Version = "v1" });
+
+});
+//builder.Services.AddSwaggerGen(c =>
+//{
+//    c.EnableAnnotations();
+//});
+
+builder.Services.Configure<Microsoft.AspNetCore.Http.Features.FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 10 * 1024 * 1024; // מגבלת גודל קובץ (10MB)
 });
 
 // הגדרת שירותים נוספים
