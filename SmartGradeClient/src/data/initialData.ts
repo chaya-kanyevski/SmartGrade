@@ -3,14 +3,15 @@ import { ExamFileType, ExamFolderType } from '../models/Exam';
 const initialData: (ExamFileType | ExamFolderType)[] = [
     {
         id: 1,
+        userId: 0,
         folderName: "מתמטיקה",
         type: "folder",
         children: [
             {
                 id: 2,
+                userId: 0,
                 title: "מבחן בגרות",
                 subject: "מתמטיקה",
-                userId: 1,
                 created_at: new Date(),
                 class: 12,
                 examPath: "/exams/math/bagrut.pdf",
@@ -19,6 +20,7 @@ const initialData: (ExamFileType | ExamFolderType)[] = [
             },
             {
                 id: 3,
+                userId: 0,
                 folderName: "תרגולים",
                 type: "folder",
                 parentId: 1,
@@ -40,6 +42,7 @@ const initialData: (ExamFileType | ExamFolderType)[] = [
     },
     {
         id: 5,
+        userId: 0,
         folderName: "פיזיקה",
         type: "folder",
         children: [

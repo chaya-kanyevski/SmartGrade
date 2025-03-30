@@ -44,6 +44,7 @@ export default (state : User, action : Action): User => {
 }
 
 export const initialUser: User = {
+    id: 0,
     name: '',
     email: '',
     password: '',

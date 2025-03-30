@@ -11,6 +11,8 @@ const Navbar = () => {
         <li><Link to="/register">להרשמה</Link></li>
         <li><Link to="/auth">כניסה</Link></li>
         <li><Link to="/exam-list">רשימת מבחנים</Link></li>
+        <li><Link to="/add-exam">הוסף מבחן</Link></li>
+        <li><Link to="/exam-upload">העלה מבחן</Link></li>
       </ul>
     </nav>
         </>

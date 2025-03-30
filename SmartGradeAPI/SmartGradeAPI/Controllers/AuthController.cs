@@ -35,9 +35,10 @@ namespace SmartGradeAPI.API.Controllers
             await _authService.AddUserAsync(newUser);
 
             var token = _authService.GenerateJwtToken(newUser);
-            return Ok(new { Token = token, User = new { newUser.Name, newUser.Email, newUser.Password, newUser.Role } });
 
+            return Ok(new { Token = token, User = new { newUser.Id, newUser.Name, newUser.Email, newUser.Password, newUser.Role } });
         }
+
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)

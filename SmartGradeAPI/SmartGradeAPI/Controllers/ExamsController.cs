@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SmartGradeAPI.Core.DTOs;
 using SmartGradeAPI.Core.Models;
 using SmartGradeAPI.Core.Services;
-//!!
+
 namespace SmartGradeAPI.API.Controllers
 {
     [Route("api/[controller]")]

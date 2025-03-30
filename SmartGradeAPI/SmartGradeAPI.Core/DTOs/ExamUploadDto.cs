@@ -11,5 +11,7 @@ namespace SmartGradeAPI.Core.DTOs
         public string FilePath { get; set; }
         public DateTime UploadDate { get; set; } = DateTime.UtcNow;
         public int Score { get; set; }
+        public int UserId { get; set; }
+
     }
 }

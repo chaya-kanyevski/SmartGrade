@@ -12,8 +12,8 @@ using SmartGradeAPI.Data;
 namespace SmartGradeAPI.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250316233722_createDB")]
-    partial class createDB
+    [Migration("20250327230123_FixDeleteBehavior")]
+    partial class FixDeleteBehavior
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,26 @@ namespace SmartGradeAPI.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("SmartGradeAPI.Core.DTOs.ExamDto", b =>
+                {
+                    b.Property<string>("Class")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.ToTable("ExamDto");
+                });
 
             modelBuilder.Entity("SmartGradeAPI.Core.Models.Answer", b =>
                 {
@@ -79,11 +99,12 @@ namespace SmartGradeAPI.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Exam");
                 });
@@ -96,7 +117,7 @@ namespace SmartGradeAPI.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ExamId")
+                    b.Property<int?>("ExamId")
                         .HasColumnType("int");
 
                     b.Property<string>("FilePath")
@@ -106,15 +127,14 @@ namespace SmartGradeAPI.Data.Migrations
                     b.Property<int>("Score")
                         .HasColumnType("int");
 
-                    b.Property<int>("StudentId")
+                    b.Property<int?>("StudentId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UploadDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -229,19 +249,24 @@ namespace SmartGradeAPI.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("SmartGradeAPI.Core.Models.Exam", b =>
+                {
+                    b.HasOne("SmartGradeAPI.Core.Models.User", null)
+                        .WithMany("Exams")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("SmartGradeAPI.Core.Models.ExamUpload", b =>
                 {
                     b.HasOne("SmartGradeAPI.Core.Models.Exam", null)
                         .WithMany("ExamsUpload")
-                        .HasForeignKey("ExamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ExamId");
 
                     b.HasOne("SmartGradeAPI.Core.Models.Student", null)
                         .WithMany("ExamsUpload")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("StudentId");
                 });
 
             modelBuilder.Entity("SmartGradeAPI.Core.Models.Question", b =>
@@ -278,6 +303,11 @@ namespace SmartGradeAPI.Data.Migrations
             modelBuilder.Entity("SmartGradeAPI.Core.Models.Report", b =>
                 {
                     b.Navigation("Students");
+                });
+
+            modelBuilder.Entity("SmartGradeAPI.Core.Models.User", b =>
+                {
+                    b.Navigation("Exams");
                 });
 
             modelBuilder.Entity("SmartGradeAPI.Core.Models.Student", b =>
