@@ -9,10 +9,14 @@ namespace SmartGradeAPI.Core.Services
 {
     public interface IExamUploadService
     {
-        Task<ExamUpload> GetExamUploadAsync(int id, int exam_id);
+        Task<ExamUpload> GetExamUploadByIdAsync(int id);
 
         Task<List<ExamUpload>> GetAllByIdAsync(int id);
 
         Task<bool> AddExamUploadAsync(ExamUpload examUpload);
+
+        Task<bool> UpdateExamUploadAsync(ExamUpload examUpload);
+
+        Task<bool> DeleteExamUploadAsync(int id);
     }
 }

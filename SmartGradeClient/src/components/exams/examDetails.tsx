@@ -53,7 +53,15 @@ const ExamDetails: React.FC = () => {
             <p><strong>נושא:</strong> {exam.subject}</p>
             <p><strong>כותרת:</strong> {exam.title}</p>
             <p><strong>כיתה:</strong> {exam.class}</p>
-
+            {exam.exampleExamPath && (
+                <p>
+                    <strong>מבחן לדוגמה:</strong>
+                    <a href={exam.exampleExamPath} target="_blank" rel="noopener noreferrer" style={{ color: "#007bff", marginLeft: "5px" }}>
+                        פתח קובץ
+                    </a>
+                </p>
+            )}
+    
             <h3>העלאות תלמידים:</h3>
             {uploadsError && <p style={{ color: "red" }}>{uploadsError}</p>}
             <ul style={{ listStyleType: "none", padding: 0 }}>
@@ -61,10 +69,10 @@ const ExamDetails: React.FC = () => {
                     if (!upload.filePath) {
                         return <li key={upload.id} style={{ marginBottom: "10px" }}>שם תלמיד: {upload.studentName}, לא קיים קישור להורדה</li>;
                     }
-
+    
                     const fileName = upload.filePath.substring(upload.filePath.lastIndexOf('/') + 1);
                     const fileType = fileName.substring(fileName.lastIndexOf('.') + 1);
-
+    
                     return (
                         <li key={upload.id} style={{ marginBottom: "10px" }}>
                             שם תלמיד: {upload.studentName},

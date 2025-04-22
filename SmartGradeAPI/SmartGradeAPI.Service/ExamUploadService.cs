@@ -22,14 +22,25 @@ namespace SmartGradeAPI.Service
             return await _examUploadRepository.AddExamUploadAsync(examUpload);
         }
 
+        public async Task<bool> DeleteExamUploadAsync(int id)
+        {
+            return await _examUploadRepository.DeleteExamUploadAsync(id);
+        }
+
         public async Task<List<ExamUpload>> GetAllByIdAsync(int id)
         {
             return await _examUploadRepository.GetAllByIdAsync(id);
         }
 
-        public async Task<ExamUpload> GetExamUploadAsync(int id, int exam_id)
+        public async Task<ExamUpload> GetExamUploadByIdAsync(int id)
         {
-            return await _examUploadRepository.GetExamUploadAsync(id, exam_id); 
+            return await _examUploadRepository.GetExamUploadByIdAsync(id); 
         }
+
+        public async Task<bool> UpdateExamUploadAsync(ExamUpload examUpload)
+        {
+            return await _examUploadRepository.UpdateExamUploadAsync(examUpload);
+        }
+
     }
 }

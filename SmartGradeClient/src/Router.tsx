@@ -10,6 +10,7 @@ import AddExam from "./components/exams/addExam";
 import ExamDetails from "./components/exams/examDetails";
 import ExamUpload from "./components/exams/examUpload";
 import EditExam from "./components/exams/editExam";
+import UploadStudentExam from "./components/exams/UploadStudentExam";
 
 
 export const router = createBrowserRouter([
@@ -28,8 +29,8 @@ export const router = createBrowserRouter([
             { path: '/add-exam', element: <AddExam/>},
             { path: '/exam/:examId', element: <ExamDetails />},
             { path: '/exam-upload', element: <ExamUpload examId={1}/>},
-            { path: '/edit-exam/:examId', element: <EditExam/>}
-
+            { path: '/edit-exam/:examId', element: <EditExam/>},
+            { path: '/upload-student-exam/:examId', element: <UploadStudentExam/>}
         ]
     }
 ])

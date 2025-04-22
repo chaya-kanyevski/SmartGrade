@@ -26,13 +26,36 @@ namespace SmartGradeAPI.Data.Repositories
 
         public async Task<List<ExamUpload>> GetAllByIdAsync(int id)
         {
-            return await _context.ExamsUploads.Where(e => e.Id == id).ToListAsync();
+            return await _context.ExamsUploads.Where(e => e.ExamId == id).ToListAsync();
         }
 
-        public async Task<ExamUpload> GetExamUploadAsync(int id, int exam_id)
+        public async Task<ExamUpload> GetExamUploadByIdAsync(int id)
         {
-            return await _context.ExamsUploads.FirstOrDefaultAsync(e => e.Id == id && e.ExamId == exam_id)
+            return await _context.ExamsUploads.FirstOrDefaultAsync(e => e.Id == id)
                                 ?? throw new Exception("ExamUpload not found"); ; 
         }
+        public async Task<bool> UpdateExamUploadAsync(ExamUpload examUpload)
+        {
+            var existingUpload = await _context.ExamsUploads.FindAsync(examUpload.Id);
+            if (existingUpload != null)
+            {
+                _context.Entry(existingUpload).CurrentValues.SetValues(examUpload);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
+        public async Task<bool> DeleteExamUploadAsync(int id)
+        {
+            var examUpload = await _context.ExamsUploads.FindAsync(id);
+            if (examUpload != null)
+            {
+                _context.ExamsUploads.Remove(examUpload);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
+
     }
 }
