@@ -1,14 +1,8 @@
 import React, { useState, useContext } from "react";
-import { addExam, getPresignedUrl } from "../../services/examService";
+import { addExam, getPresignedUrl, AddExamResponse } from "../../services/examService";
 import { UserContext } from "../../context/UserReducer";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-
-interface AddExamResponse {
-    success: boolean;
-    examId?: number;
-    error?: string;
-}
+import axios, { AxiosResponse } from "axios"; // ייבוא AxiosResponse
 
 const AddExam: React.FC = () => {
     const { user } = useContext(UserContext);
@@ -25,7 +19,6 @@ const AddExam: React.FC = () => {
     const [s3UploadError, setS3UploadError] = useState<string | null>(null);
     const [addExamError, setAddExamError] = useState<string | null>(null);
     const [examAddedSuccessfully, setExamAddedSuccessfully] = useState(false);
-    const [newExamId, setNewExamId] = useState<number | null>(null);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLInputElement>) => {
         setFormData({
@@ -64,21 +57,27 @@ const AddExam: React.FC = () => {
 
         if (s3UploadSuccessful && fileAccessUrl) {
             try {
-                const addExamResponse = await addExam(user.id, formData.subject, formData.title, formData.classNumber, fileAccessUrl);
+                const addExamResponse: AxiosResponse<AddExamResponse> = await addExam(
+                    user.id,
+                    formData.subject,
+                    formData.title,
+                    formData.classNumber,
+                    fileAccessUrl
+                );
                 console.log("תגובת addExam:", addExamResponse);
-                if (addExamResponse.data && typeof addExamResponse.data === 'object' && addExamResponse.data.examId) {
-                    newExamIdResult = addExamResponse.data.examId;
+                // כעת התגובה אמורה להיות אובייקט ExamDto עם שדה 'id'
+                if (addExamResponse.data && addExamResponse.data.id) {
+                    newExamIdResult = addExamResponse.data.id;
                     setExamAddedSuccessfully(true);
-                    setNewExamId(newExamIdResult);
-                    console.log("המבחן נוסף בהצלחה, ID:", newExamId);
+                    console.log("המבחן נוסף בהצלחה, ID:", newExamIdResult);
                     alert("המבחן נוסף בהצלחה!");
+                    console.log("מנווט ל:", `/upload-student-exam/${newExamIdResult}`); // הוסף כאן
                     setFormData({ subject: "", title: "", classNumber: "", file: null });
+                    handleNavigateToUpload(newExamIdResult);
                 } else {
-                    setAddExamError("שגיאה בהוספת המבחן.");
-                    if (addExamResponse.data && addExamResponse.data.error) {
-                        setAddExamError(`שגיאה בהוספת המבחן: ${addExamResponse.data.error}`);
-                    } else {
-                        setAddExamError("שגיאה בהוספת המבחן: תגובה לא תקינה מהשרת.");
+                    setAddExamError("שגיאה בהוספת המבחן: תגובה לא תקינה מהשרת.");
+                    if (addExamResponse.data && addExamResponse.data.title) { // בדיקה אם יש מידע אחר בתגובה
+                        setAddExamError(`שגיאה בהוספת המבחן: ${addExamResponse.data.title}`); // דוגמה לשדה אחר
                     }
                 }
             } catch (err: any) {
@@ -90,10 +89,13 @@ const AddExam: React.FC = () => {
         setUploading(false);
     };
 
-    const handleNavigateToUpload = () => {
-        if (newExamId !== null && examAddedSuccessfully) {
+    const handleNavigateToUpload = (newExamId : number) => {
+        console.log(newExamId !== null && examAddedSuccessfully)
+        console.log(newExamId !== null)
+        console.log(examAddedSuccessfully)
+        // if (newExamId !== null && examAddedSuccessfully) {
             navigate(`/upload-student-exam/${newExamId}`);
-        }
+        // }
     };
 
     const isSubmitDisabled = !formData.subject || !formData.title || !formData.classNumber || !formData.file || uploading;
@@ -125,11 +127,15 @@ const AddExam: React.FC = () => {
             {s3UploadError && <p style={{ color: "red", marginTop: "10px" }}>{s3UploadError}</p>}
             {addExamError && <p style={{ color: "red", marginTop: "10px" }}>{addExamError}</p>}
 
-            {examAddedSuccessfully && newExamId !== null && (
+            {/* כפתור הניווט הידני כבר לא נחוץ כי הניווט אוטומטי */}
+            {/* {examAddedSuccessfully && newExamId !== null && (
                 <button onClick={handleNavigateToUpload} style={{ marginTop: "20px", backgroundColor: "#28a745", color: "white", border: "none", borderRadius: "4px", cursor: "pointer", padding: "10px 15px" }}>
                     העלה פתרונות תלמידים למבחן זה
                 </button>
             )}
+            {examAddedSuccessfully && newExamId === null && (
+                <p style={{ marginTop: "20px", color: "green" }}>המבחן נוסף בהצלחה. לא ניתן לנווט ישירות להעלאת פתרונות מכיוון שה-ID לא הוחזר מהשרת.</p>
+            )} */}
         </div>
     );
 };

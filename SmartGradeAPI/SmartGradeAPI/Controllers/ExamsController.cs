@@ -41,10 +41,25 @@ namespace SmartGradeAPI.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<bool>> Post([FromBody] ExamPost examPost)
+        public async Task<ActionResult<ExamDto>> Post([FromBody] ExamPost examPost)
         {
-            var exam = _mapper.Map<Exam>(examPost);
-            return Ok(await _examService.AddExamAsync(exam));
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var createdExam = _mapper.Map<Exam>(examPost);
+            await _examService.AddExamAsync(createdExam); // שמור את המבחן שנוצר
+
+            if (createdExam == null || createdExam.Id == 0)
+            {
+                return StatusCode(500, "Failed to create exam.");
+            }
+
+            var examDto = _mapper.Map<ExamDto>(createdExam);
+
+            // החזרת CreatedAtAction עם ה-ID של המשאב החדש
+            return CreatedAtAction(nameof(Get), new { id = createdExam.Id }, _mapper.Map<ExamDto>(createdExam));
         }
 
         [HttpGet("{examId}/uploads")]

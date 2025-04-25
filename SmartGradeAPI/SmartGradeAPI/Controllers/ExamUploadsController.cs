@@ -78,7 +78,6 @@ namespace SmartGradeAPI.API.Controllers
             // יצירת אובייקט חדש של ExamUpload
             var newExamUpload = new ExamUpload
             {
-                UserId = request.UserId,
                 ExamId = request.ExamId,
                 StudentName = request.StudentName,
                 FilePath = request.FilePath,

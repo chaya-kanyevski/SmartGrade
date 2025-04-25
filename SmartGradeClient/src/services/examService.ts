@@ -1,8 +1,19 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { Exam } from "../models/Exam";
 
-const API_URL = "https://localhost:7276/api/Exams"
+const API_URL = "https://localhost:7276/api/Exams";
 const UPLOAD_API_URL = "https://localhost:7276/api/ExamUpload";
+
+export interface AddExamResponse { // האינטרפייס מוגדר כאן
+    id?: number;
+    userId: number;
+    subject: string;
+    title: string;
+    class: string;
+    exampleExamPath: string;
+    examUploads?: any[];
+    error?: string;
+}
 
 export const fetchExamsByUser = async (userId: number): Promise<Exam[]> => {
     try {
@@ -20,12 +31,12 @@ export const addExam = async (
     title: string,
     classNumber: string,
     exampleExamPath: string // הוספה של הפרמטר החדש
-): Promise<boolean> => {
+): Promise<AxiosResponse<AddExamResponse>> => { // שינוי הטיפוס ההחזרה
     try {
-        console.log(userId, subject, title, classNumber, exampleExamPath)
-        const response = await axios.post(API_URL, { userId, subject, title, class: classNumber, exampleExamPath: exampleExamPath});
-        console.log(response)
-        return response.data;
+        console.log(userId, subject, title, classNumber, exampleExamPath);
+        const response = await axios.post<AddExamResponse>(API_URL, { userId, subject, title: title, class: classNumber, exampleExamPath: exampleExamPath });
+        console.log(response);
+        return response;
     } catch (error) {
         console.error("שגיאה בהוספת המבחן:", error);
         throw error;
@@ -49,7 +60,7 @@ export const getPresignedUrl = async (fileName: string): Promise<string> => {
         const response = await axios.get<{ url: string }>(`${UPLOAD_API_URL}/presigned-url`, {
             params: { fileName },
         });
-        console.log(response.data.url)
+        console.log(response.data.url);
         return response.data.url;
     } catch (error) {
         console.error("שגיאה בקבלת ה-Presigned URL:", error);
@@ -174,7 +185,7 @@ export const bulkUploadExams = async (
                     params: { fileName },
                 });
                 const presignedUrl = presignedUrlResponse.data.url;
-
+                console.log(presignedUrl)
                 await axios.put(presignedUrl, fileWithName.file, {
                     headers: {
                         'Content-Type': fileWithName.file.type,
