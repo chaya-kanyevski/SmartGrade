@@ -11,16 +11,14 @@ namespace SmartGradeAPI.Data.Repositories
     {
         private readonly DataContext _context;
         public IUserRepository Users { get; }
-        public IExamRepository Exams { get; }
-        //public IStudentRepository Students { get; }
-        public IExamUploadRepository ExamUploads { get; }
+        public IUserFileRepository Exams { get; }
+        public IFileUploadRepository ExamUploads { get; }
 
-        public ManagerRepository(DataContext context, IUserRepository users, IExamRepository exams, IExamUploadRepository examUploads)
+        public ManagerRepository(DataContext context, IUserRepository users, IUserFileRepository exams, IFileUploadRepository examUploads)
         {
             _context = context;
             Users = users;
             Exams = exams;
-            //Students = students;
             ExamUploads = examUploads;
         }
 

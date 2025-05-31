@@ -20,29 +20,23 @@ const Navbar = () => {
                 marginRight: "20px"
             }}>
                 <li style={{ marginLeft: 20 }}>
-                    <Link to="/" style={{ textDecoration: "none", color: "#333" }}>בית</Link>
-                </li>
-                <li style={{ marginLeft: 20 }}>
-                    <Link to="/about" style={{ textDecoration: "none", color: "#333" }}>אודות</Link>
+                    <Link to="/" style={{ textDecoration: "none", color: "#333" }}>ראשי</Link>
                 </li>
                 <li style={{ marginLeft: 20 }}>
                     <Link to="/login" style={{ textDecoration: "none", color: "#333" }}>להתחברות</Link>
                 </li>
-                {/* <li style={{ marginLeft: 20 }}>
-                    <Link to="/register" style={{ textDecoration: "none", color: "#333" }}>להרשמה</Link>
-                </li> */}
-                {/* <li style={{ marginLeft: 20 }}>
-                    <Link to="/auth" style={{ textDecoration: "none", color: "#333" }}>כניסה</Link>
-                </li> */}
                 <li style={{ marginLeft: 20 }}>
-                    <Link to="/exam-list" style={{ textDecoration: "none", color: "#333" }}>רשימת מבחנים</Link>
+                    <Link to="/AI" style={{ textDecoration: "none", color: "#333" }}>עוזר חכם</Link>
                 </li>
                 <li style={{ marginLeft: 20 }}>
-                    <Link to="/add-exam" style={{ textDecoration: "none", color: "#333" }}>הוסף מבחן</Link>
+                    <Link to="/dashboard" style={{ textDecoration: "none", color: "#333" }}>dashboard</Link>
                 </li>
-                {/* <li style={{ marginLeft: 20 }}>
-                    <Link to="/exam-upload" style={{ textDecoration: "none", color: "#333" }}>העלה מבחן</Link>
-                </li> */}
+                <li style={{ marginLeft: 20 }}>
+                    <Link to="/files" style={{ textDecoration: "none", color: "#333" }}>הקבצים שלי</Link>
+                </li>
+                <li style={{ marginLeft: 20 }}>
+                    <Link to="/chat" style={{ textDecoration: "none", color: "#333" }}>צאט מורים</Link>
+                </li>
             </ul>
         </nav>
     );

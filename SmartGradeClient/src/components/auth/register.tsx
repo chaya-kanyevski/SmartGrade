@@ -2,6 +2,7 @@ import { FormEvent, useContext, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { register } from "../../services/userService";
 import { UserContext } from "../../context/UserReducer";
+import LoginWithGoogle from "./loginWithGoogle";
 
 const Register = () => {
     const nameRef = useRef<HTMLInputElement>(null);
@@ -32,7 +33,7 @@ const Register = () => {
                 type: "REGISTER",
                 data: user,
             });
-            navigate("/");
+            navigate("/dashboard");
         } catch (error) {
             setError("ההרשמה נכשלה, בדוק את הנתונים ונסה שוב.");
             console.error("ההרשמה נכשלה", error);
@@ -60,6 +61,7 @@ const Register = () => {
                     הרשם
                 </button>
             </form>
+            <LoginWithGoogle />
         </div>
     );
 };

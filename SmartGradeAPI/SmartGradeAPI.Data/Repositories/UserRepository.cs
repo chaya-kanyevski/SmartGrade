@@ -36,7 +36,7 @@ namespace SmartGradeAPI.Data.Repositories
             var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == user.Email);
             if (existingUser != null)
             {
-                return null; // user already exist
+                return null; 
             }
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();

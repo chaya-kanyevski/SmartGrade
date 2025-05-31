@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using SmartGradeAPI.API.Models;
 using SmartGradeAPI.Core.DTOs;
 using SmartGradeAPI.Core.Models;
 using System;
@@ -15,11 +14,9 @@ namespace SmartGradeAPI.Core
         public MappingProfile()
         {
             CreateMap<User, UserDto>().ReverseMap();
-            CreateMap<Exam, ExamDto>().ReverseMap();
-            CreateMap<Exam, ExamPost>().ReverseMap();
-            CreateMap<Student, StudentDto>().ReverseMap();
-            CreateMap<ExamUpload, ExamUploadDto>().ReverseMap();
-            CreateMap<Question, QuestionDto>().ReverseMap();
+            CreateMap<UserFile, UserFileDto>().ReverseMap();
+            CreateMap<UserFile, UserFilePost>().ReverseMap();
+            CreateMap<FileUpload, FileUploadDto>().ReverseMap();
             CreateMap<Report, ReportDto>().ReverseMap();
         }
     }

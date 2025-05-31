@@ -22,30 +22,7 @@ namespace SmartGradeAPI.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("SmartGradeAPI.Core.DTOs.ExamDto", b =>
-                {
-                    b.Property<string>("Class")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Subject")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.ToTable("ExamDto");
-                });
-
-            modelBuilder.Entity("SmartGradeAPI.Core.Models.Exam", b =>
+            modelBuilder.Entity("SmartGradeAPI.Core.Models.FileUpload", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -53,44 +30,7 @@ namespace SmartGradeAPI.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Class")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ExampleExamPath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Subject")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Exam");
-                });
-
-            modelBuilder.Entity("SmartGradeAPI.Core.Models.ExamUpload", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("ExamId")
+                    b.Property<int?>("FileId")
                         .HasColumnType("int");
 
                     b.Property<string>("FilePath")
@@ -98,13 +38,6 @@ namespace SmartGradeAPI.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Score")
-                        .HasColumnType("int");
-
-                    b.Property<string>("StudentEmail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("StudentId")
                         .HasColumnType("int");
 
                     b.Property<string>("StudentName")
@@ -122,43 +55,7 @@ namespace SmartGradeAPI.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ExamId");
-
-                    b.HasIndex("StudentId");
-
-                    b.ToTable("ExamsUploads");
-                });
-
-            modelBuilder.Entity("SmartGradeAPI.Core.Models.Question", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Answer")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ExamId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("QuestionNumber")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Value")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ExamId");
-
-                    b.ToTable("Questions");
+                    b.ToTable("FilesUploads");
                 });
 
             modelBuilder.Entity("SmartGradeAPI.Core.Models.Report", b =>
@@ -211,30 +108,53 @@ namespace SmartGradeAPI.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users", (string)null);
-
-                    b.UseTptMappingStrategy();
                 });
 
-            modelBuilder.Entity("SmartGradeAPI.Core.Models.Student", b =>
+            modelBuilder.Entity("SmartGradeAPI.Core.Models.UserFile", b =>
                 {
-                    b.HasBaseType("SmartGradeAPI.Core.Models.User");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.Property<string>("Class")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ReportId")
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Size")
                         .HasColumnType("int");
+
+                    b.Property<string>("Tags")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.HasIndex("ReportId");
+                    b.Property<string>("type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("Students", (string)null);
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Files");
                 });
 
-            modelBuilder.Entity("SmartGradeAPI.Core.Models.Exam", b =>
+            modelBuilder.Entity("SmartGradeAPI.Core.Models.UserFile", b =>
                 {
                     b.HasOne("SmartGradeAPI.Core.Models.User", null)
                         .WithMany("Exams")
@@ -243,59 +163,9 @@ namespace SmartGradeAPI.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SmartGradeAPI.Core.Models.ExamUpload", b =>
-                {
-                    b.HasOne("SmartGradeAPI.Core.Models.Exam", null)
-                        .WithMany("ExamUploads")
-                        .HasForeignKey("ExamId");
-
-                    b.HasOne("SmartGradeAPI.Core.Models.Student", null)
-                        .WithMany("ExamsUpload")
-                        .HasForeignKey("StudentId");
-                });
-
-            modelBuilder.Entity("SmartGradeAPI.Core.Models.Question", b =>
-                {
-                    b.HasOne("SmartGradeAPI.Core.Models.Exam", null)
-                        .WithMany("Questions")
-                        .HasForeignKey("ExamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("SmartGradeAPI.Core.Models.Student", b =>
-                {
-                    b.HasOne("SmartGradeAPI.Core.Models.User", null)
-                        .WithOne()
-                        .HasForeignKey("SmartGradeAPI.Core.Models.Student", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SmartGradeAPI.Core.Models.Report", null)
-                        .WithMany("Students")
-                        .HasForeignKey("ReportId");
-                });
-
-            modelBuilder.Entity("SmartGradeAPI.Core.Models.Exam", b =>
-                {
-                    b.Navigation("ExamUploads");
-
-                    b.Navigation("Questions");
-                });
-
-            modelBuilder.Entity("SmartGradeAPI.Core.Models.Report", b =>
-                {
-                    b.Navigation("Students");
-                });
-
             modelBuilder.Entity("SmartGradeAPI.Core.Models.User", b =>
                 {
                     b.Navigation("Exams");
-                });
-
-            modelBuilder.Entity("SmartGradeAPI.Core.Models.Student", b =>
-                {
-                    b.Navigation("ExamsUpload");
                 });
 #pragma warning restore 612, 618
         }

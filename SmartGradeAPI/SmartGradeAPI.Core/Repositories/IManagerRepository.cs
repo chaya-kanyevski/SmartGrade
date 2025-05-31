@@ -9,10 +9,8 @@ namespace SmartGradeAPI.Core.Repositories
     public interface IManagerRepository
     {
         IUserRepository Users { get; }
-        IExamRepository Exams { get; }
-
-        //IStudentRepository Students { get; }
-        IExamUploadRepository ExamUploads { get; }
+        IUserFileRepository Exams { get; }
+        IFileUploadRepository ExamUploads { get; }
         Task SaveAsync();
     }
 }

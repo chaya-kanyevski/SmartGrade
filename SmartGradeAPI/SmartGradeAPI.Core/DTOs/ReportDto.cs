@@ -10,6 +10,5 @@ namespace SmartGradeAPI.Core.DTOs
     public class ReportDto
     {
         public DateTime DateGenerated { get; set; } = DateTime.Now;
-        public List<Student> Students { get; set; }
     }
 }

@@ -1,8 +1,9 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  /* max-width: 1280px;  // הסר או הגיבי את השורה הזו */
+  /* margin: 0 auto;    // הסר או הגיבי את השורה הזו */
+  padding: 0; /* מומלץ לאפס את ה-padding כאן אם ה-padding ייעשה ברמת הקומפוננטה */
+  text-align: left; /* שנה מ-center ל-left אם התוכן לא ממורכז */
+  width: 100%; /* וודא שהוא תמיד 100% רוחב */
 }
 
 .logo {

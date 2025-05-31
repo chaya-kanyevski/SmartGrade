@@ -13,6 +13,6 @@ namespace SmartGradeAPI.Core.DTOs
         public string Email { get; set; }
         public string Password { get; set; }
         public string Role { get; set; } = "User";
-        public ExamDto[] Exams { get; set; }
+        public UserFileDto[] Exams { get; set; }
     }
 }

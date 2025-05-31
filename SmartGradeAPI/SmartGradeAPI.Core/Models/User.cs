@@ -16,7 +16,7 @@ namespace SmartGradeAPI.Core.Models
         public string Password { get; set; }
         public DateTime created_at { get; set; } = DateTime.Now;
         public string Role { get; set; } = "User";
-        public Exam[] Exams { get; set; } = new Exam[0];
+        public UserFile[] Exams { get; set; } = new UserFile[0];
         public User()
         {
 

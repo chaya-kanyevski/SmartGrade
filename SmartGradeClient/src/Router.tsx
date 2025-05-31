@@ -1,36 +1,48 @@
 import { createBrowserRouter } from "react-router-dom";
 import Layout from "./layout/Layout";
-import Home from "./pages/Home";
-import About from "./pages/About";
 import Login from "./components/auth/login";
 import Register from "./components/auth/register";
-import Auth from "./components/auth/auth";
-import ExamList from "./components/exams/examList";
-import AddExam from "./components/exams/addExam";
-import ExamDetails from "./components/exams/examDetails";
-import ExamUpload from "./components/exams/examUpload";
-import EditExam from "./components/exams/editExam";
-import UploadStudentExam from "./components/exams/UploadStudentExam";
-
+import AIQuestionGenerator from "./components/ai/AIQuestionGenerator";
+import AISummaryGenerator from "./components/ai/AISummaryGenerator";
+import AITextAnalyzer from "./components/ai/AITextAnalyzer";
+import AILessonPlanGenerator from "./components/ai/AILessonPlanGenerator";
+import AI from "./pages/AI";
+import Dashboard from "./pages/Dashboard";
+import Files from "./pages/Files";
+import Chat from "./pages/Chat";
+import Landing from "./pages/Landing";
+import Reports from "./pages/Reports";
+import Profile from "./pages/Profile";
 
 export const router = createBrowserRouter([
-    {
-        path: '/',
-        element: <Layout/>,
-        errorElement: <h1>Error!</h1>,
-        children: [
-            { path : '/', element: <Home/>},
-            { path : '/home', element: <Home/>},
-            { path : '/about', element: <About/>},
-            { path : '/auth', element: <Auth/>},
-            { path : '/login', element: <Login/>},
-            { path: '/register', element: <Register/>},
-            { path: '/exam-list', element: <ExamList/>},
-            { path: '/add-exam', element: <AddExam/>},
-            { path: '/exam/:examId', element: <ExamDetails />},
-            { path: '/exam-upload', element: <ExamUpload examId={1}/>},
-            { path: '/edit-exam/:examId', element: <EditExam/>},
-            { path: '/upload-student-exam/:examId', element: <UploadStudentExam/>}
-        ]
-    }
-])
+  {
+    path: '/',
+    element: <Landing />,
+    errorElement: <h1>Error!</h1>
+  },
+  {
+    path: '/login',
+    element: <Login />
+  },
+  {
+    path: '/register',
+    element: <Register />
+  },
+  {
+    element: <Layout />,
+    children: [
+      { path: '/login', element: <Login /> },
+      { path: '/register', element: <Register /> },
+      { path: '/AI-question-generator', element: <AIQuestionGenerator /> },
+      { path: '/AI-summary-generator', element: <AISummaryGenerator /> },
+      { path: '/AI-text-analyzer', element: <AITextAnalyzer /> },
+      { path: '/AI-lesson-plan-generator', element: <AILessonPlanGenerator /> },
+      { path: '/AI', element: <AI /> },
+      { path: '/dashboard', element: <Dashboard /> },
+      { path: '/files', element: <Files /> },
+      { path: '/chat', element: <Chat /> },
+      { path: '/reports', element: <Reports /> },
+      { path: '/profile', element: <Profile /> },
+    ]
+  }
+]);

@@ -37,9 +37,7 @@ namespace SmartGradeAPI.Service
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
         };
 
-            if (user is Student)
-                claims.Add(new Claim(ClaimTypes.Role, "Student"));
-            else if (user is Manager)
+             if (user is Manager)
                 claims.Add(new Claim(ClaimTypes.Role, "Admin"));
 
             var token = new JwtSecurityToken(

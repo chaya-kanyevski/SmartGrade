@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartGradeAPI.API", "SmartGradeAPI\SmartGradeAPI.API.csproj", "{10A88621-7FEE-4CF3-8089-649140AAA3DD}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartGradeAPI.Core", "SmartGradeAPI.Core\SmartGradeAPI.Core.csproj", "{149879BE-346C-4DEA-A09A-9E7EB04FF7A8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartGradeAPI.Data", "SmartGradeAPI.Data\SmartGradeAPI.Data.csproj", "{150E678A-6C10-44DF-8A57-0C93D725614F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartGradeAPI.Service", "SmartGradeAPI.Service\SmartGradeAPI.Service.csproj", "{046DF777-7A65-47CF-B180-7B32FA31FDCE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartGradeAPI.API", "SmartGradeAPI.API\SmartGradeAPI.API.csproj", "{D35ACC00-AF38-E85E-20F3-EE888906191E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{10A88621-7FEE-4CF3-8089-649140AAA3DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{10A88621-7FEE-4CF3-8089-649140AAA3DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{10A88621-7FEE-4CF3-8089-649140AAA3DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{10A88621-7FEE-4CF3-8089-649140AAA3DD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{149879BE-346C-4DEA-A09A-9E7EB04FF7A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{149879BE-346C-4DEA-A09A-9E7EB04FF7A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{149879BE-346C-4DEA-A09A-9E7EB04FF7A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,6 +29,10 @@ Global
 		{046DF777-7A65-47CF-B180-7B32FA31FDCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{046DF777-7A65-47CF-B180-7B32FA31FDCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{046DF777-7A65-47CF-B180-7B32FA31FDCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D35ACC00-AF38-E85E-20F3-EE888906191E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D35ACC00-AF38-E85E-20F3-EE888906191E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D35ACC00-AF38-E85E-20F3-EE888906191E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D35ACC00-AF38-E85E-20F3-EE888906191E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -2,6 +2,7 @@ import { FormEvent, useContext, useRef, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { UserContext } from "../../context/UserReducer";
 import { login } from "../../services/userService";
+import LoginWithGoogle from "./loginWithGoogle";
 
 const Login = () => {
     const emailRef = useRef<HTMLInputElement>(null);
@@ -27,7 +28,7 @@ const Login = () => {
                 type: "LOGIN",
                 data: serverUser,
             });
-            navigate("/");
+            navigate("/dashboard");
         } catch (error) {
             setError("התחברות נכשלה, בדוק את הנתונים ונסה שוב.");
             console.error("התחברות נכשלה", error);
@@ -54,6 +55,7 @@ const Login = () => {
             <p style={{ marginTop: "10px", textAlign: "center" }}>
                 אין לך חשבון? <Link to="/register" style={{ color: "#007bff" }}>הרשם כאן</Link>
             </p>
+            <LoginWithGoogle />
         </div>
     );
 };
