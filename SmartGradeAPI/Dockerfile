@@ -1,6 +1,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
+COPY SmartGradeAPI.sln ./
 COPY SmartGrade.Api/*.csproj ./SmartGrade.Api/
 COPY SmartGrade.Core/*.csproj ./SmartGrade.Core/
 COPY SmartGrade.Data/*.csproj ./SmartGrade.Data/
@@ -9,7 +10,6 @@ COPY SmartGrade.Service/*.csproj ./SmartGrade.Service/
 WORKDIR /app/SmartGrade.Api
 RUN dotnet restore
 
-WORKDIR /app
 COPY . .
 
 WORKDIR /app/SmartGrade.Api
