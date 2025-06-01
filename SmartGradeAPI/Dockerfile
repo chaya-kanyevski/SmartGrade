@@ -2,20 +2,20 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
 COPY SmartGradeAPI.sln ./
-COPY SmartGradeAPI.Api/*.csproj ./SmartGradeAPI.Api/
+COPY SmartGradeAPI.API/*.csproj ./SmartGradeAPI.API/
 COPY SmartGradeAPI.Core/*.csproj ./SmartGradeAPI.Core/
 COPY SmartGradeAPI.Data/*.csproj ./SmartGradeAPI.Data/
 COPY SmartGradeAPI.Service/*.csproj ./SmartGradeAPI.Service/
 
-WORKDIR /app/SmartGradeAPI.Api
+WORKDIR /app/SmartGradeAPI.API
 RUN dotnet restore
 
 COPY . .
 
-WORKDIR /app/SmartGradeAPI.Api
+WORKDIR /app/SmartGradeAPI.API
 RUN dotnet publish -c Release -o out
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
-COPY --from=build /app/SmartGradeAPI.Api/out ./
-ENTRYPOINT ["dotnet", "SmartGradeAPI.Api.dll"]
+COPY --from=build /app/SmartGradeAPI.API/out ./
+ENTRYPOINT ["dotnet", "SmartGradeAPI.API.dll"]
