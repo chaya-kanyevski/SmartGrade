@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: smartgrade-api
+    env: docker
+    plan: free
+    region: frankfurt 
+    dockerfilePath: ./Dockerfile
+    buildCommand: ""
+    startCommand: ""
+    autoDeploy: true
+ECHO is on.
