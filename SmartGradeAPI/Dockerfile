@@ -13,7 +13,7 @@ RUN dotnet restore
 COPY . .
 
 WORKDIR /app/SmartGradeAPI.API
-RUN dotnet publish -c Release -o out
+RUN dotnet publish SmartGradeAPI.API.csproj -c Release -o out
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
