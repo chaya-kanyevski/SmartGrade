@@ -14,7 +14,7 @@ COPY . .
 
 WORKDIR /app/SmartGradeAPI.API
 RUN dotnet clean SmartGradeAPI.API.csproj
-RUN dotnet publish SmartGradeAPI.API.csproj -c Release -o out
+RUN dotnet publish SmartGradeAPI.API.csproj -c Release -o out -p:AssemblyName=SmartGradeAPIApp
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
