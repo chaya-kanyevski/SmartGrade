@@ -12,11 +12,12 @@ RUN dotnet restore
 
 COPY . .
 
-WORKDIR /app/SmartGradeAPI.API
 RUN dotnet clean SmartGradeAPI.API.csproj
-RUN dotnet publish SmartGradeAPI.API.csproj -c Release -o out -p:AssemblyName=SmartGradeAPIApp
+RUN rm -rf bin/ obj/
+RUN dotnet publish SmartGradeAPI.API.csproj -c Release -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
-COPY --from=build /app/SmartGradeAPI.API/out ./
+COPY --from=build /app/publish .
+
 ENTRYPOINT ["dotnet", "SmartGradeAPI.API.dll"]
