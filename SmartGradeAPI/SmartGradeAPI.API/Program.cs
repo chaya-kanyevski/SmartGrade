@@ -87,5 +87,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.MapGet("/", () => "SmartGrade API is running!");
 app.Run();
