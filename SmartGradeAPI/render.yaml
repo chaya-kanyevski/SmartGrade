@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: smartgrade-api
+    name: SmartGradeApi
     env: docker
     plan: free
     region: frankfurt 
