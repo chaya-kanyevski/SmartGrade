@@ -2,8 +2,9 @@ import axios, { AxiosResponse } from 'axios';
 import { File } from '../models/File';
 import { FileDto } from '../models/File';
 
-const API_FILES_URL = import.meta.env.VITE_REACT_APP_API_FILES_URL!;
-const API_UPLOAD_URL = import.meta.env.VITE_REACT_APP_API_UPLOAD_URL!;
+const API_BASE_URL = import.meta.env.VITE_REACT_APP_BASE_API_URL!;
+const API_FILES_URL = `${API_BASE_URL}/Files`;
+const API_UPLOAD_URL = `${API_BASE_URL}/FileUpload`;
 
 export interface AddExamResponse {
     id?: number;
