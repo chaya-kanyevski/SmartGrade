@@ -1,4 +1,4 @@
-import { Exam } from "./Exam"
+import { File } from "./File"
 
 export type User = {
     id : number,
@@ -6,5 +6,5 @@ export type User = {
     email : string,
     password : string,
     role : string,
-    exams : Exam []
+    exams : File []
 }
