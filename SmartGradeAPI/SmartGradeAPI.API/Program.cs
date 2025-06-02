@@ -42,7 +42,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend",
         policy =>
         {
-            policy.SetIsOriginAllowed(origin => true)
+            policy.WithOrigins("http://localhost:5173", "https://smartgradeonline.onrender.com")
                   .AllowAnyHeader()
                   .AllowAnyMethod()
                   .AllowCredentials();
@@ -81,6 +81,9 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("StudentOnly", policy => policy.RequireRole("Student"));
 });
 
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+builder.WebHost.UseUrls($"http://*:{port}");
+
 var app = builder.Build();
 builder.Services.AddLogging();
 
@@ -92,19 +95,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("AllowFrontend");
 
-//app.UseHttpsRedirection();
-app.Use(async (context, next) =>
-{
-    if (context.Request.Method == HttpMethods.Options)
-    {
-        context.Response.StatusCode = 200;
-        await context.Response.CompleteAsync();
-        return;
-    }
-
-    await next();
-});
-
+app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
