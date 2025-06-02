@@ -44,7 +44,8 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
     ?? Environment.GetEnvironmentVariable("SMARTGRADE_CONNECTION_STRING");
 
 builder.Services.AddDbContext<DataContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+
 
 builder.Services.AddControllers();
 
@@ -79,11 +80,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SmartGrade API v1"));
 }
-app.UseHttpsRedirection();
+
 app.UseCors("AllowAnyOrigin");
+
+app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 app.MapGet("/", () => "SmartGrade API is running!");
+
 app.Run();
