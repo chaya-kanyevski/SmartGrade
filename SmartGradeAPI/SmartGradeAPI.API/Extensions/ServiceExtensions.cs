@@ -17,18 +17,20 @@ namespace SmartGradeAPI.API.Extensions
             services.AddScoped<IManagerRepository, ManagerRepository>();
 
             services.AddScoped<IUserRepository, UserRepository>();
-            //services.AddScoped<IStudentRepository, StudentRepository>();
             services.AddScoped<IFileUploadRepository, FileUploadRepository>();
             services.AddScoped<IUserFileRepository, FileRepository>();
             services.AddScoped<IAuthRepository, AuthRepository>();
 
             services.AddScoped<IUserService, UserService>();
-            //services.AddScoped<IStudentService, StudentService>();
             services.AddScoped<IFileService, FileService>();
             services.AddScoped<IFileUploadService, FileUploadService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IAiService, AiService>();
+            //services.AddScoped<IOpenAiClient, OpenAiClient>();
+            services.AddScoped<IAiActionRepository, AiActionRepository>();
 
-
+            // זה פותר את הבעיה עם HttpClient
+            services.AddHttpClient<IOpenAiClient, OpenAiClient>();
 
             services.AddAutoMapper(typeof(MappingProfile));
             services.AddDbContext<DataContext>();
@@ -37,6 +39,5 @@ namespace SmartGradeAPI.API.Extensions
             services.AddAutoMapper(typeof(MappingProfile));
             services.AddDbContext<DataContext>();
         }
-
     }
 }

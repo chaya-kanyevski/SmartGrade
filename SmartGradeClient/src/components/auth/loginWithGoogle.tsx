@@ -24,7 +24,7 @@ const LoginWithGoogle: React.FC = () => {
       <img
         src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
         alt="Google logo"
-        className="w-5 h-5 ml-4" // מרווח גדול יותר מימין (RTL)
+        className="w-5 h-5 ml-4" 
       />
       <span className="text-gray-700 font-medium">התחברות עם גוגל</span>
     </button>

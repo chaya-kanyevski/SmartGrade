@@ -20,6 +20,9 @@ var accessKey = Env.GetString("AWS_ACCESS_KEY_ID");
 var secretKey = Env.GetString("AWS_SECRET_ACCESS_KEY");
 var bucketName = Env.GetString("AWS_BUCKET_NAME");
 var region = Env.GetString("AWS_REGION");
+var openAiKey = Env.GetString("OPENAI_API_KEY");
+builder.Configuration["OpenAI:ApiKey"] = Env.GetString("OPENAI_API_KEY");
+
 
 if (string.IsNullOrEmpty(accessKey) || string.IsNullOrEmpty(secretKey) || string.IsNullOrEmpty(region))
 {

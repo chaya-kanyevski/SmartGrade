@@ -16,6 +16,7 @@ namespace SmartGradeAPI.Data
         public DbSet<UserFile> Files { get; set; }
         public DbSet<FileUpload> FilesUploads { get; set; }   
         public DbSet<Report> Reports { get; set; }
+        public DbSet<AiAction> AiActions { get; set; }
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
         }
