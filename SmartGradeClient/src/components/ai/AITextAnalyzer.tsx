@@ -14,14 +14,13 @@ import {
 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-//import { InvokeLLM, UploadFile } from "@/integrations/Core";
-
+import { analyzeText as analyzeTextAPI } from '../../services/aiService'; // Adjust the import path as necessary
 const AITextAnalyzer = () => {
   const [textInput, setTextInput] = useState('');
   const [fileUrl, setFileUrl] = useState('');
   const [uploadedFileName, setUploadedFileName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [analysisResult, setAnalysisResult] = useState(null);
+  const [analysisResult, setAnalysisResult] = useState('');
   const [activeTab, setActiveTab] = useState('text');
   const [analysisType, setAnalysisType] = useState('concepts');
 
@@ -69,13 +68,13 @@ const AITextAnalyzer = () => {
         prompt += `הקובץ שהועלה: ${uploadedFileName}. אנא נתח את תוכן הקובץ.`;
       }
 
-    //   const response = await InvokeLLM({
-    //     prompt,
-    //     add_context_from_internet: activeTab === 'text',
-    //     file_urls: activeTab === 'file' ? [fileUrl] : undefined
-    //   });
+       const response = await analyzeTextAPI(
+          1,
+          activeTab === 'text' ? textInput : uploadedFileName,
+          analysisType
+       );
 
-    //   setAnalysisResult(response);
+      setAnalysisResult(response);
       setIsLoading(false);
     } catch (error) {
       console.error("Error analyzing text:", error);
