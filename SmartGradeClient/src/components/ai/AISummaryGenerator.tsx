@@ -3,20 +3,12 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { 
-  AlignJustify, 
-  FileUp, 
-  Loader2, 
-  Copy, 
-  Download,
-  Send
-} from "lucide-react";
+import { AlignJustify,  FileUp,  Loader2, Copy, Download, Send} from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Slider } from "@/components/ui/slider";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-//import { InvokeLLM, UploadFile } from "@/integrations/Core";
-
+import { summarizeText } from '@/services/aiService';
 const AISummaryGenerator = () => {
   const [textInput, setTextInput] = useState('');
   const [fileUrl, setFileUrl] = useState('');
@@ -44,9 +36,11 @@ const AISummaryGenerator = () => {
   };
 
   const generateSummary = async () => {
+    console.log("aaaaa")
     if ((!textInput && activeTab === 'text') || (!fileUrl && activeTab === 'file')) {
       return;
     }
+    console.log("bbbbb")
 
     try {
       setIsLoading(true);
@@ -86,13 +80,14 @@ const AISummaryGenerator = () => {
         prompt += `הקובץ שהועלה: ${uploadedFileName}. אנא סכם את תוכן הקובץ.`;
       }
 
-    //   const response = await InvokeLLM({
-    //     prompt,
-    //     add_context_from_internet: activeTab === 'text',
-    //     file_urls: activeTab === 'file' ? [fileUrl] : undefined
-    //   });
+        const response = await summarizeText(
+        1,
+        activeTab === 'text' ? textInput : uploadedFileName,
+        lengthModifier,
+        styleModifier
+        );
 
-    //  setGeneratedSummary(response);
+      setGeneratedSummary(response);
       setIsLoading(false);
     } catch (error) {
       console.error("Error generating summary:", error);

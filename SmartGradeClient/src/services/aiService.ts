@@ -1,7 +1,11 @@
 // services/aiService.ts
 import axios from 'axios';
 
-const API_BASE = '/api/ai'; // ודאי שזה תואם לנתיב בשרת שלך
+const API_BASE = import.meta.env.VITE_REACT_APP_BASE_API_URL!;
+const LESSON_PLAN_API = `${API_BASE}/ai/lesson-plan`;
+const GENERATE_QUESTIONS_API = `${API_BASE}/ai/generate-questions`;
+const SUMMARIZE_TEXT_API = `${API_BASE}/ai/summarize`;
+const ANALYZE_TEXT_API = `${API_BASE}/ai/analyze`;
 
 export const generateLessonPlan = async (
   userId: number,
@@ -10,7 +14,7 @@ export const generateLessonPlan = async (
   duration: number,
   components: string[]
 ): Promise<string> => {
-  const response = await axios.post(`${API_BASE}/lesson-plan`, {
+  const response = await axios.post(LESSON_PLAN_API, {
     userId,
     topic,
     grade,
@@ -28,7 +32,7 @@ export const generateQuestions = async (
   numQuestions: number,
   textOrFileName: string
 ): Promise<string> => {
-  const response = await axios.post(`${API_BASE}/questions`, {
+  const response = await axios.post(GENERATE_QUESTIONS_API, {
     userId,
     topic,
     questionType,
@@ -42,10 +46,10 @@ export const generateQuestions = async (
 export const summarizeText = async (
   userId: number,
   textOrFileName: string,
-  summaryLength: number,
+  summaryLength: string,
   summaryStyle: string
 ): Promise<string> => {
-  const response = await axios.post(`${API_BASE}/summarize`, {
+  const response = await axios.post(SUMMARIZE_TEXT_API, {
     userId,
     textOrFileName,
     summaryLength,
@@ -59,7 +63,7 @@ export const analyzeText = async (
   textOrFileName: string,
   analysisType: string
 ): Promise<string> => {
-  const response = await axios.post(`${API_BASE}/analyze`, {
+  const response = await axios.post(ANALYZE_TEXT_API, {
     userId,
     textOrFileName,
     analysisType,

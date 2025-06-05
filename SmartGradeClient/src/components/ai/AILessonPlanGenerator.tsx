@@ -75,7 +75,7 @@ const AILessonPlanGenerator = () => {
           <Label>שכבת גיל</Label>
           <Select value={grade} onValueChange={setGrade}>
             <SelectTrigger>
-              <SelectValue placeholder="בחרי שכבת גיל" />
+              <SelectValue placeholder="בחר שכבת גיל" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="elementary">יסודי</SelectItem>

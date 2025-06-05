@@ -7,12 +7,11 @@ import { Label } from "@/components/ui/label";
 import { FileQuestion, FileUp, FileText, Loader2, Copy, Download, Send} from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-//import { InvokeLLM, UploadFile } from "@/integrations/Core";
-
+import { generateQuestions as generateQuestionsAPI} from "../../services/aiService"; // Adjust the import path as necessary
 const AIQuestionGenerator = () => {
   const [textInput, setTextInput] = useState('');
   const [fileUrl, setFileUrl] = useState('');
-  const [numQuestions, setNumQuestions] = useState('5');
+  const [numQuestions, setNumQuestions] = useState(5);
   const [difficultyLevel, setDifficultyLevel] = useState('medium');
   const [questionType, setQuestionType] = useState('multiple_choice');
   const [isLoading, setIsLoading] = useState(false);
@@ -54,13 +53,17 @@ const AIQuestionGenerator = () => {
       
       prompt += `\n\nבנוסף, אנא הוסף תשובות לשאלות. יש לסדר את השאלות במספור ולהציג באופן ברור.`;
 
-      // const response = await InvokeLLM({
-      //   prompt,
-      //   add_context_from_internet: activeTab === 'text',
-      //   file_urls: activeTab === 'file' ? [fileUrl] : undefined
-      // });
+       const response = await generateQuestionsAPI(
+         1,
+         textInput,
+         getQuestionTypeText(questionType),
+        getDifficultyText(difficultyLevel),
+        numQuestions,
+        activeTab === 'text'? textInput : uploadedFileName // Assuming the file name is used as identifier
+       //  file_urls: activeTab === 'file' ? [fileUrl] : undefined
+       );
 
-      //setGeneratedQuestions(response);
+      setGeneratedQuestions(response);
       setIsLoading(false);
     } catch (error) {
       console.error("Error generating questions:", error);
@@ -170,7 +173,7 @@ const AIQuestionGenerator = () => {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
             <div className="space-y-2">
               <Label htmlFor="numQuestions">מספר שאלות</Label>
-              <Select value={numQuestions} onValueChange={setNumQuestions}>
+              <Select value={numQuestions.toString()} onValueChange={(value) => setNumQuestions(Number(value))}>
                 <SelectTrigger>
                   <SelectValue placeholder="בחר מספר" />
                 </SelectTrigger>

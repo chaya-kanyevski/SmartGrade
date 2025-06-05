@@ -28,8 +28,8 @@ namespace SmartGradeAPI.Core.Requests
     {
         public int UserId { get; set; }
         public string TextOrFileName { get; set; }
-        public int SummaryLength { get; set; } // מספר מילים בערך
-        public string SummaryStyle { get; set; } // למשל: bullet_points, concise
+        public string SummaryLength { get; set; } 
+        public string SummaryStyle { get; set; } 
     }
 
     public class AnalyzeRequest

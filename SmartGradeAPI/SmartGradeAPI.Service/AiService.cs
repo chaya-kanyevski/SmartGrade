@@ -69,10 +69,10 @@ namespace SmartGradeAPI.Service
             return result;
         }
 
-        public async Task<string> SummarizeTextAsync(int userId, string textOrFileName, int summaryLength, string summaryStyle)
+        public async Task<string> SummarizeTextAsync(int userId, string textOrFileName, string summaryLength, string summaryStyle)
         {
-            string lengthModifier = summaryLength < 30 ? "קצר מאוד, בתמצות רב" :
-                                    summaryLength < 60 ? "באורך בינוני" : "ארוך ומפורט";
+            //string lengthModifier = summaryLength < 30 ? "קצר מאוד, בתמצות רב" :
+            //                        summaryLength < 60 ? "באורך בינוני" : "ארוך ומפורט";
 
             string styleModifier = summaryStyle switch
             {
@@ -83,7 +83,7 @@ namespace SmartGradeAPI.Service
                 _ => "תמציתי"
             };
 
-            string prompt = $@"אנא צור סיכום {lengthModifier} בסגנון {styleModifier} לתוכן הבא:
+            string prompt = $@"אנא צור סיכום {summaryLength} בסגנון {styleModifier} לתוכן הבא:
 
 {textOrFileName}";
 
