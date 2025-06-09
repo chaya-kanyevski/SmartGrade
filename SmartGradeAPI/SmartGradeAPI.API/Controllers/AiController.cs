@@ -19,7 +19,7 @@ namespace SmartGradeAPI.API.Controllers
         }
 
         [HttpPost("lesson-plan")]
-        public async Task<IActionResult> GenerateLessonPlan([FromBody] LessonPlanRequest request)
+        public async Task<IActionResult> GenerateLessonPlan([FromBody] AIRequests request)
         {
             var result = await _aiService.GenerateLessonPlanAsync(
                 request.UserId, request.Topic, request.Grade, request.Duration, request.Components);

@@ -72,7 +72,7 @@ const AITextAnalyzer = () => {
           1,
           activeTab === 'text' ? textInput : uploadedFileName,
           analysisType
-       );
+       );6
 
       setAnalysisResult(response);
       setIsLoading(false);

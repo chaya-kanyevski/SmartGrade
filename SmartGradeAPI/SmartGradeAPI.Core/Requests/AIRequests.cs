@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SmartGradeAPI.Core.Requests
 {
-    public class LessonPlanRequest
+    public class AIRequests
     {
         public int UserId { get; set; }
         public string Topic { get; set; }

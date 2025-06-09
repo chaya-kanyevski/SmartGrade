@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Brain, FileQuestion, AlignJustify, BookOpen } from "lucide-react";
-
 import AIQuestionGenerator from '../components/ai/AIQuestionGenerator';
 import AISummaryGenerator from '../components/ai/AISummaryGenerator';
 import AITextAnalyzer from '../components/ai/AITextAnalyzer';

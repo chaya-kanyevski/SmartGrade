@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from '@/components/ui/checkbox';
 import { Loader2, Copy, Download } from "lucide-react";
-import { generateLessonPlan as generateLessonPlanApi } from "@/services/aiService"; // ייבוא מה-service
+import { generateLessonPlan as generateLessonPlanApi } from "@/services/aiService";
 
 const AILessonPlanGenerator = () => {
   const [topic, setTopic] = useState('');

@@ -8,6 +8,7 @@ using Microsoft.OpenApi.Models;
 using SmartGradeAPI.API.Extensions;
 using SmartGradeAPI.API.Extentions;
 using SmartGradeAPI.Core.Models;
+using SmartGradeAPI.Core.SignalR;
 using SmartGradeAPI.Data;
 using System;
 using System.Runtime;
@@ -87,10 +88,10 @@ builder.Services.AddAuthorization(options =>
 
 //var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
 //builder.WebHost.UseUrls($"http://*:{port}");
-
+builder.Services.AddSignalR();
 var app = builder.Build();
 //builder.Services.AddLogging();
-
+app.MapHub<ChatHub>("/chatHub");
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

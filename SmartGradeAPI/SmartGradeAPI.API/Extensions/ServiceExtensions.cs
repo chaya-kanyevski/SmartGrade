@@ -20,6 +20,8 @@ namespace SmartGradeAPI.API.Extensions
             services.AddScoped<IFileUploadRepository, FileUploadRepository>();
             services.AddScoped<IUserFileRepository, FileRepository>();
             services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IChatRepository, ChatRepository>();
+
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IFileService, FileService>();
@@ -31,6 +33,7 @@ namespace SmartGradeAPI.API.Extensions
 
             // זה פותר את הבעיה עם HttpClient
             services.AddHttpClient<IOpenAiClient, OpenAiClient>();
+            services.AddScoped<IChatService, ChatService>();
 
             services.AddAutoMapper(typeof(MappingProfile));
             services.AddDbContext<DataContext>();
