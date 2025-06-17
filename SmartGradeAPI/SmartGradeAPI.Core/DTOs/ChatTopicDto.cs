@@ -14,7 +14,7 @@ namespace SmartGradeAPI.Core.DTOs
         public string AuthorName { get; set; } = string.Empty;
         public string AuthorInitials { get; set; } = "?";
 
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public int AuthorId { get; set; }
         public string? LastMessage { get; set; }
         public int MessageCount { get; set; }

@@ -68,11 +68,14 @@ export const sendMessageToTopic = async (topicId: string, message: string, userI
     return res.data;
   };
 
-  export const formatDateTime = (dateString: string) => {
-    const date = new Date(dateString);
+  export const formatDateTime = (dateString: string | undefined | null) => {
+    const date = new Date(dateString ?? '');
+    if (isNaN(date.getTime())) {
+      return 'תאריך לא זמין'
+    }
     return new Intl.DateTimeFormat('he-IL', {
       dateStyle: 'short',
       timeStyle: 'short',
     }).format(date);
-  }
+  };
   

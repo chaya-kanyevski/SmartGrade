@@ -28,7 +28,7 @@ export const TopicItem: React.FC<Props> = ({ topic, selected, onSelect, currentU
       <div>
         <h3 className="font-medium">{topic.title}</h3>
         <p className="text-xs text-gray-500">
-          פורסם ע"י {topic.author.id === currentUserId ? "את/ה" : topic?.author?.name} • {formatDateTime(topic.time)}
+          פורסם ע"י {topic.author.id === currentUserId ? "את/ה" : topic?.author?.name} • {topic.time ?  formatDateTime(topic.time) : 'תאריך לא זמין'}
         </p>
       </div>
     </div>

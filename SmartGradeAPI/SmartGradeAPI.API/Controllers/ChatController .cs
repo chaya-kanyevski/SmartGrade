@@ -1,9 +1,11 @@
 ﻿using Azure.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using SmartGradeAPI.Core.DTOs;
 using SmartGradeAPI.Core.Models;
 using SmartGradeAPI.Core.Services;
+using SmartGradeAPI.Core.SignalR;
 
 namespace SmartGradeAPI.API.Controllers
 {
@@ -12,10 +14,13 @@ namespace SmartGradeAPI.API.Controllers
     public class ChatController : ControllerBase
     {
         private readonly IChatService _chatService;
+        private readonly IHubContext<ChatHub> _hubContext;
 
-        public ChatController(IChatService chatService)
+
+        public ChatController(IChatService chatService, IHubContext<ChatHub> hubContext)
         {
             _chatService = chatService;
+            _hubContext = hubContext;
         }
 
         [HttpGet("topics")]
@@ -63,9 +68,21 @@ namespace SmartGradeAPI.API.Controllers
         [HttpPost("messages")]
         public async Task<IActionResult> SendMessage([FromBody] SendMessageDto dto)
         {
-            await _chatService.AddMessageAsync(dto.TopicId, dto.Text, dto.UserId);
-            return Ok();
+            var message = await _chatService.AddMessageAsync(dto.TopicId, dto.Text, dto.UserId);
+
+            var messageDto = new
+            {
+                Id = message.Id,
+                Text = message.Text,
+                SenderId = message.SenderId,
+                SentAt = message.SentAt
+            };
+
+            await _hubContext.Clients.All.SendAsync("ReceiveMessage", dto.TopicId.ToString(), messageDto);
+
+            return Ok(messageDto);
         }
+
 
         [HttpGet("messages")]
         public async Task<IActionResult> GetMessages([FromQuery] int topicId)

@@ -27,7 +27,7 @@ export const ThreadView: React.FC<Props> = ({ topic, messages, newMessage, onCha
 
     <ScrollArea className="flex-1 p-4">
       <div className="space-y-6">
-        {messages.map(msg => <ThreadMessageItem key={msg.id} message={msg} />)}
+        {messages.map(msg => <ThreadMessageItem key={msg.id} message={msg} currentUserId={currentUser?.id!} />)}
       </div>
     </ScrollArea>
 
