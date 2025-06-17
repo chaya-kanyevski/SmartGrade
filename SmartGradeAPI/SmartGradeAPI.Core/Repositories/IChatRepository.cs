@@ -12,10 +12,9 @@ namespace SmartGradeAPI.Core.Repositories
     {
         Task<List<ChatTopic>> GetAllTopicsAsync();
         Task<ChatTopic?> GetTopicByIdAsync(int id);
-        Task<ChatTopic> CreateTopicAsync(string title, int userId);
+        Task<ChatTopic> CreateTopicAsync(string title, int userId, string initialMessage);
 
         Task<List<ChatMessage>> GetMessagesForTopicAsync(int topicId);
-        Task<ChatMessage> AddMessageAsync(int topicId, string text, string senderId);
-
+        Task<ChatMessage> AddMessageAsync(int topicId, string text, int senderId);
     }
 }

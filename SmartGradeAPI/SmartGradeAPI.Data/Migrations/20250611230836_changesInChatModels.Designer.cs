@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartGradeAPI.Data;
 
@@ -10,9 +11,11 @@ using SmartGradeAPI.Data;
 namespace SmartGradeAPI.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250611230836_changesInChatModels")]
+    partial class changesInChatModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -85,7 +88,7 @@ namespace SmartGradeAPI.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int?>("CreatedById")
+                    b.Property<int>("CreatedByUserId")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -93,8 +96,6 @@ namespace SmartGradeAPI.Data.Migrations
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CreatedById");
 
                     b.ToTable("ChatTopics");
                 });
@@ -240,15 +241,6 @@ namespace SmartGradeAPI.Data.Migrations
                     b.Navigation("ChatTopic");
 
                     b.Navigation("Sender");
-                });
-
-            modelBuilder.Entity("SmartGradeAPI.Core.Models.ChatTopic", b =>
-                {
-                    b.HasOne("SmartGradeAPI.Core.Models.User", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById");
-
-                    b.Navigation("CreatedBy");
                 });
 
             modelBuilder.Entity("SmartGradeAPI.Core.Models.UserFile", b =>

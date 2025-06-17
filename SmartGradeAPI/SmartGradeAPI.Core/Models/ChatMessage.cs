@@ -11,12 +11,26 @@ namespace SmartGradeAPI.Core.Models
         public int Id { get; set; }
 
         public int ChatTopicId { get; set; }
-        public int UserId { get; set; }
         public ChatTopic ChatTopic { get; set; } = null!;
 
-        public string SenderId { get; set; } = string.Empty;
+        public User Sender { get; set; } = null!; // קשר למשתמש המחבר
+
+        public int SenderId { get; set; } // אם זה כפול ל-UserId – אולי מיותר
         public string Text { get; set; } = string.Empty;
         public DateTime SentAt { get; set; } = DateTime.UtcNow;
     }
+
+    //public class ChatMessage
+    //{
+    //    public int Id { get; set; }
+
+    //    public int ChatTopicId { get; set; }
+    //    public int UserId { get; set; }
+    //    public ChatTopic ChatTopic { get; set; } = null!;
+
+    //    public int SenderId { get; set; }
+    //    public string Text { get; set; } = string.Empty;
+    //    public DateTime SentAt { get; set; } = DateTime.UtcNow;
+    //}
 
 }

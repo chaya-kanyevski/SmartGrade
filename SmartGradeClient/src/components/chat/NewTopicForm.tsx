@@ -38,7 +38,7 @@ export const NewTopicForm: React.FC<Props> = ({ title, message, onChangeTitle, o
     </CardContent>
     <CardFooter className="flex gap-2 justify-end">
       <Button variant="outline" onClick={onCancel}>ביטול</Button>
-      <Button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white" onClick={onSubmit} disabled={!title.trim() || !message.trim()}>
+      <Button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white" onClick={onSubmit} disabled={!title.trim()}>
         פרסם נושא חדש
       </Button>
     </CardFooter>

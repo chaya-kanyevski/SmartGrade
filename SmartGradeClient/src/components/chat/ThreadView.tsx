@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { ThreadMessageItem } from './ThreadMessageItem';
 import { ForumTopic, ThreadMessage } from '@/models/Forum';
+import { User } from '@/models/User';
 
 interface Props {
   topic: ForumTopic;
@@ -12,13 +13,16 @@ interface Props {
   onChangeMessage: (msg: string) => void;
   onSend: () => void;
   onKeyPress: (e: React.KeyboardEvent) => void;
+  currentUser: User | null;
 }
 
-export const ThreadView: React.FC<Props> = ({ topic, messages, newMessage, onChangeMessage, onSend, onKeyPress }) => (
+export const ThreadView: React.FC<Props> = ({ topic, messages, newMessage, onChangeMessage, onSend, onKeyPress, currentUser }) => (
   <div className="flex flex-col flex-1">
     <div className="p-4 border-b">
       <h2 className="text-xl font-bold">{topic.title}</h2>
-      <p className="text-sm text-gray-500">נפתח ע"י {topic.author.name} • {topic.messageCount} תגובות</p>
+      <p className="text-sm text-gray-500">
+      נפתח ע"י {topic?.author?.id === currentUser?.id ? 'את/ה' : topic?.author?.name || '?'} • {topic.messageCount} תגובות
+      </p>
     </div>
 
     <ScrollArea className="flex-1 p-4">

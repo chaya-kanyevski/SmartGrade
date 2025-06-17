@@ -14,6 +14,7 @@ interface Props {
   onNewTopic: () => void;
   searchQuery: string;
   onSearchChange: (query: string) => void;
+  currentUserId?: number; 
 }
 
 export const ForumSidebar: React.FC<Props> = ({
@@ -24,6 +25,7 @@ export const ForumSidebar: React.FC<Props> = ({
   onNewTopic,
   searchQuery,
   onSearchChange,
+  currentUserId
 }) => (
   <div className="w-full md:w-80 border-l bg-gray-50">
     <div className="p-4 border-b">
@@ -66,6 +68,7 @@ export const ForumSidebar: React.FC<Props> = ({
               topic={topic}
               selected={selectedTopicId === topic.id}
               onSelect={() => onSelectTopic(topic.id)}
+              currentUserId={currentUserId || 0} 
             />
           ))}
         </div>

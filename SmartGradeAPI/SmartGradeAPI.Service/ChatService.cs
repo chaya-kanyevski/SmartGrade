@@ -17,14 +17,14 @@ namespace SmartGradeAPI.Service
             _chatRepository = chatRepository;
         }
 
-        public async Task<ChatMessage> AddMessageAsync(int topicId, string text, string senderId)
+        public async Task<ChatMessage> AddMessageAsync(int topicId, string text, int senderId)
         {
             return await _chatRepository.AddMessageAsync(topicId, text, senderId);
         }
 
-        public Task<ChatTopic> CreateTopicAsync(string title, int userId)
+        public Task<ChatTopic> CreateTopicAsync(string title, int userId, string initialMessage)
         {
-            return _chatRepository.CreateTopicAsync(title, userId);
+            return _chatRepository.CreateTopicAsync(title, userId, initialMessage);
         }
 
         public Task<List<ChatTopic>> GetAllTopicsAsync()
