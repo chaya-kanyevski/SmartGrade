@@ -1,15 +1,25 @@
 // src/components/LoginWithGoogle.tsx
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "@/firebase"; // הנתיב לקובץ שלך!
+import { UserContext } from "@/context/UserReducer";
+import { loginWithGoogle } from "@/services/userService";
 
 const LoginWithGoogle: React.FC = () => {
   const navigate = useNavigate();
+  const { userDispatch } = useContext(UserContext);
 
-  const handleLogin = async () => {
+   const handleLogin = async () => {
     try {
-      // const result = await signInWithPopup(auth, provider);
-      // const user = result.user;
-      // console.log("Signed in user:", user);
+      const result = await signInWithPopup(auth, provider);
+      const idToken = await result.user.getIdToken();
+
+      const { token, user: serverUser } = await loginWithGoogle(idToken);
+
+      localStorage.setItem("token", token);
+      userDispatch({ type: "LOGIN", data: serverUser });
+      console.log("Signed in user:", result.user);
       navigate("/dashboard");
     } catch (error) {
       console.error("Error signing in with Google:", error);
@@ -24,7 +34,7 @@ const LoginWithGoogle: React.FC = () => {
       <img
         src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
         alt="Google logo"
-        className="w-5 h-5 ml-4" 
+        className="w-5 h-5 ml-4"
       />
       <span className="text-gray-700 font-medium">התחברות עם גוגל</span>
     </button>
@@ -32,36 +42,3 @@ const LoginWithGoogle: React.FC = () => {
 };
 
 export default LoginWithGoogle;
-
-
-
-
-// // src/components/LoginWithGoogle.tsx
-// import React from "react";
-// // import { signInWithPopup } from "firebase/auth";
-// // import { auth, provider } from "../../firebase";
-// import { useNavigate } from "react-router-dom";
-
-
-// const LoginWithGoogle: React.FC = () => {
-//   const navigate = useNavigate();
-
-//   const handleLogin = async () => {
-//     try {
-//       // const result = await signInWithPopup(auth, provider);
-//       // const user = result.user;
-//       // console.log("Signed in user:", user);
-//       navigate("/dashboard");
-//     } catch (error) {
-//       console.error("Error signing in with Google:", error);
-//     }
-//   };
-
-//   return (
-//     <button onClick={handleLogin}>
-//       Sign in with Google
-//     </button>
-//   );
-// };
-
-// export default LoginWithGoogle;

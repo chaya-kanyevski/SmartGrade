@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { SelectChangeEvent } from "@mui/material";
 import FileTypeSelect from "./fileTypeSelect";
 import { File as FileModel } from "../../models/File"; 
+import LoadingButton from "@/components/ui/LoadingButton";
 
 interface AddFileProps {
   onFileAdded: (newFile: FileModel) => void; 
@@ -201,18 +202,13 @@ const handleTypeChange = (newType: FileType) => {
         <Button variant="outline" onClick={onClose}>
           ביטול
         </Button>
-        <Button
-          type="submit"
-          disabled={isSubmitDisabled}
-          className="bg-gradient-to-r from-blue-600 to-purple-600 text-white"
-        >
-          {isUploading ? (
-            <>
-              <div className="mr-2 h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-              מעלה...
-            </>
-          ) : "העלאה"}
-        </Button>
+        <LoadingButton
+  type="submit"
+  isLoading={isUploading}
+  disabled={isSubmitDisabled}
+>
+  העלאה
+</LoadingButton>
       </div>
     </form>
   );

@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { ThreadMessageItem } from './ThreadMessageItem';
 import { ForumTopic, ThreadMessage } from '@/models/Forum';
 import { User } from '@/models/User';
+import LoadingButton from '@/components/ui/LoadingButton';
 
 interface Props {
   topic: ForumTopic;
@@ -14,9 +15,10 @@ interface Props {
   onSend: () => void;
   onKeyPress: (e: React.KeyboardEvent) => void;
   currentUser: User | null;
+  isSending: boolean;
 }
 
-export const ThreadView: React.FC<Props> = ({ topic, messages, newMessage, onChangeMessage, onSend, onKeyPress, currentUser }) => (
+export const ThreadView: React.FC<Props> = ({ topic, messages, newMessage, onChangeMessage, onSend, onKeyPress, currentUser, isSending }) => (
   <div className="flex flex-col flex-1">
     <div className="p-4 border-b">
       <h2 className="text-xl font-bold">{topic.title}</h2>
@@ -39,12 +41,13 @@ export const ThreadView: React.FC<Props> = ({ topic, messages, newMessage, onCha
           onChange={(e) => onChangeMessage(e.target.value)}
           onKeyDown={onKeyPress}
         />
-        <Button
-          className="bg-gradient-to-r from-blue-600 to-purple-600 text-white"
+        <LoadingButton
+          isLoading={isSending}
           onClick={onSend}
+          disabled={!newMessage.trim()}
         >
           שלח
-        </Button>
+        </LoadingButton>
       </div>
     </div>
   </div>

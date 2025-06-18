@@ -20,6 +20,8 @@ const Chat: React.FC = () => {
   const [newTopicMessage, setNewTopicMessage] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const { user } = useContext(UserContext);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSending, setIsSending] = useState(false);
 
   const connectionRef = useRef<HubConnection | null>(null);
 
@@ -118,6 +120,7 @@ const Chat: React.FC = () => {
   // ✅ שליחת הודעה
   const handleSendMessage = async () => {
     if (!newMessage.trim() || !selectedTopicId) return;
+    setIsSending(true);
     await sendMessageToTopic(selectedTopicId, newMessage, user.id);
     setNewMessage('');
     setTopics(prevTopics =>
@@ -132,7 +135,7 @@ const Chat: React.FC = () => {
           : t
       )
     );
-    
+    setIsSending(false);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -145,7 +148,7 @@ const Chat: React.FC = () => {
   // ✅ יצירת נושא חדש
   const handleCreateTopic = async () => {
     if (!newTopicTitle.trim()) return;
-
+    setIsSubmitting(true);
     const newTopic = await createTopic(newTopicTitle, user.id, newTopicMessage);
 
     const enrichedTopic: ForumTopic = {
@@ -183,6 +186,8 @@ const Chat: React.FC = () => {
 
     setNewTopicTitle('');
     setNewTopicMessage('');
+    setIsSubmitting(false);
+
   };
 
   const filteredTopics = topics.filter(t =>
@@ -214,6 +219,7 @@ const Chat: React.FC = () => {
             onChangeMessage={setNewTopicMessage}
             onSubmit={handleCreateTopic}
             onCancel={() => setNewTopicMode(false)}
+            isSubmitting={isSubmitting}
           />
         ) : selectedTopic ? (
           <ThreadView
@@ -224,6 +230,7 @@ const Chat: React.FC = () => {
             onSend={handleSendMessage}
             onKeyPress={handleKeyPress}
             currentUser={user}
+            isSending={isSending}
           />
         ) : (
           <div className="flex items-center justify-center h-full text-gray-400">

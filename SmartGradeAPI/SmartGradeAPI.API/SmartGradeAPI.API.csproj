@@ -6,22 +6,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>5c7bee39-9253-43e0-96b1-9a2e5275114a</UserSecretsId>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="NewFolder1\**" />
-    <Compile Remove="NewFolder\**" />
-    <Content Remove="NewFolder1\**" />
-    <Content Remove="NewFolder\**" />
-    <EmbeddedResource Remove="NewFolder1\**" />
-    <EmbeddedResource Remove="NewFolder\**" />
-    <None Remove="NewFolder1\**" />
-    <None Remove="NewFolder\**" />
-  </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="AWSSDK.S3" Version="3.7.415.21" />
     <PackageReference Include="DotNetEnv" Version="3.1.1" />
+    <PackageReference Include="FirebaseAdmin" Version="3.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.20" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
@@ -33,5 +22,10 @@
 	  <ProjectReference Include="..\SmartGradeAPI.Data\SmartGradeAPI.Data.csproj" />
 	  <ProjectReference Include="..\SmartGradeAPI.Service\SmartGradeAPI.Service.csproj" /> 
   </ItemGroup>
+	<ItemGroup>
+		<None Update="smartgrade-79f11-firebase-adminsdk-fbsvc-5b0d871db9.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 
 </Project>

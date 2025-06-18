@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import LoadingButton from '@/components/ui/LoadingButton';
 
 interface Props {
   title: string;
@@ -10,9 +11,10 @@ interface Props {
   onChangeMessage: (val: string) => void;
   onSubmit: () => void;
   onCancel: () => void;
+  isSubmitting: boolean;
 }
 
-export const NewTopicForm: React.FC<Props> = ({ title, message, onChangeTitle, onChangeMessage, onSubmit, onCancel }) => (
+export const NewTopicForm: React.FC<Props> = ({ title, message, onChangeTitle, onChangeMessage, onSubmit, onCancel, isSubmitting}) => (
   <Card className="flex-1 border-0 rounded-none shadow-none">
     <CardHeader>
       <CardTitle>פתיחת נושא חדש</CardTitle>
@@ -38,9 +40,14 @@ export const NewTopicForm: React.FC<Props> = ({ title, message, onChangeTitle, o
     </CardContent>
     <CardFooter className="flex gap-2 justify-end">
       <Button variant="outline" onClick={onCancel}>ביטול</Button>
-      <Button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white" onClick={onSubmit} disabled={!title.trim()}>
-        פרסם נושא חדש
-      </Button>
+      <LoadingButton
+  isLoading={isSubmitting}
+  onClick={onSubmit}
+  disabled={!title.trim()}
+>
+  פרסם נושא חדש
+</LoadingButton>
+
     </CardFooter>
   </Card>
 );

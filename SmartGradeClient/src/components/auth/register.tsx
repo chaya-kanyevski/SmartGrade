@@ -3,40 +3,44 @@ import { useNavigate, Link } from "react-router-dom";
 import { UserContext } from "../../context/UserReducer";
 import { register } from "../../services/userService";
 import LoginWithGoogle from "./loginWithGoogle";
+import LoadingButton from "../ui/LoadingButton";
 
 const Register = () => {
     const nameRef = useRef<HTMLInputElement>(null);
-        const emailRef = useRef<HTMLInputElement>(null);
-        const passwordRef = useRef<HTMLInputElement>(null);
-        const navigate = useNavigate();
-        const { userDispatch } = useContext(UserContext);
-        const [error, setError] = useState<string | null>(null);
-        const handleSubmit = async (e: FormEvent) => {
-                e.preventDefault();
-                const name = nameRef.current?.value.trim();
-                const email = emailRef.current?.value.trim();
-                const password = passwordRef.current?.value.trim();
-                if (!email || !password || !name) {
-                    setError("יש למלא את כל השדות");
-                    return;
+    const emailRef = useRef<HTMLInputElement>(null);
+    const passwordRef = useRef<HTMLInputElement>(null);
+    const navigate = useNavigate();
+    const { userDispatch } = useContext(UserContext);
+    const [error, setError] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
 
-            }
+        const handleSubmit = async (e: FormEvent) => {
+          e.preventDefault();
+          const name = nameRef.current?.value.trim();
+          const email = emailRef.current?.value.trim();
+          const password = passwordRef.current?.value.trim();
+          if (!email || !password || !name) {
+              setError("יש למלא את כל השדות");
+              return;
+      }
+      setIsLoading(true);
             try {
-                    const response = await register(name, email, password, "User");
-                    const { token, user } = response;
+                const response = await register(name, email, password, "User");
+                const { token, user } = response;
                 console.log('tttt' + token);
                 console.log('uuuu', user);
                 localStorage.setItem("token", token);
                 userDispatch({
-                        type: "REGISTER",
-                        data: user,
-
+                    type: "REGISTER",
+                    data: user,
                 });
                 navigate("/dashboard");
         } catch (error) {
                  setError("ההרשמה נכשלה, בדוק את הנתונים ונסה שוב.");
                  console.error("ההרשמה נכשלה", error);
 
+            }finally {
+              setIsLoading(false); 
             }
     };
 
@@ -80,12 +84,9 @@ const Register = () => {
 
           {error && <p className="text-red-500 text-sm text-center">{error}</p>}
 
-          <button
-            type="submit"
-            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-2 rounded-lg hover:opacity-90 transition"
-          >
-            הרשם
-          </button>
+          <LoadingButton type="submit" isLoading={isLoading} className="w-full">
+          הרשם
+          </LoadingButton>
         </form>
 
         <p className="text-center text-sm text-gray-600 mt-4">
@@ -104,75 +105,3 @@ const Register = () => {
 };
 
 export default Register;
-
-
-
-// import { FormEvent, useContext, useRef, useState } from "react";
-// import { useNavigate } from "react-router-dom";
-// import { register } from "../../services/userService";
-// import { UserContext } from "../../context/UserReducer";
-// import LoginWithGoogle from "./loginWithGoogle";
-
-// const Register = () => {
-//     const nameRef = useRef<HTMLInputElement>(null);
-//     const emailRef = useRef<HTMLInputElement>(null);
-//     const passwordRef = useRef<HTMLInputElement>(null);
-//     const navigate = useNavigate();
-//     const { userDispatch } = useContext(UserContext);
-//     const [error, setError] = useState<string | null>(null);
-
-//     const handleSubmit = async (e: FormEvent) => {
-//         e.preventDefault();
-
-//         const name = nameRef.current?.value.trim();
-//         const email = emailRef.current?.value.trim();
-//         const password = passwordRef.current?.value.trim();
-//         if (!email || !password || !name) {
-//             setError("יש למלא את כל השדות");
-//             return;
-//         }
-//         try {
-//             const response = await register(name, email, password, "User");
-//             const { token, user } = response;
-//             console.log('tttt' + token);
-//             console.log('uuuu', user);
-//             localStorage.setItem("token", token);
-
-//             userDispatch({
-//                 type: "REGISTER",
-//                 data: user,
-//             });
-//             navigate("/dashboard");
-//         } catch (error) {
-//             setError("ההרשמה נכשלה, בדוק את הנתונים ונסה שוב.");
-//             console.error("ההרשמה נכשלה", error);
-//         }
-//     };
-
-//     return (
-//         <div style={{ padding: "20px", border: "1px solid #ddd", borderRadius: "8px", maxWidth: "400px", margin: "20px auto" }}>
-//             <h2>הרשמה</h2>
-//             <form onSubmit={handleSubmit}>
-//                 <div style={{ marginBottom: "10px" }}>
-//                     <label htmlFor="name" style={{ display: "block", marginBottom: "5px" }}>שם:</label>
-//                     <input type="text" id="name" ref={nameRef} required style={{ width: "100%", padding: "8px", border: "1px solid #ccc", borderRadius: "4px" }} />
-//                 </div>
-//                 <div style={{ marginBottom: "10px" }}>
-//                     <label htmlFor="email" style={{ display: "block", marginBottom: "5px" }}>אימייל:</label>
-//                     <input type="email" id="email" ref={emailRef} required style={{ width: "100%", padding: "8px", border: "1px solid #ccc", borderRadius: "4px" }} />
-//                 </div>
-//                 <div style={{ marginBottom: "10px" }}>
-//                     <label htmlFor="password" style={{ display: "block", marginBottom: "5px" }}>סיסמה:</label>
-//                     <input type="password" id="password" ref={passwordRef} required style={{ width: "100%", padding: "8px", border: "1px solid #ccc", borderRadius: "4px" }} />
-//                 </div>
-//                 {error && <p className="error-message" style={{ color: "red", marginBottom: "10px" }}>{error}</p>}
-//                 <button type="submit" style={{ width: "100%", padding: "10px 15px", backgroundColor: "#007bff", color: "white", border: "none", borderRadius: "4px", cursor: "pointer" }}>
-//                     הרשם
-//                 </button>
-//             </form>
-//             <LoginWithGoogle />
-//         </div>
-//     );
-// };
-
-// export default Register;

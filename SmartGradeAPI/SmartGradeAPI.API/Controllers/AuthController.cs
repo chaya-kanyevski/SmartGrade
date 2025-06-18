@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SmartGradeAPI.Core.DTOs;
 using SmartGradeAPI.Core.Models;
 using SmartGradeAPI.Core.Services;
-//!!
+using FirebaseAdmin;
+using FirebaseAdmin.Auth;
+using Google.Apis.Auth.OAuth2;
+
 namespace SmartGradeAPI.API.Controllers
 {
     [Route("api/[controller]")]
@@ -53,6 +57,34 @@ namespace SmartGradeAPI.API.Controllers
             return Ok(new { Token = token, User = userDto }); 
 
         }
+
+        [HttpPost("google")]
+        public async Task<IActionResult> GoogleLogin([FromBody] GoogleLoginRequest request)
+        {
+            var firebaseToken = request.IdToken;
+
+            // אמת את ה-IdToken מול Firebase
+            var decoded = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(firebaseToken);
+            var email = decoded.Claims["email"]?.ToString();
+            var name = decoded.Claims["name"]?.ToString() ?? "";
+
+            // חפש משתמש במסד
+            var user = await _authService.GetUserByEmailAsync(email);
+
+            if (user == null)
+            {
+                // צור משתמש חדש אם לא קיים
+                user = new User { Name = name, Email = email, Role = "User", Password = "Google"};
+                await _authService.AddUserAsync(user);
+            }
+
+            var token = _authService.GenerateJwtToken(user);
+
+            var userDto = _mapper.Map<UserDto>(user);
+            return Ok(new { Token = token, User = userDto });
+        }
+
+
     }
 
     public class RegisterModel
@@ -70,3 +102,7 @@ namespace SmartGradeAPI.API.Controllers
     }
 }
 
+public class GoogleLoginRequest
+{
+    public string IdToken { get; set; }
+}
