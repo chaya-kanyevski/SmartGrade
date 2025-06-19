@@ -11,7 +11,7 @@ namespace SmartGradeAPI.Data.Repositories
 {
     public class FileUploadRepository : IFileUploadRepository
     {
-        private readonly DataContext _context;
+        private readonly DataContext _context; 
         public FileUploadRepository(DataContext context)
         {
             _context = context;

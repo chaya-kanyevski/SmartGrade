@@ -4,6 +4,8 @@ import { fetchFilesByUser, deleteFile } from '../../services/fileService';
 import { File } from '../../models/File';
 import FileGridView from './fileGridView';
 import FileListView from './fileListView';
+import { useToast } from '@/context/ToastContext';
+import FileDeleteConfirm from './FileDeleteConfirm';
 
 type FileTabType = 'all' | File['type'];
 
@@ -17,38 +19,37 @@ interface FilesListProps {
 
 const FilesList: React.FC<FilesListProps> = ({ searchQuery, viewMode, currentTab, onFilesLoaded, files }) => {
   const { user } = useContext(UserContext);
+  const { showToast } = useToast();
+
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string>('');
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [fileIdToDelete, setFileIdToDelete] = useState<number | null>(null);
 
   useEffect(() => {
     const loadUserFiles = async () => {
       setIsLoading(true);
       setError('');
+      if (!user?.id) {
+        setError('משתמש לא מחובר.');
+        setIsLoading(false);
+        return;
+      }
       try {
-        if (!user?.id) {
-          setError("משתמש לא מחובר.");
-          setIsLoading(false);
-          return;
-        }
         const filesDataDto = await fetchFilesByUser(user.id);
-
         const loadedFiles: File[] = filesDataDto.map(dto => ({
           id: dto.id,
           title: dto.title,
           type: dto.type ?? 'other',
           date: new Date(),
           size: dto.size ?? 0,
-          tags: typeof dto.tags === 'string'
-            ? dto.tags.split(',').map((tag: string) => tag.trim())
-            : [],
+          tags: typeof dto.tags === 'string' ? dto.tags.split(',').map(t => t.trim()) : [],
           filePath: dto.filePath,
           description: dto.description ?? '',
         }));
-
         onFilesLoaded(loadedFiles);
-      } catch (err) {
-        console.error(err);
-        setError("שגיאה בטעינת הקבצים.");
+      } catch {
+        setError('שגיאה בטעינת הקבצים.');
       } finally {
         setIsLoading(false);
       }
@@ -57,55 +58,68 @@ const FilesList: React.FC<FilesListProps> = ({ searchQuery, viewMode, currentTab
   }, [user?.id, onFilesLoaded]);
 
   const filteredFiles = files.filter(file => {
-    const matchesSearch = file.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    const matchesSearch =
+      file.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       file.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
 
-    if (currentTab === 'all') return matchesSearch;
-    return file.type === currentTab && matchesSearch;
+    return currentTab === 'all' ? matchesSearch : file.type === currentTab && matchesSearch;
   });
 
-  const handleDeleteFile = async (fileId: number) => {
+  const handleAskDelete = (fileId: number) => {
+    setFileIdToDelete(fileId);
+    setIsConfirmOpen(true);
+  };
+
+  const handleDeleteFile = async () => {
+    if (fileIdToDelete === null) return;
+
     try {
-      const success = await deleteFile(fileId);
+      const success = await deleteFile(fileIdToDelete);
       if (success) {
-        const updatedFiles = files.filter(file => file.id !== fileId);
+        const updatedFiles = files.filter(f => f.id !== fileIdToDelete);
         onFilesLoaded(updatedFiles);
+        showToast('הקובץ נמחק בהצלחה!', 'success');
       }
     } catch {
-      alert("אירעה שגיאה בעת מחיקת הקובץ.");
+      showToast('אירעה שגיאה בעת מחיקת הקובץ.', 'error');
+    } finally {
+      setIsConfirmOpen(false);
+      setFileIdToDelete(null);
     }
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
-      </div>
-    );
-  }
+  if (isLoading) return (
+    <div className="flex items-center justify-center h-64">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+    </div>
+  );
 
-  if (error) {
-    return <div className="text-center p-12 text-red-500">{error}</div>;
-  }
+  if (error) return <div className="text-center p-12 text-red-500">{error}</div>;
 
-  if (filteredFiles.length === 0) {
-    return (
-      <div className="text-center p-12">
-        <h3 className="mt-4 text-lg font-medium">אין קבצים</h3>
-        <p className="text-gray-500">לא נמצאו קבצים מתאימים לחיפוש שלך</p>
-      </div>
-    );
-  }
+  if (filteredFiles.length === 0) return (
+    <div className="text-center p-12">
+      <h3 className="mt-4 text-xl font-semibold text-gray-800">
+        לא מצאנו קבצים בשבילך עדיין
+      </h3>
+      <p className="mt-2 text-gray-600">
+        זה הזמן להתחיל להעלות קבצים, לארגן את החומר שלך ולעבוד בצורה חכמה יותר 🎉
+      </p>
+    </div>
+  );
 
   return (
     <>
       {viewMode === 'grid' ? (
-        <FileGridView files={filteredFiles} onDeleteFile={handleDeleteFile} />
+        <FileGridView files={filteredFiles} onDeleteFile={handleAskDelete} />
       ) : (
-        <FileListView files={filteredFiles} onDeleteFile={handleDeleteFile} />
+        <FileListView files={filteredFiles} onDeleteFile={handleAskDelete} />
       )}
+      <FileDeleteConfirm
+        isOpen={isConfirmOpen}
+        onConfirm={handleDeleteFile}
+        onCancel={() => setIsConfirmOpen(false)}
+      />
     </>
   );
 };
-
 export default FilesList;

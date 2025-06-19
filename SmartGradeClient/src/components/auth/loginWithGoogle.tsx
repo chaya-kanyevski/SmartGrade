@@ -1,8 +1,7 @@
-// src/components/LoginWithGoogle.tsx
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { signInWithPopup } from "firebase/auth";
-import { auth, provider } from "@/firebase"; // הנתיב לקובץ שלך!
+import { auth, provider } from "@/firebase"; 
 import { UserContext } from "@/context/UserReducer";
 import { loginWithGoogle } from "@/services/userService";
 

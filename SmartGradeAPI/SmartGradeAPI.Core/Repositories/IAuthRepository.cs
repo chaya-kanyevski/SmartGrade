@@ -12,5 +12,7 @@ namespace SmartGradeAPI.Core.Repositories
         Task<bool> IsEmailExistAsync(string email);
         Task<User> GetUserByEmailAsync(string email);
         Task AddUserAsync(User user);
+        bool VerifyPassword(User user, string password);
+
     }
 }

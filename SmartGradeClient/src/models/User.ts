@@ -6,5 +6,6 @@ export type User = {
     email : string,
     password : string,
     role : string,
-    exams : File []
+    files : File [],
+    token?: string 
 }

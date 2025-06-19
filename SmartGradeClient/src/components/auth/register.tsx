@@ -23,6 +23,10 @@ const Register = () => {
               setError("יש למלא את כל השדות");
               return;
       }
+      if (password.length < 6) {
+        setError("הסיסמה חייבת להכיל לפחות 6 תווים");
+        return;
+      }
       setIsLoading(true);
             try {
                 const response = await register(name, email, password, "User");
@@ -32,13 +36,11 @@ const Register = () => {
                 localStorage.setItem("token", token);
                 userDispatch({
                     type: "REGISTER",
-                    data: user,
+                    data: { ...user, token },
                 });
                 navigate("/dashboard");
-        } catch (error) {
-                 setError("ההרשמה נכשלה, בדוק את הנתונים ונסה שוב.");
-                 console.error("ההרשמה נכשלה", error);
-
+        } catch (error: any) {
+                 setError(typeof error === "string" ? error : "ההרשמה נכשלה");
             }finally {
               setIsLoading(false); 
             }

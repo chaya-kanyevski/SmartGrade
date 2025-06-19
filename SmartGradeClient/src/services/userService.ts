@@ -9,11 +9,14 @@ export const login = async (email : string, password : string) => {
             email,
             password
         });
+        const token = response.data.token;
+        localStorage.setItem("token", token);
         console.log('login successfully!')
         console.log(response.data)
         return response.data
-    } catch(error){
+    } catch(error : any){
         console.error("שגיאה בהתחברות", error);
+        throw error.response?.data || "ההתחברות נכשלה, בדוק את הנתונים ונסה שוב.";
     }
 }
 
@@ -27,10 +30,13 @@ export const register = async (name : string, email : string,
             password,
             role
         });
+        const token = response.data.token;
+        localStorage.setItem("token", token);
         console.log('register successfully!')
         return response.data
-    } catch(error){
+    } catch(error: any) {
         console.error("שגיאה בהרשמה", error);
+        throw error.response?.data || "ההרשמה נכשלה, בדוק את הנתונים ונסה שוב.";
     }
 }
 
@@ -39,10 +45,12 @@ export const loginWithGoogle = async (idToken: string) => {
       const response = await axios.post(API_URL + "/google", {
         idToken,
       });
+      const token = response.data.token;
+      localStorage.setItem("token", token);
       console.log("login with google successfully!");
       return response.data;
     } catch (error) {
       console.error("שגיאה בהתחברות עם גוגל", error);
-      throw error; // כדאי לזרוק שוב כדי שהקומפוננטה תדע על השגיאה
+      throw error;
     }
-  };
+};

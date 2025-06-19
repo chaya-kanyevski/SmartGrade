@@ -14,7 +14,7 @@ interface Props {
   onNewTopic: () => void;
   searchQuery: string;
   onSearchChange: (query: string) => void;
-  currentUserId?: number; 
+  currentUserId?: number;
 }
 
 export const ForumSidebar: React.FC<Props> = ({
@@ -27,8 +27,9 @@ export const ForumSidebar: React.FC<Props> = ({
   onSearchChange,
   currentUserId
 }) => (
-  <div className="w-full md:w-80 border-l bg-gray-50">
-    <div className="p-4 border-b">
+  <div className="flex flex-col w-full md:w-80 border-l bg-gray-50 h-screen">
+    {/* עליון: חיפוש וכפתור */}
+    <div className="p-4 border-b shrink-0">
       <div className="relative mb-3">
         <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
         <Input
@@ -38,7 +39,7 @@ export const ForumSidebar: React.FC<Props> = ({
           onChange={(e) => onSearchChange(e.target.value)}
         />
       </div>
-      <Button 
+      <Button
         className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white"
         onClick={onNewTopic}
       >
@@ -47,7 +48,8 @@ export const ForumSidebar: React.FC<Props> = ({
       </Button>
     </div>
 
-    <ScrollArea className="h-[calc(100vh-16rem)]">
+    {/* מרכזי: רשימת נושאים עם גלילה */}
+    <ScrollArea className="flex-1 overflow-auto">
       {isLoading ? (
         <div className="p-4 space-y-4">
           {[1, 2, 3, 4].map(i => (
@@ -68,7 +70,7 @@ export const ForumSidebar: React.FC<Props> = ({
               topic={topic}
               selected={selectedTopicId === topic.id}
               onSelect={() => onSelectTopic(topic.id)}
-              currentUserId={currentUserId || 0} 
+              currentUserId={currentUserId || 0}
             />
           ))}
         </div>

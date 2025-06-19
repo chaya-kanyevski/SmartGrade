@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartGradeAPI.Core.DTOs;
 using SmartGradeAPI.Core.Models;
@@ -7,6 +8,7 @@ using SmartGradeAPI.Service;
 
 namespace SmartGradeAPI.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class FilesController : ControllerBase
@@ -32,10 +34,6 @@ namespace SmartGradeAPI.API.Controllers
         public async Task<ActionResult<List<UserFileDto>>> GetFilesByUserId(int userId)
         {
             var files = await _fileService.GetFilesByUserIdAsync(userId);
-            if (files == null || files.Count == 0)
-            {
-                return NotFound("No files found for this user");
-            }
             return Ok(_mapper.Map<List<UserFileDto>>(files));
         }
 

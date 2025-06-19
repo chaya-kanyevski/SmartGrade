@@ -1,5 +1,5 @@
 // services/aiService.ts
-import axios from 'axios';
+import api from './api'
 
 const API_BASE = import.meta.env.VITE_REACT_APP_BASE_API_URL!;
 const LESSON_PLAN_API = `${API_BASE}/ai/lesson-plan`;
@@ -14,7 +14,7 @@ export const generateLessonPlan = async (
   duration: number,
   components: string[]
 ): Promise<string> => {
-  const response = await axios.post(LESSON_PLAN_API, {
+  const response = await api.post(LESSON_PLAN_API, {
     userId,
     topic,
     grade,
@@ -32,7 +32,7 @@ export const generateQuestions = async (
   numQuestions: number,
   textOrFileName: string
 ): Promise<string> => {
-  const response = await axios.post(GENERATE_QUESTIONS_API, {
+  const response = await api.post(GENERATE_QUESTIONS_API, {
     userId,
     topic,
     questionType,
@@ -49,7 +49,7 @@ export const summarizeText = async (
   summaryLength: string,
   summaryStyle: string
 ): Promise<string> => {
-  const response = await axios.post(SUMMARIZE_TEXT_API, {
+  const response = await api.post(SUMMARIZE_TEXT_API, {
     userId,
     textOrFileName,
     summaryLength,
@@ -63,7 +63,7 @@ export const analyzeText = async (
   textOrFileName: string,
   analysisType: string
 ): Promise<string> => {
-  const response = await axios.post(ANALYZE_TEXT_API, {
+  const response = await api.post(ANALYZE_TEXT_API, {
     userId,
     textOrFileName,
     analysisType,

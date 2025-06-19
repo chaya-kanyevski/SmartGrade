@@ -67,5 +67,11 @@ namespace SmartGradeAPI.Data.Repositories
             Console.WriteLine("deleted");
             return true;
         }
+
+        public bool VerifyPassword(User user, string password)
+        {
+            return user.Password == password;
+        }
+
     }
 }

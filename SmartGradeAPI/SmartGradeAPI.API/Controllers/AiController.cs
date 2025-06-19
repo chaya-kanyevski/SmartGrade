@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SmartGradeAPI.Core.Repositories;
 using SmartGradeAPI.Core.Requests;
@@ -7,6 +8,7 @@ using SmartGradeAPI.Data.Repositories;
 
 namespace SmartGradeAPI.API.Controllers
 {
+    [Authorize]
     [Route("api/ai")]
     [ApiController]
     public class AiController : ControllerBase

@@ -107,7 +107,8 @@ export default function Layout() {
   const [notifications, setNotifications] = useState(2); // Sample notifications count
   const location = useLocation();
   const navigate = useNavigate();
-  
+  const { userDispatch } = useContext(UserContext);
+
   useEffect(() => {
     const loadUser = async () => {
       try {
@@ -197,17 +198,19 @@ export default function Layout() {
                 </span>
               )}
             </Button>
-            <Button 
-              variant="outline" 
-              size="icon"
-              className="w-10 h-10 rounded-full border-gray-200"
-              onClick={async () => {
-                // await user.logout();
-                navigate("/");
-              }}
-            >
-              <LogOut className="h-5 w-5 text-gray-700" />
-            </Button>
+                <Button 
+                  variant="outline" 
+                  size="icon"
+                  className="w-10 h-10 rounded-full border-gray-200"
+                  onClick={() => {
+                    localStorage.removeItem("token");  
+                    userDispatch({ type: "LOG_OUT" });
+                    navigate("/");
+                  }}
+                >
+                  <LogOut className="h-5 w-5 text-gray-700" />
+                </Button>
+
           </div>
         </div>
       </div>
@@ -255,10 +258,10 @@ export default function Layout() {
               <Button
                 variant="outline"
                 className="w-full justify-start text-gray-700"
-                onClick={async () => {
-                //   await User.logout();
+                onClick={() => {
+                  localStorage.removeItem("token");  
+                  userDispatch({ type: "LOG_OUT" });
                   navigate("/");
-                  setIsMobileOpen(false);
                 }}
               >
                 <LogOut className="w-5 h-5 ml-2" />

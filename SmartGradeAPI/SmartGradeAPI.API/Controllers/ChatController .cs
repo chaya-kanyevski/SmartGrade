@@ -1,4 +1,5 @@
 ﻿using Azure.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -9,6 +10,7 @@ using SmartGradeAPI.Core.SignalR;
 
 namespace SmartGradeAPI.API.Controllers
 {
+    [Authorize]
     [Route("api/chat")]
     [ApiController]
     public class ChatController : ControllerBase
@@ -58,7 +60,7 @@ namespace SmartGradeAPI.API.Controllers
                 AuthorId = created.CreatedBy?.Id ?? 0,
                 AuthorName = created.CreatedBy?.Name,
                 AuthorInitials = created.CreatedBy?.Name?.Substring(0, 1).ToUpper(),
-                LastMessage = created.Messages?.FirstOrDefault()?.Text,
+                LastMessage = created.Messages?.FirstOrDefault()?.Text ?? "",
                 MessageCount = created.Messages?.Count ?? 0
             };
             return CreatedAtAction(nameof(GetTopics), new { id = created.Id }, topicDto);

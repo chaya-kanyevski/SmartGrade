@@ -51,9 +51,8 @@ const FileListView: React.FC<FileListViewProps> = ({ files, onDeleteFile }) => {
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                if (window.confirm(`האם למחוק את הקובץ: ${file.title}?`)) {
                   onDeleteFile(file.id);
-                }
+
               }}
               className="text-red-500 hover:text-red-700"
               aria-label={`מחק קובץ ${file.title}`}

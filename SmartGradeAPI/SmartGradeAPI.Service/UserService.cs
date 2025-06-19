@@ -74,5 +74,11 @@ namespace SmartGradeAPI.Service
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+        public bool VerifyPassword(User user, string password)
+        {
+            return _userRepository.VerifyPassword(user, password);
+        }
+
     }
 }

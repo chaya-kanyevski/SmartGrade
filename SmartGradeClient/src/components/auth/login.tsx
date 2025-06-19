@@ -26,11 +26,10 @@ const Login = () => {
       const response = await login(email, password);
       const { token, user: serverUser } = response;
       localStorage.setItem("token", token);
-      userDispatch({ type: "LOGIN", data: serverUser });
+      userDispatch({ type: "LOGIN", data: { ...serverUser, token } });
       navigate("/dashboard");
-    } catch (error) {
-      setError("התחברות נכשלה, בדוק את הנתונים ונסה שוב.");
-      console.error("התחברות נכשלה", error);
+    } catch (error: any) {
+      setError(typeof error === "string" ? error : "ההתחברות נכשלה");
     }finally {
       setIsLoading(false); 
     }

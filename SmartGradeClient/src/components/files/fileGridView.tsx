@@ -84,9 +84,7 @@ const FileGridView: React.FC<FileGridViewProps> = ({ files, onDeleteFile }) => {
                   <FileActionsMenu
                     onDownload={() => handleDownload(file)}
                     onDelete={() => {
-                      if (window.confirm(`האם למחוק את הקובץ: ${file.title}?`)) {
                         onDeleteFile(file.id);
-                      }
                     }}
                   />
                 </div>

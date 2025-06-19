@@ -11,6 +11,8 @@ import { SelectChangeEvent } from "@mui/material";
 import FileTypeSelect from "./fileTypeSelect";
 import { File as FileModel } from "../../models/File"; 
 import LoadingButton from "@/components/ui/LoadingButton";
+import Toast from "../ui/Toast";
+import { useToast } from "@/context/ToastContext";
 
 interface AddFileProps {
   onFileAdded: (newFile: FileModel) => void; 
@@ -19,7 +21,7 @@ interface AddFileProps {
 
 const AddFile: React.FC<AddFileProps> = ({ onFileAdded, onClose }) => {
   const { user } = useContext(UserContext);
-
+  const { showToast } = useToast();
   const [formData, setFormData] = useState({
     title: "",
     file: null as File | null,
@@ -31,7 +33,7 @@ const AddFile: React.FC<AddFileProps> = ({ onFileAdded, onClose }) => {
 
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
+  
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>
   ) => {
@@ -97,7 +99,7 @@ const AddFile: React.FC<AddFileProps> = ({ onFileAdded, onClose }) => {
         };
         console.log("New file added:", newFile);
         onFileAdded(newFile);
-        alert("✅ הקובץ נוסף בהצלחה!");
+        showToast("הקובץ נוסף בהצלחה!", "success");
         onClose();
       } else {
         setError("שגיאה בהוספת הקובץ: " + (addFileResponse.data?.title || "תגובה לא תקינה מהשרת."));
@@ -127,6 +129,7 @@ const handleTypeChange = (newType: FileType) => {
   const isSubmitDisabled = !formData.title || !formData.file || isUploading;
 
   return (
+    <>
     <form onSubmit={handleSubmit} className="space-y-4">
       {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
 
@@ -211,7 +214,8 @@ const handleTypeChange = (newType: FileType) => {
 </LoadingButton>
       </div>
     </form>
-  );
+    </>
+  )
 };
 
 export default AddFile;

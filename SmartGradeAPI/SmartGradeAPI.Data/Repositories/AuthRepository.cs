@@ -34,5 +34,11 @@ namespace SmartGradeAPI.Data.Repositories
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
         }
+
+        public bool VerifyPassword(User user, string password)
+        {
+            return user.Password.Equals(password);
+        }
+
     }
 }

@@ -1,8 +1,6 @@
 using Amazon;
 using Amazon.S3;
-using AutoMapper;
 using DotNetEnv;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using SmartGradeAPI.API.Extensions;
@@ -10,8 +8,6 @@ using SmartGradeAPI.API.Extentions;
 using SmartGradeAPI.Core.Models;
 using SmartGradeAPI.Core.SignalR;
 using SmartGradeAPI.Data;
-using System;
-using System.Runtime;
 using FirebaseAdmin;
 using Google.Apis.Auth.OAuth2;
 
@@ -39,68 +35,6 @@ if (FirebaseApp.DefaultInstance == null)
     });
 }
 
-//if (FirebaseApp.DefaultInstance == null)
-//{
-//    GoogleCredential credential;
-
-//    var firebaseJson = Environment.GetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS_JSON");
-
-//    if (!string.IsNullOrEmpty(firebaseJson))
-//    {
-//        credential = GoogleCredential.FromJson(firebaseJson);
-//    }
-//    else
-//    {
-//        credential = GoogleCredential.FromFile("smartgrade-79f11-firebase-adminsdk-fbsvc-5b0d871db9.json");
-//    }
-//    if (FirebaseApp.DefaultInstance == null)
-//    {
-//        FirebaseApp.Create(new AppOptions()
-//        {
-//            Credential = credential
-//        });
-//    }
-//var firebaseKeyPath = Environment.GetEnvironmentVariable("FIREBASE_KEY_PATH");
-
-//GoogleCredential credential;
-
-//string projectId = Environment.GetEnvironmentVariable("FIREBASE_PROJECT_ID");
-
-//if (!string.IsNullOrEmpty(projectId))
-//{
-//    var firebaseCredentialObject = new
-//    {
-//        type = "service_account",
-//        project_id = Environment.GetEnvironmentVariable("FIREBASE_PROJECT_ID"),
-//        private_key_id = Environment.GetEnvironmentVariable("FIREBASE_PRIVATE_KEY_ID"),
-//        private_key = Environment.GetEnvironmentVariable("FIREBASE_PRIVATE_KEY")?.Replace("\\n", "\n"),
-//        client_email = Environment.GetEnvironmentVariable("FIREBASE_CLIENT_EMAIL"),
-//        client_id = Environment.GetEnvironmentVariable("FIREBASE_CLIENT_ID"),
-//        auth_uri = "https://accounts.google.com/o/oauth2/auth",
-//        token_uri = "https://oauth2.googleapis.com/token",
-//        auth_provider_x509_cert_url = "https://www.googleapis.com/oauth2/v1/certs",
-//        client_x509_cert_url = Environment.GetEnvironmentVariable("FIREBASE_CLIENT_X509_CERT_URL")
-//    };
-
-
-//    var firebaseCredentialJson = System.Text.Json.JsonSerializer.Serialize(firebaseCredentialObject);
-//    credential = GoogleCredential.FromJson(firebaseCredentialJson);
-//}
-//else
-//{
-//    credential = GoogleCredential.FromFile("smartgrade-79f11-firebase-adminsdk-fbsvc-5b0d871db9.json");
-//}
-
-//}
-
-//if (FirebaseApp.DefaultInstance == null)
-//{
-//    FirebaseApp.Create(new AppOptions()
-//    {
-//        Credential = GoogleCredential.FromFile("smartgrade-79f11-firebase-adminsdk-fbsvc-5b0d871db9.json")
-
-//    });
-//}
 var accessKey = Env.GetString("AWS_ACCESS_KEY_ID");
 var secretKey = Env.GetString("AWS_SECRET_ACCESS_KEY");
 var bucketName = Env.GetString("AWS_BUCKET_NAME");

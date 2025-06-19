@@ -14,5 +14,6 @@ namespace SmartGradeAPI.Core.Repositories
         Task<User> AddUserAsync(User user);
         Task<bool> UpdateUserAsync(int id, User user);
         Task<bool> DeleteUserAsync(int id);
+        bool VerifyPassword(User user, string password);
     }
 }

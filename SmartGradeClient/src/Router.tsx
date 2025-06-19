@@ -13,6 +13,7 @@ import Chat from "./pages/Chat";
 import Landing from "./pages/Landing";
 import Reports from "./pages/Reports";
 import Profile from "./pages/Profile";
+import PrivateRoute from "./components/user/PrivateRoute";
 
 export const router = createBrowserRouter([
   {
@@ -29,20 +30,23 @@ export const router = createBrowserRouter([
     element: <Register />
   },
   {
-    element: <Layout />,
+    element: <PrivateRoute />, // 👈 עוטף את כל הפרייבט רואטס!
     children: [
-      { path: '/login', element: <Login /> },
-      { path: '/register', element: <Register /> },
-      { path: '/AI-question-generator', element: <AIQuestionGenerator /> },
-      { path: '/AI-summary-generator', element: <AISummaryGenerator /> },
-      { path: '/AI-text-analyzer', element: <AITextAnalyzer /> },
-      { path: '/AI-lesson-plan-generator', element: <AILessonPlanGenerator /> },
-      { path: '/AI', element: <AI /> },
-      { path: '/dashboard', element: <Dashboard /> },
-      { path: '/files', element: <Files /> },
-      { path: '/chat', element: <Chat /> },
-      { path: '/reports', element: <Reports /> },
-      { path: '/profile', element: <Profile /> },
+      {
+        element: <Layout />,
+        children: [
+          { path: '/AI-question-generator', element: <AIQuestionGenerator /> },
+          { path: '/AI-summary-generator', element: <AISummaryGenerator /> },
+          { path: '/AI-text-analyzer', element: <AITextAnalyzer /> },
+          { path: '/AI-lesson-plan-generator', element: <AILessonPlanGenerator /> },
+          { path: '/AI', element: <AI /> },
+          { path: '/dashboard', element: <Dashboard /> },
+          { path: '/files', element: <Files /> },
+          { path: '/chat', element: <Chat /> },
+          { path: '/reports', element: <Reports /> },
+          { path: '/profile', element: <Profile /> },
+        ]
+      }
     ]
   }
 ]);

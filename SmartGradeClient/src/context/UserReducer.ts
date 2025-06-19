@@ -49,7 +49,7 @@ export const initialUser: User = {
     email: '',
     password: '',
     role: '',
-    exams: []
+    files: []
 };
 
 export const UserContext = createContext<{

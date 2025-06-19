@@ -15,5 +15,7 @@ namespace SmartGradeAPI.Core.Services
         Task<bool> UpdateUserAsync(int id, User user);
         Task<bool> DeleteUserAsync(int id);
         string GenerateJwtToken(string email, string role);
+        bool VerifyPassword(User user, string password);
+
     }
 }

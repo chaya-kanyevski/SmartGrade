@@ -7,6 +7,7 @@ using SmartGradeAPI.Core.Services;
 using FirebaseAdmin;
 using FirebaseAdmin.Auth;
 using Google.Apis.Auth.OAuth2;
+using SmartGradeAPI.API.Models;
 
 namespace SmartGradeAPI.API.Controllers
 {
@@ -27,7 +28,10 @@ namespace SmartGradeAPI.API.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
             if (await _authService.IsEmailExistAsync(model.Email))
-                return BadRequest("Email is already in use.");
+                return BadRequest("האימייל כבר רשום במערכת.");
+
+            if (string.IsNullOrWhiteSpace(model.Password) || model.Password.Length < 6)
+                return BadRequest("הסיסמה חייבת להכיל לפחות 6 תווים.");
 
             User newUser = model.Role.ToLower() switch
             {
@@ -39,8 +43,9 @@ namespace SmartGradeAPI.API.Controllers
             await _authService.AddUserAsync(newUser);
 
             var token = _authService.GenerateJwtToken(newUser);
+            return Ok(new { Token = token, User = new { newUser.Id, newUser.Name, newUser.Email, newUser.Role } });
 
-            return Ok(new { Token = token, User = new { newUser.Id, newUser.Name, newUser.Email, newUser.Password, newUser.Role } });
+            //return Ok(new { Token = token, User = new { newUser.Id, newUser.Name, newUser.Email, newUser.Password, newUser.Role } });
         }
 
 
@@ -50,7 +55,12 @@ namespace SmartGradeAPI.API.Controllers
             var user = await _authService.GetUserByEmailAsync(model.Email);
 
             if (user == null)
-                return Unauthorized("Invalid credentials");
+                return Unauthorized("האימייל או הסיסמה שגויים.");
+
+            if (string.IsNullOrEmpty(user.Password))
+                return Unauthorized("אנא התחבר באמצעות Google Sign-In.");
+            if (!_authService.VerifyPassword(user, model.Password))
+                return Unauthorized("האימייל או הסיסמה שגויים.");
 
             var token = _authService.GenerateJwtToken(user);
             var userDto = _mapper.Map<UserDto>(user);
@@ -74,7 +84,7 @@ namespace SmartGradeAPI.API.Controllers
             if (user == null)
             {
                 // צור משתמש חדש אם לא קיים
-                user = new User { Name = name, Email = email, Role = "User", Password = "Google"};
+                user = new User { Name = name, Email = email, Role = "User", Password = null};
                 await _authService.AddUserAsync(user);
             }
 
@@ -86,23 +96,4 @@ namespace SmartGradeAPI.API.Controllers
 
 
     }
-
-    public class RegisterModel
-    {
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public string Role { get; set; }
-    }
-
-    public class LoginModel
-    {
-        public string Email { get; set; }
-        public string Password { get; set; }
-    }
-}
-
-public class GoogleLoginRequest
-{
-    public string IdToken { get; set; }
 }
