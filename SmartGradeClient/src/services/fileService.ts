@@ -1,33 +1,49 @@
 import { AxiosResponse } from 'axios';
 import { File } from '../models/File';
-import { FileDto } from '../models/File';
 import api from "./api";
 
 const API_BASE_URL = import.meta.env.VITE_REACT_APP_BASE_API_URL!;
 const API_FILES_URL = `${API_BASE_URL}/Files`;
 const API_UPLOAD_URL = `${API_BASE_URL}/FileUpload`;
 
-export interface AddExamResponse {
-    id?: number;
+export interface AddFileResponse {
+    id: number;
     userId: number;
-    subject: string;
     title: string;
-    class: string;
-    exampleExamPath: string;
-    examUploads?: any[];
-    error?: string;
-}
-  
-export const fetchFilesByUser = async (userId: number): Promise<FileDto[]> => { 
-  try {
-    const response = await api.get<FileDto[]>(`${API_FILES_URL}/user/${userId}`);
-    console.log(`Fetched files for user ${userId}:`, response.data); 
-    return response.data;
-  } catch (error) {
-    console.error(`Error fetching files for user ${userId}:`, error);
-    throw error;
+    description: string;
+    filePath: string;
+    tags: string[];
+    type: string;
+    size: number;
+    date?: Date
   }
-};
+  
+  
+  export const fetchFilesByUser = async (userId: number): Promise<File[]> => {
+    try {
+      const response = await api.get<File[]>(`${API_FILES_URL}/user/${userId}`);
+      console.log(`Fetched files for user ${userId}:`, response.data);
+  
+      const fixed: File[] = response.data.map(file => {
+        const rawTags = file.tags as unknown as string | string[] | null;
+        return {
+          ...file,
+          date: file.createdAt 
+          ? new Date(file.createdAt + "Z") 
+          : undefined,
+          tags: Array.isArray(rawTags)
+            ? rawTags
+            : (rawTags || "").split(",").map(t => t.trim()).filter(Boolean),
+        };
+      });
+      return fixed;
+    } catch (error) {
+      console.error(`Error fetching files for user ${userId}:`, error);
+      throw error;
+    }
+  };
+  
+  
 
 export const addFile = async (
     userId: number,
@@ -37,10 +53,11 @@ export const addFile = async (
     description: string,
     type: string, 
     size: number, 
-  ): Promise<AxiosResponse<AddExamResponse>> => {
+    // date: Date
+  ): Promise<AxiosResponse<AddFileResponse>> => {
     try {
       console.log("Sending to backend:", { userId, title, tags, description, filePath, type, size }); 
-      const response = await api.post<AddExamResponse>(API_FILES_URL, {
+      const response = await api.post<AddFileResponse>(API_FILES_URL, {
         userId,
         title,
         filePath: filePath, 
@@ -56,7 +73,7 @@ export const addFile = async (
       throw error;
     }
   };
-
+  
 export const getPresignedUrl = async (fileName: string): Promise<string> => {
     try {
         console.log(`${API_UPLOAD_URL}/presigned-url?fileName=${fileName}`);

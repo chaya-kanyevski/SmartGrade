@@ -56,6 +56,14 @@ namespace SmartGradeAPI.API.Controllers
 
             return Ok(result);
         }
+
+        [HttpPost("teaching-tips")]
+        public async Task<IActionResult> GetTeachingTips([FromBody] TeachingTipsRequest request)
+        {
+            var result = await _aiService.GetTeachingTipsAsync(request.UserId);
+            return Ok(result);
+        }
+
     }
 
 }

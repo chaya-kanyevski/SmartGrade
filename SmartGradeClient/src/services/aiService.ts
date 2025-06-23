@@ -6,6 +6,7 @@ const LESSON_PLAN_API = `${API_BASE}/ai/lesson-plan`;
 const GENERATE_QUESTIONS_API = `${API_BASE}/ai/generate-questions`;
 const SUMMARIZE_TEXT_API = `${API_BASE}/ai/summarize`;
 const ANALYZE_TEXT_API = `${API_BASE}/ai/analyze`;
+const TEACHING_TIPS_API = `${API_BASE}/ai/teaching-tips`;
 
 export const generateLessonPlan = async (
   userId: number,
@@ -68,5 +69,10 @@ export const analyzeText = async (
     textOrFileName,
     analysisType,
   });
+  return response.data;
+};
+
+export const getTeachingTips = async (userId: number): Promise<string[]> => {
+  const response = await api.post(TEACHING_TIPS_API, { userId });
   return response.data;
 };

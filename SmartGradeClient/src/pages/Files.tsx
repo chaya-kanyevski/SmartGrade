@@ -12,24 +12,7 @@ import AddFile from "../components/files/addFile";
 import { File } from '../models/File'; 
 import FilesList from '@/components/files/filesList';
 
-  type FileTabType = 'all' | File['type'];
-
-const fileTypeIcons = {
-  'exam': FilePen,
-  'summary': FileText,
-  'presentation': Presentation,
-  'lesson_plan': FileSpreadsheet,
-  'quiz': FilePen,
-  'other': FileIcon
-};
-
-const formatDate = (date : Date) => {
-  return new Date(date).toLocaleDateString('he-IL', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
-};
+type FileTabType = 'all' | File['type'];
 
 export default function Files() {
   const { user } = useContext(UserContext);
@@ -69,16 +52,9 @@ export default function Files() {
             </DialogHeader>
             <AddFile
               onFileAdded={(fileDto) => {
-                const newFile: File = {
-                  id: fileDto.id,
-                  title: fileDto.title,
-                  type: fileDto.type,
-                  date: new Date(), 
-                  size: 0.1,
-                  tags: fileDto.tags,
-                  filePath: fileDto.filePath,
-                };
-                handleFileAdded(newFile); 
+                handleFileAdded({
+                  ...fileDto,
+                });
               }}
               onClose={() => setIsAddFileDialogOpen(false)}
             />

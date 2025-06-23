@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Amazon.S3.Model;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SmartGradeAPI.Core.DTOs;
@@ -95,5 +96,6 @@ namespace SmartGradeAPI.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
     }
 }

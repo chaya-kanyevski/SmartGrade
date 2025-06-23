@@ -11,8 +11,8 @@ using SmartGradeAPI.Data;
 namespace SmartGradeAPI.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250605223301_update-summarize-text")]
-    partial class updatesummarizetext
+    [Migration("20250621200445_ChangeIntToLong")]
+    partial class ChangeIntToLong
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,6 +49,57 @@ namespace SmartGradeAPI.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AiActions");
+                });
+
+            modelBuilder.Entity("SmartGradeAPI.Core.Models.ChatMessage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("ChatTopicId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SenderId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SentAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChatTopicId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("ChatMessages");
+                });
+
+            modelBuilder.Entity("SmartGradeAPI.Core.Models.ChatTopic", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("CreatedById")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.ToTable("ChatTopics");
                 });
 
             modelBuilder.Entity("SmartGradeAPI.Core.Models.FileUpload", b =>
@@ -150,8 +201,8 @@ namespace SmartGradeAPI.Data.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("Size")
-                        .HasColumnType("int");
+                    b.Property<long>("Size")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Tags")
                         .IsRequired()
@@ -175,6 +226,36 @@ namespace SmartGradeAPI.Data.Migrations
                     b.ToTable("Files");
                 });
 
+            modelBuilder.Entity("SmartGradeAPI.Core.Models.ChatMessage", b =>
+                {
+                    b.HasOne("SmartGradeAPI.Core.Models.ChatTopic", "ChatTopic")
+                        .WithMany("Messages")
+                        .HasForeignKey("ChatTopicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SmartGradeAPI.Core.Models.User", "Sender")
+                        .WithMany()
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ChatTopic");
+
+                    b.Navigation("Sender");
+                });
+
+            modelBuilder.Entity("SmartGradeAPI.Core.Models.ChatTopic", b =>
+                {
+                    b.HasOne("SmartGradeAPI.Core.Models.User", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedBy");
+                });
+
             modelBuilder.Entity("SmartGradeAPI.Core.Models.UserFile", b =>
                 {
                     b.HasOne("SmartGradeAPI.Core.Models.User", null)
@@ -182,6 +263,11 @@ namespace SmartGradeAPI.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("SmartGradeAPI.Core.Models.ChatTopic", b =>
+                {
+                    b.Navigation("Messages");
                 });
 
             modelBuilder.Entity("SmartGradeAPI.Core.Models.User", b =>

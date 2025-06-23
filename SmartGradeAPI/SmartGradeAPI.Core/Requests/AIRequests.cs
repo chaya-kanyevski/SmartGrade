@@ -39,4 +39,9 @@ namespace SmartGradeAPI.Core.Requests
         public string AnalysisType { get; set; } // למשל: concepts, tags, themes
     }
 
+    public class TeachingTipsRequest
+    {
+        public int UserId { get; set; }
+    }
+
 }

@@ -147,6 +147,28 @@ namespace SmartGradeAPI.Service
             _ => "בינונית"
         };
 
-    }
+        public async Task<List<string>> GetTeachingTipsAsync(int userId)
+        {
+            string prompt = @"תן לי 5 טיפים שימושיים להוראה עבור מורים בישראל, בעברית ברורה ותמציתית. הצג כל טיפ בשורה חדשה.";
 
+            var result = await _openAiClient.SendPromptAsync(prompt);
+
+            // הפרדה לפי שורות:
+            var tips = result.Split('\n')
+                             .Select(t => t.Trim())
+                             .Where(t => !string.IsNullOrWhiteSpace(t))
+                             .ToList();
+
+            await _logRepository.AddActionLogAsync(new AiAction
+            {
+                UserId = userId,
+                ActionType = "TeachingTips",
+                InputData = "", // אין קלט מיוחד
+                Result = result
+            });
+
+            return tips;
+        }
+
+    }
 }

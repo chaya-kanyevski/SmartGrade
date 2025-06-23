@@ -85,7 +85,7 @@ namespace SmartGradeAPI.Data.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int?>("CreatedById")
+                    b.Property<int>("CreatedById")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -198,8 +198,8 @@ namespace SmartGradeAPI.Data.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("Size")
-                        .HasColumnType("int");
+                    b.Property<long>("Size")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Tags")
                         .IsRequired()
@@ -246,7 +246,9 @@ namespace SmartGradeAPI.Data.Migrations
                 {
                     b.HasOne("SmartGradeAPI.Core.Models.User", "CreatedBy")
                         .WithMany()
-                        .HasForeignKey("CreatedById");
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("CreatedBy");
                 });

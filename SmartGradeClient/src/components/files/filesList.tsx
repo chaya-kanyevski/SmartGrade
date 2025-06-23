@@ -36,18 +36,13 @@ const FilesList: React.FC<FilesListProps> = ({ searchQuery, viewMode, currentTab
         return;
       }
       try {
-        const filesDataDto = await fetchFilesByUser(user.id);
-        const loadedFiles: File[] = filesDataDto.map(dto => ({
-          id: dto.id,
-          title: dto.title,
-          type: dto.type ?? 'other',
-          date: new Date(),
-          size: dto.size ?? 0,
-          tags: typeof dto.tags === 'string' ? dto.tags.split(',').map(t => t.trim()) : [],
-          filePath: dto.filePath,
-          description: dto.description ?? '',
-        }));
-        onFilesLoaded(loadedFiles);
+
+        if (user?.id) {
+          const files = await fetchFilesByUser(user.id);
+          const sorted = [...files].sort(
+            (a, b) => new Date(b.date!).getTime() - new Date(a.date!).getTime()
+          );
+        onFilesLoaded(sorted);}
       } catch {
         setError('שגיאה בטעינת הקבצים.');
       } finally {
@@ -88,6 +83,21 @@ const FilesList: React.FC<FilesListProps> = ({ searchQuery, viewMode, currentTab
     }
   };
 
+  const handleOpenFileInNewTab = (file: File) => {
+    if (!file.filePath) {
+      console.error("Missing file URL");
+      return;
+    }
+    window.open(file.filePath, '_blank', 'noopener,noreferrer');
+  };
+
+  const truncateTitle = (title: string, maxLength: number = 30) => {
+    if (title.length > maxLength) {
+      return title.slice(0, 27) + "...";
+    }
+    return title;
+  };
+
   if (isLoading) return (
     <div className="flex items-center justify-center h-64">
       <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
@@ -110,9 +120,9 @@ const FilesList: React.FC<FilesListProps> = ({ searchQuery, viewMode, currentTab
   return (
     <>
       {viewMode === 'grid' ? (
-        <FileGridView files={filteredFiles} onDeleteFile={handleAskDelete} />
+        <FileGridView files={filteredFiles} onDeleteFile={handleAskDelete} onClickOnFile={handleOpenFileInNewTab} truncateTitle={truncateTitle}/>
       ) : (
-        <FileListView files={filteredFiles} onDeleteFile={handleAskDelete} />
+        <FileListView files={filteredFiles} onDeleteFile={handleAskDelete} onClickOnFile={handleOpenFileInNewTab} truncateTitle={truncateTitle}/>
       )}
       <FileDeleteConfirm
         isOpen={isConfirmOpen}

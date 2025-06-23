@@ -12,6 +12,8 @@ namespace SmartGradeAPI.Core.Services
         Task<string> GenerateQuestionsAsync(int userId, string topic, string questionType, string difficulty, int numQuestions, string textOrFileName);
         Task<string> SummarizeTextAsync(int userId, string textOrFileName, string summaryLength, string summaryStyle);
         Task<string> AnalyzeTextAsync(int userId, string textOrFileName, string analysisType);
+        Task<List<string>> GetTeachingTipsAsync(int userId);
+
     }
 
 

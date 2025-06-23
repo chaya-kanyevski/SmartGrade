@@ -13,7 +13,7 @@ namespace SmartGradeAPI.Core.Models
         public string Title { get; set; } = "";
         public string Type { get; set; } = "";
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public int Size { get; set; } = 0;
+        public long Size { get; set; } = 0;
         public string Tags { get; set; } = "";
         public string FilePath { get; set; } = "";
         public string Description { get; set; } = "";
