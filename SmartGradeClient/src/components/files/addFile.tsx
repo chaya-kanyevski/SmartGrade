@@ -41,7 +41,7 @@ const AddFile: React.FC<AddFileProps> = ({ onFileAdded, onClose }) => {
       const presignedUrl = await getPresignedUrl(formData.file.name);
       await axios.put(presignedUrl, formData.file, { headers: { "Content-Type": formData.file.type } });
       const fileAccessUrl = presignedUrl.split("?")[0];
-      const addFileResponse = await addFile(user.id, formData.title, fileAccessUrl, formData.tags, formData.description, formData.type, formData.file.size, new Date());
+      const addFileResponse = await addFile(user.id, formData.title, fileAccessUrl, formData.tags, formData.description, formData.type, formData.file.size);
       if (addFileResponse.data?.id) {
         const newFile: FileModel = {
           id: addFileResponse.data.id,
