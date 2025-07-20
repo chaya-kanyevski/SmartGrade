@@ -1,6 +1,5 @@
-import React from "react";
 import { Button } from "@/components/ui/button";
-import { Download, Share2, File as FileIcon } from "lucide-react";
+import { Download, File as FileIcon } from "lucide-react";
 import { File } from "@/models/File";
 import { fileTypeColors, fileTypeIcons } from "../files/fileGridView";
 

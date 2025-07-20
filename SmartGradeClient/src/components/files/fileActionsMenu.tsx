@@ -11,9 +11,10 @@ import { Button } from '../ui/button';
 interface FileActionsMenuProps {
   onDownload: () => void;
   onDelete: () => void;
+  onEdit: () => void;
 }
 
-const FileActionsMenu: React.FC<FileActionsMenuProps> = ({ onDownload, onDelete }) => {
+const FileActionsMenu: React.FC<FileActionsMenuProps> = ({ onDownload, onDelete, onEdit }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -23,7 +24,7 @@ const FileActionsMenu: React.FC<FileActionsMenuProps> = ({ onDownload, onDelete 
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={onDownload}>הורד</DropdownMenuItem>
-        <DropdownMenuItem>ערוך</DropdownMenuItem>
+        <DropdownMenuItem onClick={onEdit}>ערוך</DropdownMenuItem>
         <DropdownMenuItem>נתח עם AI</DropdownMenuItem>
         <DropdownMenuItem onClick={onDelete} className="text-red-600">מחק</DropdownMenuItem>
       </DropdownMenuContent>

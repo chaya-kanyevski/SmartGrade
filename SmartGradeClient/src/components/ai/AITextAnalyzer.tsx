@@ -3,18 +3,11 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { 
-  Search, 
-  FileUp, 
-  Loader2, 
-  Copy, 
-  Tag,
-  List,
-  Send
-} from "lucide-react";
+import { Search, FileUp, Loader2, Copy, Tag, List, Send } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { analyzeText as analyzeTextAPI } from '../../services/aiService'; // Adjust the import path as necessary
+import { analyzeText as analyzeTextAPI } from '../../services/aiService';
+
 const AITextAnalyzer = () => {
   const [textInput, setTextInput] = useState('');
   const [fileUrl, setFileUrl] = useState('');
@@ -24,14 +17,15 @@ const AITextAnalyzer = () => {
   const [activeTab, setActiveTab] = useState('text');
   const [analysisType, setAnalysisType] = useState('concepts');
 
-  const handleFileUpload = async (e : any) => {
+  const handleFileUpload = async (e: any) => {
     const file = e.target.files[0];
     if (file) {
       try {
         setIsLoading(true);
         setUploadedFileName(file.name);
-        // const { file_url } = await UploadFile({ file : any });
+        // const { file_url } = await UploadFile({ file });
         // setFileUrl(file_url);
+        setFileUrl('dummy_url'); // זמני
         setIsLoading(false);
       } catch (error) {
         console.error("Error uploading file:", error);
@@ -41,45 +35,34 @@ const AITextAnalyzer = () => {
   };
 
   const analyzeText = async () => {
-    if ((!textInput && activeTab === 'text') || (!fileUrl && activeTab === 'file')) {
-      return;
-    }
-
+    if ((!textInput && activeTab === 'text') || (!fileUrl && activeTab === 'file')) return;
     try {
       setIsLoading(true);
-      
       let prompt = '';
-      
       switch (analysisType) {
         case 'concepts':
-          prompt = 'זהה וסכם את המושגים המרכזיים בטקסט הבא. עבור כל מושג תן הגדרה ברורה והסבר על משמעותו בהקשר הכולל. הצג זאת במבנה של כותרת למושג ופסקה קצרה לכל מושג. השתמש בכותרות עם סולמיות (#) לארגון התוכן.\n\n';
+          prompt = 'זהה וסכם את המושגים המרכזיים בטקסט הבא...';
           break;
         case 'themes':
-          prompt = 'זהה את הנושאים והרעיונות המרכזיים בטקסט הבא. עבור כל נושא, תן הסבר על הרעיון המרכזי ואיך הוא מתקשר לתוכן הכולל. הצג זאת במבנה מדורג עם כותרות ברורות.\n\n';
+          prompt = 'זהה את הנושאים והרעיונות המרכזיים בטקסט הבא...';
           break;
         case 'tags':
-          prompt = 'צור רשימה של תגיות רלוונטיות לטקסט הבא. התגיות צריכות לכלול מושגי מפתח, נושאים, וקטגוריות מרכזיות. עבור כל תגית, הסבר בקצרה מדוע היא רלוונטית. הצג את התגיות ברשימה מסודרת.\n\n';
+          prompt = 'צור רשימה של תגיות רלוונטיות לטקסט הבא...';
           break;
       }
-      
-      if (activeTab === 'text') {
-        prompt += textInput;
-      } else {
-        prompt += `הקובץ שהועלה: ${uploadedFileName}. אנא נתח את תוכן הקובץ.`;
-      }
+      prompt += activeTab === 'text' ? textInput : `הקובץ: ${uploadedFileName}`;
 
-       const response = await analyzeTextAPI(
-          1,
-          activeTab === 'text' ? textInput : uploadedFileName,
-          analysisType
-       );6
+      const response = await analyzeTextAPI(
+        1,
+        activeTab === 'text' ? textInput : uploadedFileName,
+        analysisType
+      );
 
       setAnalysisResult(response);
-      setIsLoading(false);
     } catch (error) {
       console.error("Error analyzing text:", error);
+    } finally {
       setIsLoading(false);
-    //  setAnalysisResult("אירעה שגיאה בעת ניתוח הטקסט. אנא נסה שוב מאוחר יותר.");
     }
   };
 
@@ -91,7 +74,7 @@ const AITextAnalyzer = () => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <Card>
+      <Card className="shadow-xl">
         <CardHeader>
           <CardTitle className="flex items-center">
             <Search className="ml-2 h-5 w-5" />
@@ -103,11 +86,21 @@ const AITextAnalyzer = () => {
         </CardHeader>
         <CardContent>
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full grid-cols-2 mb-4">
-              <TabsTrigger value="text">הקלדת טקסט</TabsTrigger>
-              <TabsTrigger value="file">העלאת קובץ</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 mb-4 rounded-xl border border-blue-100 bg-gradient-to-r from-blue-50 to-purple-50 p-1 shadow-sm">
+              <TabsTrigger
+                value="text"
+                className="rounded-lg py-2 font-medium text-blue-700 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600 data-[state=active]:to-purple-600 data-[state=active]:text-white transition-colors"
+              >
+                הקלדת טקסט
+              </TabsTrigger>
+              <TabsTrigger
+                value="file"
+                className="rounded-lg py-2 font-medium text-blue-700 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600 data-[state=active]:to-purple-600 data-[state=active]:text-white transition-colors"
+              >
+                העלאת קובץ
+              </TabsTrigger>
             </TabsList>
-            
+
             <TabsContent value="text" className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="textInput">הזן טקסט לניתוח</Label>
@@ -120,73 +113,67 @@ const AITextAnalyzer = () => {
                 />
               </div>
             </TabsContent>
-            
+
             <TabsContent value="file" className="space-y-4">
               <div className="space-y-2">
                 <Label>העלה קובץ (PDF, DOCX, TXT)</Label>
-                <div className="border-2 border-dashed rounded-lg p-6 text-center">
-                  <FileUp className="mx-auto h-10 w-10 text-gray-400 mb-3" />
-                  <p className="text-sm text-gray-500 mb-2">גרור ושחרר קובץ, או</p>
-                  <div>
-                    <label htmlFor="file-upload-analysis" className="button bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 cursor-pointer inline-block">
-                      בחר קובץ
-                    </label>
-                    <input 
-                      id="file-upload-analysis" 
-                      type="file" 
-                      accept=".pdf,.docx,.txt" 
-                      className="hidden"
-                      onChange={handleFileUpload}
-                      disabled={isLoading}
-                    />
-                  </div>
+                <div className="border-2 border-dashed border-blue-200 rounded-xl p-6 text-center bg-gradient-to-br from-blue-50 to-purple-50 shadow-inner">
+                  <FileUp className="mx-auto h-10 w-10 text-blue-500 mb-3" />
+                  <p className="text-sm text-blue-600 mb-2">גרור ושחרר קובץ, או</p>
+                  <label htmlFor="file-upload-analysis" className="inline-block bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-md shadow hover:opacity-90 cursor-pointer transition">
+                    בחר קובץ
+                  </label>
+                  <input
+                    id="file-upload-analysis"
+                    type="file"
+                    accept=".pdf,.docx,.txt"
+                    className="hidden"
+                    onChange={handleFileUpload}
+                    disabled={isLoading}
+                  />
                   {fileUrl && (
                     <div className="mt-3">
-                      <Badge variant="outline">{uploadedFileName}</Badge>
+                      <Badge variant="outline" className="flex items-center gap-2">
+                        <FileUp className="h-4 w-4" />
+                        <span>{uploadedFileName}</span>
+                      </Badge>
                     </div>
                   )}
                 </div>
               </div>
             </TabsContent>
           </Tabs>
-          
+
           <div className="mt-6">
             <Label>סוג הניתוח</Label>
             <div className="flex flex-wrap gap-2 mt-2">
-              <Button
-                variant={analysisType === 'concepts' ? 'default' : 'outline'}
-                className="flex items-center gap-2"
-                onClick={() => setAnalysisType('concepts')}
-              >
-                <Search className="h-4 w-4" />
-                מושגים מרכזיים
-              </Button>
-              <Button
-                variant={analysisType === 'themes' ? 'default' : 'outline'}
-                className="flex items-center gap-2"
-                onClick={() => setAnalysisType('themes')}
-              >
-                <List className="h-4 w-4" />
-                נושאים ורעיונות
-              </Button>
-              <Button
-                variant={analysisType === 'tags' ? 'default' : 'outline'}
-                className="flex items-center gap-2"
-                onClick={() => setAnalysisType('tags')}
-              >
-                <Tag className="h-4 w-4" />
-                הצעת תגיות
-              </Button>
+              {['concepts', 'themes', 'tags'].map(type => (
+                <Button
+                  key={type}
+                  variant={analysisType === type ? 'default' : 'outline'}
+                  className={
+                    analysisType === type
+                      ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold shadow"
+                      : "border-blue-200 text-blue-700 hover:bg-blue-50 transition"
+                  }
+                  onClick={() => setAnalysisType(type)}
+                >
+                  {type === 'concepts' && <Search className="h-4 w-4 ml-1" />}
+                  {type === 'themes' && <List className="h-4 w-4 ml-1" />}
+                  {type === 'tags' && <Tag className="h-4 w-4 ml-1" />}
+                  {type === 'concepts' ? 'מושגים מרכזיים' : type === 'themes' ? 'נושאים ורעיונות' : 'הצעת תגיות'}
+                </Button>
+              ))}
             </div>
           </div>
         </CardContent>
         <CardFooter>
           <Button
-            className="w-full"
+            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-2 rounded-md shadow-md hover:opacity-90 transition"
             onClick={analyzeText}
             disabled={
-              isLoading || 
-              (activeTab === 'text' && !textInput.trim()) || 
+              isLoading ||
+              (activeTab === 'text' && !textInput.trim()) ||
               (activeTab === 'file' && !fileUrl)
             }
           >
@@ -204,23 +191,14 @@ const AITextAnalyzer = () => {
           </Button>
         </CardFooter>
       </Card>
-      
-      <Card>
+
+      <Card className="shadow-xl">
         <CardHeader>
           <CardTitle className="flex items-center">
-            {analysisType === 'concepts' ? (
-              <Search className="ml-2 h-5 w-5" />
-            ) : analysisType === 'themes' ? (
-              <List className="ml-2 h-5 w-5" />
-            ) : (
-              <Tag className="ml-2 h-5 w-5" />
-            )}
-            {analysisType === 'concepts' ? 'מושגים מרכזיים' : 
-             analysisType === 'themes' ? 'נושאים ורעיונות' : 'תגיות מוצעות'}
+            {analysisType === 'concepts' ? <Search className="ml-2 h-5 w-5" /> : analysisType === 'themes' ? <List className="ml-2 h-5 w-5" /> : <Tag className="ml-2 h-5 w-5" />}
+            {analysisType === 'concepts' ? 'מושגים מרכזיים' : analysisType === 'themes' ? 'נושאים ורעיונות' : 'תגיות מוצעות'}
           </CardTitle>
-          <CardDescription>
-            ניתוח שנוצר על ידי בינה מלאכותית
-          </CardDescription>
+          <CardDescription>ניתוח שנוצר על ידי בינה מלאכותית</CardDescription>
         </CardHeader>
         <CardContent>
           {analysisResult ? (
@@ -231,9 +209,7 @@ const AITextAnalyzer = () => {
             <div className="flex flex-col items-center justify-center h-[300px] text-center p-4">
               <Search className="h-16 w-16 text-gray-300 mb-4" />
               <h3 className="text-xl font-medium text-gray-700">אין ניתוח עדיין</h3>
-              <p className="text-gray-500 mt-2">
-                השתמש בטופס משמאל כדי לנתח טקסט
-              </p>
+              <p className="text-gray-500 mt-2">השתמש בטופס משמאל כדי לנתח טקסט</p>
             </div>
           )}
         </CardContent>

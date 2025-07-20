@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Lightbulb } from "lucide-react";
 import { UserContext } from "@/context/UserReducer";
@@ -12,34 +12,38 @@ const DEFAULT_TIPS = [
 
 const TeachingTips: React.FC = () => {
   const { user } = useContext(UserContext);
-  const [tips, setTips] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  // const [tips, setTips] = useState<string[]>([]);
+  // const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const loadTips = async () => {
-      try {
-        if (user?.id) {
-          const data = await getTeachingTips(user.id);
-          if (data && data.length > 0) {
-            setTips(data);
-          } else {
-            // במקרה שחוזר מערך ריק
-            setTips(DEFAULT_TIPS);
-          }
-        } else {
-          // אם אין יוזר — גם טיפים ברירת מחדל
-          setTips(DEFAULT_TIPS);
-        }
-      } catch (error) {
-        console.error("שגיאה בטעינת טיפים:", error);
-        setTips(DEFAULT_TIPS);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  //למחוק!!!!
+  const [isLoading, setIsLoading] = useState(false);
+  const tips = DEFAULT_TIPS
 
-    loadTips();
-  }, [user]);
+  // useEffect(() => {
+  //   const loadTips = async () => {
+  //     try {
+  //       if (user?.id) {
+  //         const data = await getTeachingTips(user.id);
+  //         if (data && data.length > 0) {
+  //           setTips(data);
+  //         } else {
+  //           // במקרה שחוזר מערך ריק
+  //           setTips(DEFAULT_TIPS);
+  //         }
+  //       } else {
+  //         // אם אין יוזר — גם טיפים ברירת מחדל
+  //         setTips(DEFAULT_TIPS);
+  //       }
+  //     } catch (error) {
+  //       console.error("שגיאה בטעינת טיפים:", error);
+  //       setTips(DEFAULT_TIPS);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
+
+  //   loadTips();
+  // }, [user]);
 
   return (
     <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-100">

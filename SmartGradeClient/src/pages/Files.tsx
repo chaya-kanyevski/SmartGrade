@@ -31,6 +31,13 @@ export default function Files() {
     setIsAddFileDialogOpen(false);
   };
 
+  const handleFileUpdated = (updatedFile: File) => {
+    setFiles((prevFiles) =>
+      prevFiles.map((f) => (f.id === updatedFile.id ? updatedFile : f))
+    );
+  };
+  
+
   return (
     <div className="fade-in space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -125,6 +132,7 @@ export default function Files() {
         currentTab={currentTab}
         onFilesLoaded={handleFilesLoaded} 
         files={files} 
+        onFileUpdated={handleFileUpdated}
       />
     </div>
   );

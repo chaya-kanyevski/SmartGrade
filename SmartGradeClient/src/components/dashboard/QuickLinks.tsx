@@ -1,4 +1,3 @@
-import React from "react";
 import { MessageCircle, Brain } from "lucide-react";
 import { Link } from "react-router-dom";
 

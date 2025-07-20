@@ -4,10 +4,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { FileQuestion, FileUp, FileText, Loader2, Copy, Download, Send} from "lucide-react";
+import { FileQuestion, FileUp, FileText, Loader2, Copy, Download, Send } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { generateQuestions as generateQuestionsAPI} from "../../services/aiService"; // Adjust the import path as necessary
+import { generateQuestions as generateQuestionsAPI } from "../../services/aiService";
+
 const AIQuestionGenerator = () => {
   const [textInput, setTextInput] = useState('');
   const [fileUrl, setFileUrl] = useState('');
@@ -19,14 +20,15 @@ const AIQuestionGenerator = () => {
   const [activeTab, setActiveTab] = useState('text');
   const [uploadedFileName, setUploadedFileName] = useState('');
 
-  const handleFileUpload = async (e  : any ) => {
+  const handleFileUpload = async (e: any) => {
     const file = e.target.files[0];
     if (file) {
       try {
         setIsLoading(true);
         setUploadedFileName(file.name);
-        //const { file_url } = await UploadFile({ file });
-        //setFileUrl(file_url);
+        // const { file_url } = await UploadFile({ file });
+        // setFileUrl(file_url);
+        setFileUrl("uploaded-file-url"); // סימולציה
         setIsLoading(false);
       } catch (error) {
         console.error("Error uploading file:", error);
@@ -42,26 +44,25 @@ const AIQuestionGenerator = () => {
 
     try {
       setIsLoading(true);
-      
+
       let prompt = `נא ליצור ${numQuestions} שאלות ${getQuestionTypeText(questionType)} ברמה ${getDifficultyText(difficultyLevel)} על הנושא הבא:\n\n`;
-      
+
       if (activeTab === 'text') {
         prompt += textInput;
       } else {
         prompt += `הקובץ שהועלה: ${uploadedFileName}. אנא צור שאלות מבוססות על תוכן הקובץ.`;
       }
-      
+
       prompt += `\n\nבנוסף, אנא הוסף תשובות לשאלות. יש לסדר את השאלות במספור ולהציג באופן ברור.`;
 
-       const response = await generateQuestionsAPI(
-         1,
-         textInput,
-         getQuestionTypeText(questionType),
+      const response = await generateQuestionsAPI(
+        1,
+        textInput,
+        getQuestionTypeText(questionType),
         getDifficultyText(difficultyLevel),
         numQuestions,
-        activeTab === 'text'? textInput : uploadedFileName // Assuming the file name is used as identifier
-       //  file_urls: activeTab === 'file' ? [fileUrl] : undefined
-       );
+        activeTab === 'text' ? textInput : uploadedFileName
+      );
 
       setGeneratedQuestions(response);
       setIsLoading(false);
@@ -72,7 +73,7 @@ const AIQuestionGenerator = () => {
     }
   };
 
-  const getDifficultyText = (level : any ) => {
+  const getDifficultyText = (level: any) => {
     switch (level) {
       case 'easy': return 'רמה קלה';
       case 'medium': return 'רמה בינונית';
@@ -81,7 +82,7 @@ const AIQuestionGenerator = () => {
     }
   };
 
-  const getQuestionTypeText = (type : any ) => {
+  const getQuestionTypeText = (type: any) => {
     switch (type) {
       case 'multiple_choice': return 'רב-ברירה';
       case 'open': return 'פתוחות';
@@ -120,11 +121,21 @@ const AIQuestionGenerator = () => {
         </CardHeader>
         <CardContent>
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full grid-cols-2 mb-4">
-              <TabsTrigger value="text">הקלדת טקסט</TabsTrigger>
-              <TabsTrigger value="file">העלאת קובץ</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 mb-4 rounded-xl border border-blue-100 bg-gradient-to-r from-blue-50 to-purple-50 p-1 shadow-sm">
+              <TabsTrigger
+                value="text"
+                className="rounded-lg py-2 font-medium text-blue-700 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600 data-[state=active]:to-purple-600 data-[state=active]:text-white transition-colors"
+              >
+                הקלדת טקסט
+              </TabsTrigger>
+              <TabsTrigger
+                value="file"
+                className="rounded-lg py-2 font-medium text-blue-700 data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600 data-[state=active]:to-purple-600 data-[state=active]:text-white transition-colors"
+              >
+                העלאת קובץ
+              </TabsTrigger>
             </TabsList>
-            
+
             <TabsContent value="text" className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="textInput">הזן טקסט ליצירת שאלות</Label>
@@ -133,30 +144,28 @@ const AIQuestionGenerator = () => {
                   placeholder="הזן את הטקסט כאן..."
                   className="min-h-[150px] rtl"
                   value={textInput}
-                  onChange={(e : any ) => setTextInput(e.target.value)}
+                  onChange={(e: any) => setTextInput(e.target.value)}
                 />
               </div>
             </TabsContent>
-            
+
             <TabsContent value="file" className="space-y-4">
               <div className="space-y-2">
                 <Label>העלה קובץ (PDF, DOCX, TXT)</Label>
-                <div className="border-2 border-dashed rounded-lg p-6 text-center">
-                  <FileUp className="mx-auto h-10 w-10 text-gray-400 mb-3" />
-                  <p className="text-sm text-gray-500 mb-2">גרור ושחרר קובץ, או</p>
-                  <div>
-                    <label htmlFor="file-upload" className="button bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 cursor-pointer inline-block">
-                      בחר קובץ
-                    </label>
-                    <input 
-                      id="file-upload"
-                      type="file" 
-                      accept=".pdf,.docx,.txt" 
-                      className="hidden"
-                      onChange={handleFileUpload}
-                      disabled={isLoading}
-                    />
-                  </div>
+                <div className="border-2 border-dashed border-blue-200 rounded-xl p-6 text-center bg-gradient-to-br from-blue-50 to-purple-50 shadow-inner">
+                  <FileUp className="mx-auto h-10 w-10 text-blue-500 mb-3" />
+                  <p className="text-sm text-blue-600 mb-2">גרור ושחרר קובץ, או</p>
+                  <label htmlFor="file-upload" className="inline-block bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-md shadow hover:opacity-90 cursor-pointer transition">
+                    בחר קובץ
+                  </label>
+                  <input
+                    id="file-upload"
+                    type="file"
+                    accept=".pdf,.docx,.txt"
+                    className="hidden"
+                    onChange={handleFileUpload}
+                    disabled={isLoading}
+                  />
                   {fileUrl && (
                     <div className="mt-3">
                       <Badge variant="outline" className="flex items-center gap-2">
@@ -169,7 +178,7 @@ const AIQuestionGenerator = () => {
               </div>
             </TabsContent>
           </Tabs>
-          
+
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
             <div className="space-y-2">
               <Label htmlFor="numQuestions">מספר שאלות</Label>
@@ -185,7 +194,7 @@ const AIQuestionGenerator = () => {
                 </SelectContent>
               </Select>
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="difficulty">רמת קושי</Label>
               <Select value={difficultyLevel} onValueChange={setDifficultyLevel}>
@@ -199,7 +208,7 @@ const AIQuestionGenerator = () => {
                 </SelectContent>
               </Select>
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="questionType">סוג שאלות</Label>
               <Select value={questionType} onValueChange={setQuestionType}>
@@ -217,11 +226,11 @@ const AIQuestionGenerator = () => {
         </CardContent>
         <CardFooter>
           <Button
-            className="w-full"
+            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold py-2 rounded-md shadow-md hover:opacity-90 transition"
             onClick={generateQuestions}
             disabled={
-              isLoading || 
-              (activeTab === 'text' && !textInput.trim()) || 
+              isLoading ||
+              (activeTab === 'text' && !textInput.trim()) ||
               (activeTab === 'file' && !fileUrl)
             }
           >
@@ -239,7 +248,7 @@ const AIQuestionGenerator = () => {
           </Button>
         </CardFooter>
       </Card>
-      
+
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center">
@@ -267,11 +276,11 @@ const AIQuestionGenerator = () => {
         </CardContent>
         {generatedQuestions && (
           <CardFooter className="flex gap-2 justify-end border-t pt-4">
-            <Button variant="outline" onClick={handleCopyToClipboard}>
+            <Button variant="outline" onClick={handleCopyToClipboard} className="border-blue-200 text-blue-700 hover:bg-blue-50 hover:text-blue-800 transition">
               <Copy className="ml-2 h-4 w-4" />
               העתק
             </Button>
-            <Button variant="outline" onClick={handleDownload}>
+            <Button variant="outline" onClick={handleDownload} className="border-blue-200 text-blue-700 hover:bg-blue-50 hover:text-blue-800 transition">
               <Download className="ml-2 h-4 w-4" />
               הורד כקובץ
             </Button>

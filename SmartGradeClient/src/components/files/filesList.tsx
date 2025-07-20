@@ -15,9 +15,10 @@ interface FilesListProps {
   currentTab: FileTabType;
   onFilesLoaded: (files: File[]) => void;
   files: File[];
+  onFileUpdated: (file: File) => void;
 }
 
-const FilesList: React.FC<FilesListProps> = ({ searchQuery, viewMode, currentTab, onFilesLoaded, files }) => {
+const FilesList: React.FC<FilesListProps> = ({ searchQuery, viewMode, currentTab, onFilesLoaded, files, onFileUpdated }) => {
   const { user } = useContext(UserContext);
   const { showToast } = useToast();
 
@@ -120,7 +121,7 @@ const FilesList: React.FC<FilesListProps> = ({ searchQuery, viewMode, currentTab
   return (
     <>
       {viewMode === 'grid' ? (
-        <FileGridView files={filteredFiles} onDeleteFile={handleAskDelete} onClickOnFile={handleOpenFileInNewTab} truncateTitle={truncateTitle}/>
+        <FileGridView files={filteredFiles} onDeleteFile={handleAskDelete} onClickOnFile={handleOpenFileInNewTab} truncateTitle={truncateTitle} onFileUpdated={onFileUpdated}/>
       ) : (
         <FileListView files={filteredFiles} onDeleteFile={handleAskDelete} onClickOnFile={handleOpenFileInNewTab} truncateTitle={truncateTitle}/>
       )}

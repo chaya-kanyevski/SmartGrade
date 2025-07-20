@@ -128,6 +128,7 @@ export const updateFile = async (
     tags: string,
     description: string, 
     fileUrl: string,
+    type: string
 ): Promise<boolean> => {
     try {
         const response = await api.put(`${API_FILES_URL}/${fileId}`, {
@@ -136,7 +137,8 @@ export const updateFile = async (
             title: title,
             tags: tags,
             description: description, 
-            fileUrl: fileUrl,
+            filePath: fileUrl,
+            Type: type,
         });
         return response.data;
     } catch (error) {

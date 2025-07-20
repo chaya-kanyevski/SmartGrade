@@ -15,7 +15,6 @@ import QuickLinks from "@/components/dashboard/QuickLinks";
 function Dashboard() {
   const { user } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(true);
-  const [todayTips, setTodayTips] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState("activity");
   const [recentFiles, setRecentFiles] = useState<File[]>([]);
   const [isAddFileDialogOpen, setIsAddFileDialogOpen] = useState(false);
@@ -50,11 +49,6 @@ function Dashboard() {
         setFilesThisMonth(currentMonthCount);
         setGrowthPercent(growthPercent);
       }
-        setTodayTips([
-          "שלב אלמנטים חזותיים בהוראה להגברת ההבנה והזיכרון.",
-          "הקדש זמן לרפלקציה בסוף כל שיעור.",
-          "התאם את ההוראה לסגנונות למידה שונים.",
-        ]);
 
       } catch (error) {
         console.error("שגיאה בטעינת הדשבורד:", error);

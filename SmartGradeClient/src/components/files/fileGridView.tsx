@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { File } from '../../models/File';
 import { Card, CardContent } from "@/components/ui/card";
 import { FileText, FilePen, Presentation, FileSpreadsheet, File as FileIcon } from 'lucide-react';
 import FileActionsMenu from './fileActionsMenu';
 import FileTagList from './FileTagList';
+import EditFileDialog from './editFileDialog';
+import { UserContext } from '@/context/UserReducer';
 
 interface FileGridViewProps {
   files: File[];
   onDeleteFile: (fileId: number) => void;
   onClickOnFile: (file: File) => void;
   truncateTitle: (title: string, maxLength: number) => string
+  onFileUpdated: (updatedFile: File) => void;
 }
 export const fileTypeIcons = {
   'exam': FilePen,
@@ -41,7 +44,16 @@ const formatDate = (date: string | Date) => {
 };
 
 
-const FileGridView: React.FC<FileGridViewProps> = ({ files, onDeleteFile, onClickOnFile, truncateTitle }) => {
+const FileGridView: React.FC<FileGridViewProps> = ({ files, onDeleteFile, onClickOnFile, truncateTitle, onFileUpdated }) => {
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [fileBeingEdited, setFileBeingEdited] = useState<File | null>(null);
+  const { user } = useContext(UserContext);
+
+  const handleEditFile = (file: File) => {
+    setFileBeingEdited(file);
+    setIsEditOpen(true);
+  };
+
   const handleDownload = async (file: File) => {
     if (!file.filePath) {
       console.error("Missing file URL");
@@ -63,35 +75,17 @@ const FileGridView: React.FC<FileGridViewProps> = ({ files, onDeleteFile, onClic
       console.error("Download failed:", error);
     }
   };
-
-  // const handleOpenFileInNewTab = (file: File) => {
-  //   if (!file.filePath ) {
-  //     console.log(file)
-  //     console.error("Missing file URL");
-  //     return;
-  //   }
-  //   const link = document.createElement("a");
-  //   link.href = file.filePath;
-  //   link.download = file.title;
-  //   document.body.appendChild(link);
-  //   link.click();
-  //   document.body.removeChild(link);
-  // };
-
   const sortedFiles = [...files].sort((a, b) => {
-    // files.forEach(file => console.log(`ccccc${file.createdAt}`));
-    // files.forEach(file => console.log(file.date));
-
-    return new Date(b.date!).getTime() - new Date(a.date!).getTime();
-
+   return new Date(b.date!).getTime() - new Date(a.date!).getTime();
   });
 
-  return (
+  return (      <>
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       {sortedFiles.map(file => {
         const FileTypeIcon = fileTypeIcons[file.type!] || FileIcon;
         const colorClasses = fileTypeColors[file.type!] || 'bg-gray-100 text-gray-600';
         return (
+          
 <div onClick={() => onClickOnFile(file)} className="cursor-pointer">
           <Card key={file.id} className="cursor-pointer hover:shadow-md transition-shadow">
             <CardContent className="p-0">
@@ -105,6 +99,7 @@ const FileGridView: React.FC<FileGridViewProps> = ({ files, onDeleteFile, onClic
                     onDelete={() => {
                         onDeleteFile(file.id);
                     }}
+                    onEdit={() => handleEditFile(file)}
                   />
                 </div>
                 <h3 className="font-medium text-gray-900">{truncateTitle(file.title, 30)}</h3>
@@ -118,8 +113,32 @@ const FileGridView: React.FC<FileGridViewProps> = ({ files, onDeleteFile, onClic
           </Card>
           </div>
         );
+        
       })}
     </div>
+    {fileBeingEdited && user?.id && (
+      <EditFileDialog
+  isOpen={isEditOpen}
+  onClose={() => setIsEditOpen(false)}
+  file={{
+    id: fileBeingEdited.id,
+    userId: user.id,
+    title: fileBeingEdited.title,
+    tags: fileBeingEdited.tags.toString(),
+    description: fileBeingEdited.description || "",
+    filePath: fileBeingEdited.filePath || "",
+    type: fileBeingEdited.type
+  }}
+  onSaveSuccess={(updatedFile) => {
+    onFileUpdated(updatedFile);
+    setIsEditOpen(false);
+  }}
+  
+/>
+
+)}
+
+    </>
   );
 };
 export default FileGridView;
